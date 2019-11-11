@@ -30,7 +30,10 @@ class EventFeed extends Component {
             {list.map((item) => {
               return(
                 <div>
-                  {item}
+                  <button>
+                     <h2>{item.Eventname}</h2>
+                     <p>{item.Date}</p>
+                  </button>
                 </div>
               );
             })}
