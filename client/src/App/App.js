@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import EventFeed from "./routes/EventFeed";
+import Event from "./routes/Event";
 
 import { Switch } from 'react-router-dom';
 import './App.css';
@@ -17,6 +18,7 @@ class App extends Component {
           <Route exact path='/' component={EventFeed}/>
           <Route exact path='/EventFeed' component={EventFeed}/>
           <Route exact path='/CreateEvent' component={CreateEvent}/>
+          <Route path='/Event/:EventID' component={Event}/>
         </Switch>
       </div>
     )
