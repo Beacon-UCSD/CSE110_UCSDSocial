@@ -1,18 +1,31 @@
 {
-    "name": "UCSDSocial-client",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "react": "^16.11.0",
-        "react-dom": "^16.11.0",
-        "react-router-dom": "^5.1.2",
-        "react-scripts": "3.2.0"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
-    },
-    "proxy": "http://localhost:5000"
+  "name": "ucsdsocial-client",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0"
+  },
+  "scripts": {
+    "start": "echo \"Error! Did you mean to start both the frontend and backend?\" && echo \"\"  && echo \"If so, please use 'npm run dev' from the root directory.\" && echo \"Otherwise, you may use 'npm run startclient' to start just the frontend from here.\n\" && exit 0",
+    "startclient": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:5000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
