@@ -8,7 +8,8 @@
         "backend": "node index.js",
         "frontend": "cd client && npm run startclient",
         "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "installall": "echo \"Installing both backend & frontend...\" && npm install && cd client && npm install"
     },
     "repository": {
         "type": "git",

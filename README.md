@@ -1,19 +1,30 @@
-# React Express Example
+# UCSD Social
 
-This project offers a simple example of how to set up a React project with Create React App and how to connect this app with an Express backend. React-Router is also used for routing.
+This is a project where we are developing a web application where UCSD students can create, find and join social/academic events.
+
 
 ## Prerequisites
+
 In order to run this project node.js and npm both need to have been installed.
 
+
 ## Deployment
-<ol>
-<li>Clone this repo</li>
-<li>Run npm start from react-express-example to start the Express app</li>
-<li>Run npm start from the client directory to start the React app</li>
-<li>Visit http://localhost:3000/</li>
-</ol>
+
+1. Clone this repo
+2. Run `npm run installall` from the root directory to install both the backend and frontend.
+2. Run `npm run dev` from the root directory to start the backend and frontend.
+3. Visit http://localhost:3000/
+
+
+#### Want to start only the backend or frontend?
+
+- To only start the backend, you may run `npm run backend` from the root directory.
+- To only start the frontend, you may run `npm run frontend` from the root directory.
+- You may also run `npm run startclient` from the client directory to only start the frontend.
+
 
 ## Built With
+
 * [React.js](https://reactjs.org/)
 * [Express.js](https://expressjs.com/)
 * [React-Router](https://reacttraining.com/react-router/core/guides/philosophy)
