@@ -58,10 +58,10 @@
     },
     "homepage": "https://github.com/Beacon-UCSD/CSE110_UCSDSocial#readme",
     "dependencies": {
-        "express": "^4.17.1"
+        "express": "^4.17.1",
+        "mysql": "^2.17.1"
     },
     "devDependencies": {
         "concurrently": "^5.0.0"
-    },
-    "mysql": "latest"
+    }
 }
