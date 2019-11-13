@@ -1,16 +1,67 @@
 {
-  "name": "react-express-example",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "author": "Nicolas Burgess",
-  "scripts": {
-    "start": "node index.js",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
-  },
-  "keywords": [],
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.16.3"
-  }
+    "name": "ucsdsocial-server",
+    "version": "1.0.0",
+    "description": "Web application where UCSD students can find, create, and join events.",
+    "main": "index.js",
+    "scripts": {
+        "start": "echo \"Error, please be more specific.\n\" && echo \"- To start the  backend, use 'npm run backend'.\" && echo \"- To start the frontend, use 'npm run frontend'.\" && echo \"- To start both servers, use 'npm run dev'.\" && exit 0",
+        "backend": "node index.js",
+        "frontend": "cd client && npm run startclient",
+        "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "installall": "echo \"Installing both backend & frontend...\" && npm install && cd client && npm install"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Beacon-UCSD/CSE110_UCSDSocial.git"
+    },
+    "keywords": [
+        "ucsd",
+        "social"
+    ],
+    "author": "CSE110 Team Beacon",
+    "contributors": [
+        {
+            "name": "Dan Lam"
+        },
+        {
+            "name": "Andrew Liu"
+        },
+        {
+            "name": "Cameron Smith"
+        },
+        {
+            "name": "David Dai"
+        },
+        {
+            "name": "Anthony Garcia"
+        },
+        {
+            "name": "Enlil Odisho"
+        },
+        {
+            "name": "Brendan Lau"
+        },
+        {
+            "name": "Harry Tran"
+        },
+        {
+            "name": "Patrick Pajarillaga"
+        },
+        {
+            "name": "Rujvi Mehendre"
+        }
+    ],
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Beacon-UCSD/CSE110_UCSDSocial/issues"
+    },
+    "homepage": "https://github.com/Beacon-UCSD/CSE110_UCSDSocial#readme",
+    "dependencies": {
+        "express": "^4.17.1",
+        "mysql": "^2.17.1"
+    },
+    "devDependencies": {
+        "concurrently": "^5.0.0"
+    }
 }

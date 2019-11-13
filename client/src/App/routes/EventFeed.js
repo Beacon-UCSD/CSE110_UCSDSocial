@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -21,16 +20,20 @@ class EventFeed extends Component {
     }
 
     render(){
-    
-    const { list } = this.state;
-        return(
+      const { list } = this.state;
+      return(
         <div>
             <h1> Event Feed. </h1>
         <div>
             {list.map((item) => {
               return(
-                <div>
-                  {item}
+                <div key={item.EventID}>
+                  <Link to={'./Event/' + item.EventID}>
+                    <button>
+                      <h2>{item.Eventname}</h2>
+                      <p>{item.Date}</p>
+                    </button>
+                  </Link>
                 </div>
               );
             })}
