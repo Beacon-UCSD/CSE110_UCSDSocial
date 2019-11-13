@@ -12,9 +12,9 @@ class Event extends Component {
     render() {
         return (
             <div>
-                <h1>{this.props.event.Eventname}</h1>
+                <h1>{this.props.event.eventName}</h1>
                 <div>
-                    <label>{this.props.event.Host}</label>
+                    <label>{this.props.event.host}</label>
                     <label>{this.props.event.Date}</label>
                     <label>{this.props.event.Starttime}</label>
                     <label>{this.props.event.Endtime}</label>
