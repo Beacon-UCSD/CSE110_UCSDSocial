@@ -5,6 +5,7 @@ import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 import {Route} from 'react-router-dom';
+import Event from './Event.js';
 
 class CreateEvent extends Component {
 
@@ -28,7 +29,7 @@ class CreateEvent extends Component {
 
     handleChange(event) {
         // decide whether the event name or description attribute is being changed
-        const name = target.name;
+        const name = event.name;
         
         this.setState({
             [name]: event.target.value
