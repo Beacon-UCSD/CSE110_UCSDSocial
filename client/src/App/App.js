@@ -1,35 +1,34 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
-import EventFeed from "./routes/EventFeed";
-import Event from "./routes/Event";
-
-import { Switch } from 'react-router-dom';
-import './App.css';
-import CreateEvent from './routes/CreateEvent';
+import LoginPage from './pages/LoginPage';
 
 class App extends Component {
+    constructor() {
+        super();
 
-  render() {
+        this.state = {
+            loggedInStatus: 'NOT_LOGGED_IN',
+            user: {}
+        };
+    }
 
-    const App = () => (
-      <div>
-        <Switch>
-          <Route exact path='/' component={EventFeed}/>
-          <Route exact path='/EventFeed' component={EventFeed}/>
-          <Route exact path='/CreateEvent' component={CreateEvent}/>
-          <Route path='/Event/:EventID' component={Event}/>
-        </Switch>
-      </div>
-    )
+    componentDidMount() {
+        // Set title shown in browser.
+        document.title = "UCSD Social";
+    }
 
-    return (
-      <Router>
-        <App/>
-      </Router>
-    );
-  }
-
+    render() {
+        return (
+            <div className="app">
+                <Router>
+                    <Switch>
+                        <Route exact path='/' component={LoginPage} />
+                    </Switch>
+                </Router>
+            </div>
+        );
+    }
 }
 
 export default App;
