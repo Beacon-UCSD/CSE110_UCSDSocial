@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
-import LoginPage from './pages/LoginPage';
+import LoginPage   from './pages/LoginPage';
+import EventFeed   from './routes/EventFeed';
+import CreateEvent from './routes/CreateEvent';
+import Event       from './routes/Event';
 
 class App extends Component {
     constructor() {
@@ -24,6 +27,9 @@ class App extends Component {
                 <Router>
                     <Switch>
                         <Route exact path='/' component={LoginPage} />
+                        <Route exact path='/EventFeed' component={EventFeed} />
+                        <Route exact path='/CreateEvent' component={CreateEvent} />
+                        <Route exact path='/Event/:EventID' component={Event} />
                     </Switch>
                 </Router>
             </div>
