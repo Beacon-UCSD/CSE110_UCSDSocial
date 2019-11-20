@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import './EventFeed.css';
 
 
 class EventFeed extends Component {
@@ -23,13 +24,13 @@ class EventFeed extends Component {
       const { list } = this.state;
       return(
         <div>
-            <h1> Event Feed. </h1>
+            <h1> Event Feed </h1>
         <div>
             {list.map((item) => {
               return(
                 <div key={item.EventID}>
                   <Link to={'./Event/' + item.EventID}>
-                    <button>
+                    <button className="eventButton">
                       <h2>{item.Eventname}</h2>
                       <p>{item.Date}</p>
                     </button>
@@ -42,6 +43,8 @@ class EventFeed extends Component {
             <Link to={'./CreateEvent'}>
             <button variant="raised"> Create Event </button>
             </Link>
+        </div>
+        <div>
         </div>
         </div>
         );
