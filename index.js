@@ -3,41 +3,42 @@ const path = require('path');
 
 const app = express();
 
+const bodyparser = require('body-parser');
+app.use(bodyparser.json());
+
+
 const testEventList = [
 	{
-		EventID: "000",
+		EventID: "0",
 		tagID: "CSE110, Project",
 		Eventname: "CSE110 Project Meeting",
 		Host: "Dan Lam",
-		Date: "11/11/19",
-		Starttime: "10:00 AM",
-		Endtime: "11:30 AM",
+		Startdate: (new Date(2019,0,12)).toString(),
+		Enddate: (new Date(2019,0,12,12)).toString(),
 		Private: "True",
 		Description: "We will be working on the data",
 		FlyerURL: "",
 		Attendees: "tien, andrew, cameron"
 	},
 	{
-		EventID: "001",
+		EventID: "1",
 		tagID: "Hangout, Lunch, Price Center",
 		Eventname: "Team Lunch",
 		Host: "Gary",
-		Date: "11/12/19",
-		Starttime: "1:00 PM",
-		Endtime: "2:00 PM",
+		Startdate: (new Date(2019,1,12)).toString(),
+		Enddate: (new Date(2019,1,12,12)).toString(),
 		Private: "True",
 		Description: "Lunch meet-up at price center! Lets just chill and not talk about the project for once!",
 		FlyerURL: "",
 		Attendees: "tien, andrew, cameron, rujvi, dan"
 	},
 	{
-		EventID: "002",
+		EventID: "2",
 		tagID: "Hangout, Lunch, Price Center",
 		Eventname: "Lonely During Lunch?",
 		Host: "Teemo",
-		Date: "12/13/19",
-		Starttime: "1:05 PM",
-		Endtime: "2:05 PM",
+		Startdate: (new Date(2019,0,13,3)).toString(),
+		Enddate: (new Date(2019,0,14,12)).toString(),
 		Private: "False",
 		Description: "Lunch meet-up at price center! Lets just chill and we have free cookies!",
 		FlyerURL: "",
@@ -46,7 +47,7 @@ const testEventList = [
 ];
 
 // Serve the static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+//app.use(express.static(path.join(__dirname, 'client/build')));
 
 // An api endpoint that returns a short list of items
 app.get('/api/getList', (req,res) => {
@@ -65,10 +66,26 @@ app.get('/api/getEvent', (req,res) => {
 	res.json(event[0]);
 })
 
-app.all('/api/storeEvent', (req,res) => {
-    console.log(req)
+app.post('/api/storeEvent', function (req,res) {
+	console.log('Body of Request for storing: ');
+	console.log(req.body);
+	console.log('Attempt: Store new event: ' + req.body.Eventname);
+	var newEvent = {
+		EventID: testEventList.length.toString(10),
+		tagID: req.body.tagID,
+		Eventname: req.body.Eventname,
+		Host: req.body.Host,
+		Startdate: req.body.Startdate,
+		Enddate: req.body.Enddate,
+		Private: req.body.Private,
+		Description: req.body.Description,
+		FlyerURL: req.FlyerURL,
+		Attendees: req.body.Attendees		
+	}
+	testEventList.push(newEvent);
+	console.log('Number of events now: ' + testEventList.length);
+	console.log(testEventList);
 });
-
 
 
 // Handles any requests that don't match the ones above
