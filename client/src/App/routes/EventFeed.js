@@ -32,7 +32,8 @@ class EventFeed extends Component {
                   <Link to={'./Event/' + item.EventID}>
                     <button className="eventButton">
                       <h2>{item.Eventname}</h2>
-                      <p>{item.Date}</p>
+                      <h3>Start: {item.Startdate}</h3>
+                      <h3>End: {item.Enddate}</h3>
                     </button>
                   </Link>
                 </div>
