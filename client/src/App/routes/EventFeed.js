@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 
 class EventFeed extends Component {
 
     // Initialize the state
     constructor(props){
+
         super(props);
         this.state = {
             list: []
         }
+
+        //redirect to user to login if not logged in
+        if ( typeof( Cookies.get('user_email') ) == "undefined" ) {
+            this.props.history.push('/')
+        }
+
     }
 
     // Fetch the event feed on mount

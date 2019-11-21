@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
+import Cookies from 'js-cookie';
 
 class LoginPage extends Component {
+
     onGoogleLoginSuccess(response) {
+
         // Make sure response is valid & contains token.
         if (response == null || response.Zi == null
             || response.Zi.id_token == null) {
             return;
         }
 
-        console.log(response);
-        console.log(response.Zi.id_token);
-        // TODO Send the login token to the backend to verify.
-        fetch('/api/authentication/validateGoogleUser', {
-            method:     'POST',
-            headers:    {
-                'Accept':       'application/json',
-                'Content-Type': 'application/json'
-            },
-            body:       JSON.stringify({
-                id_token:   response.Zi.id_token
-            })
-        });
+        //store the user email in a cookie
+        //note that we should encrypt this email cookie when getting serious
+        //so that user can't modify the cookie and hack another user
+        
+        var inFifteenMinutes = new Date(new Date().getTime() + 30 * 60 * 1000);
+        Cookies.set('user_email', response.w3.getEmail(), 
+                                     {expires: inFifteenMinutes});
+        
     }
 
     onGoogleLoginFailure(response) {

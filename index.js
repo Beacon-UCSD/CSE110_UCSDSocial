@@ -6,9 +6,6 @@ const bodyParser = require('body-parser');
 // Gets an instance of the database controller.
 // Enlil: File not committed yet since still working on it.
 // const dbController = require('./DatabaseController');
-// Gets an instance of the user authenticator.
-const authenticator = require('./UserAuthenticator');
-
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,18 +68,6 @@ const testEventList = [
 
 // Parse application/json
 app.use(bodyParser.json());
-
-app.post('/api/authentication/validateGoogleUser', (req, res) => {
-    // Check if id_token is sent.
-    if (req == null || req.body == null || req.body.id_token == null) {
-        // send bad request error
-        res.status(400).json({success:false,message:"Missing required params."});
-        return;
-    }
-
-    console.log("Received login token from client: " + req.body.id_token);
-    authenticator.authenticate(req.body.id_token, res);
-});
 
 // An api endpoint that returns a short list of items
 app.get('/api/getList', (req,res) => {
