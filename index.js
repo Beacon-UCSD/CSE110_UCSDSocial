@@ -80,7 +80,7 @@ app.post('/api/authentication/validateGoogleUser', (req, res) => {
         return;
     }
 
-    console.log("Received login token from client: " + req.body.id_token);
+    // Do magic and send client a session token
     authenticator.authenticate(req.body.id_token, res);
 });
 

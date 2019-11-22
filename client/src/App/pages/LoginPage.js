@@ -9,9 +9,8 @@ class LoginPage extends Component {
             return;
         }
 
-        console.log(response);
-        console.log(response.Zi.id_token);
-        // TODO Send the login token to the backend to verify.
+        //console.log(response);
+        // Send the login token to the backend to get session token.
         fetch('/api/authentication/validateGoogleUser', {
             method:     'POST',
             headers:    {
@@ -21,6 +20,10 @@ class LoginPage extends Component {
             body:       JSON.stringify({
                 id_token:   response.Zi.id_token
             })
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            console.log("Backend response: ", data);
         });
     }
 
