@@ -29,7 +29,9 @@ class Auth {
             localStorage.setItem('session', sessionToken);
         }
 
-        callback();
+        if (callback != null) {
+            callback();
+        }
     }
 
     logout(callback) {
@@ -41,7 +43,9 @@ class Auth {
             localStorage.removeItem('session');
         }
 
-        callback();
+        if (callback != null) {
+            callback();
+        }
     }
 
     isAuthenticated() {

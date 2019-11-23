@@ -50,13 +50,17 @@ class ProtectedFetch {
         }
 
         // Append response listener to invoke callback
-        if (callback != null) {
-            req.then((response) => {
-                return response.json();
-            }).then((data) => {
+        req.then((response) => {
+            if (response.status === 401) { 
+                // Unauthorized, maybe token expired?
+                auth.logout();
+            }
+            return response.json();
+        }).then((data) => {
+            if (callback != null) {
                 callback(data);
-            });
-        }
+            }
+        });
     }
 
     /*
