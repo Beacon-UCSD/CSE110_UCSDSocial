@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import pfetch from '../fetch.protected';
 
+import './EventFeed.css';
+
 class EventFeed extends Component {
 
     // Initialize the state
@@ -27,15 +29,16 @@ class EventFeed extends Component {
       const { list } = this.state;
       return(
         <div>
-            <h1> Event Feed. </h1>
+            <h1> Event Feed </h1>
         <div>
             {list.map((item) => {
               return(
                 <div key={item.EventID}>
                   <Link to={'./app/Event/' + item.EventID}>
-                    <button>
+                    <button className="eventButton">
                       <h2>{item.Eventname}</h2>
-                      <p>{item.Date}</p>
+                      <h3>Start: {item.Startdate}</h3>
+                      <h3>End: {item.Enddate}</h3>
                     </button>
                   </Link>
                 </div>
@@ -46,6 +49,8 @@ class EventFeed extends Component {
             <Link to={'./app/CreateEvent'}>
             <button variant="raised"> Create Event </button>
             </Link>
+        </div>
+        <div>
         </div>
         </div>
         );

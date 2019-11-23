@@ -4,17 +4,14 @@ import { ProtectedRoute } from './protected.route.js';
 
 import LoginPage   from './routes/LoginPage';
 import EventFeed   from './routes/EventFeed';
-import CreateEvent from './routes/CreateEvent';
 import Event       from './routes/Event';
+import CreateEvent from './routes/CreateEvent';
+import UpdateEvent from './routes/UpdateEvent';
+
 
 class App extends Component {
     constructor() {
         super();
-
-        this.state = {
-            loggedInStatus: 'NOT_LOGGED_IN',
-            user: {}
-        };
     }
 
     componentDidMount() {
@@ -30,6 +27,7 @@ class App extends Component {
                         <Route exact path='/(|login)' component={LoginPage} />
                         <ProtectedRoute exact path='/app(|/EventFeed)' component={EventFeed} />
                         <ProtectedRoute exact path='/app/CreateEvent' component={CreateEvent} />
+                        <ProtectedRoute exact path='/app/UpdateEvent' component={UpdateEvent} />
                         <ProtectedRoute exact path='/app/Event/:EventID' component={Event} />
                     </Switch>
                 </Router>
