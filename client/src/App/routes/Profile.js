@@ -1,10 +1,15 @@
 import React, {Component} from "react";
+import auth from '../auth';
 import pfetch from '../fetch.protected';
 
 class Profile extends Component {
 
      constructor(props) {
          super(props);
+
+         // Gets basic user info (name, email, and profile pic)
+         this.userInfo = auth.getUserInfo();
+
          this.state = {
              list: []
          }
@@ -22,13 +27,14 @@ class Profile extends Component {
              <div>
                  {list.map((item) => {
                      return (
-                         <div>
-                             <h1>{item.Username}</h1>
+                         <div key={item.UserID}>
+                             <img src={this.userInfo.pictureSrc} alt={"You, "+this.userInfo.name} height={"100"} width={"100"} />
+                             <h1>{this.userInfo.name}</h1>
                              <h3>Email:</h3>
-                             <p>{item.Email}</p>
+                             <p>{this.userInfo.email}</p>
                              <h3>Phone Number:</h3>
                              <p>{item.Phone}</p>
-                             <h3>Tage IDs:</h3>
+                             <h3>Tag IDs:</h3>
                              <p>{item.tagIDs}</p>
                              <h3>College:</h3>
                              <p>{item.College}</p>
