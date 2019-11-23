@@ -3,6 +3,16 @@ import { GoogleLogin } from 'react-google-login';
 import auth from '../auth';
 
 class LoginPage extends Component {
+    constructor(props) {
+        super(props);
+
+        // If user is already logged in and goes to login page, redirect to
+        // home page.
+        if (auth.isAuthenticated()) {
+            this.props.history.push('/app');
+        }
+    }
+
     onGoogleLoginSuccess(response) {
         // Make sure response is valid & contains token.
         if (response == null || response.Zi == null
@@ -24,10 +34,25 @@ class LoginPage extends Component {
         }).then((response) => {
             return response.json();
         }).then((data) => {
-            console.log("Backend response: ", data);
+            if (!("sessionToken" in data)) {
+                console.log("Error. Backend didn't send session token.");
+                console.log("Backend response:", data);
+                return;
+            }
+
             // Login user and redirect to main page
-            auth.login(() => {
-                this.props.history.push('/app');
+            auth.login(data.sessionToken, () => {
+                // Redirect user to app
+                if (this.state != null && "from" in this.state
+                    && this.state.from.toLowerCase().startsWith('/app')) {
+                    // User was sent here when they tried to visit a protected
+                    // route.
+                    // Send user back to where they came from now that they've
+                    // logged in.
+                    this.props.history.push(this.state.from);
+                } else {
+                    this.props.history.push('/app');
+                }
             });
         });
     }

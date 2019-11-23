@@ -79,7 +79,7 @@ exports.authenticate = function(idToken, clientRes) {
                     clientRes.status(500).json({success:false});
                     return;
                 }
-                clientRes.status(200).json({success:true, authToken:token});
+                clientRes.status(200).json({success:true, sessionToken:token});
             });
         }
     );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import pfetch from '../fetch.protected';
 
 class EventFeed extends Component {
 
@@ -14,9 +14,13 @@ class EventFeed extends Component {
 
     // Fetch the event feed on mount
     componentDidMount() {
+        /*
         fetch('/api/getList')
         .then(res => res.json())
-        .then(list => this.setState({ list }))
+        .then(list => this.setState({ list }))*/
+        pfetch.jsonGet('/api/getList', (list) => {
+            this.setState({ list });
+        });
     }
 
     render(){
@@ -28,7 +32,7 @@ class EventFeed extends Component {
             {list.map((item) => {
               return(
                 <div key={item.EventID}>
-                  <Link to={'./Event/' + item.EventID}>
+                  <Link to={'./app/Event/' + item.EventID}>
                     <button>
                       <h2>{item.Eventname}</h2>
                       <p>{item.Date}</p>
@@ -39,7 +43,7 @@ class EventFeed extends Component {
             })}
           </div>
         <div>
-            <Link to={'./CreateEvent'}>
+            <Link to={'./app/CreateEvent'}>
             <button variant="raised"> Create Event </button>
             </Link>
         </div>

@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import pfetch from '../fetch.protected';
 
 class Event extends Component {
 
@@ -10,11 +11,15 @@ class Event extends Component {
     }
 
     componentDidMount = () =>{
-        fetch('/api/getEvent?EventID=' + this.props.match.params.EventID).then(res => res.json()).then(e => {
+        /*fetch('/api/getEvent?EventID=' + this.props.match.params.EventID).then(res => res.json()).then(e => {
             this.setState({
                 event: e
             })
-        })
+        })*/
+        pfetch.jsonGet('/api/getEvent?EventID=' + this.props.match.params.EventID,
+            (data) => {
+                this.setState({ event: data });
+            });
     }
 
     render() {
