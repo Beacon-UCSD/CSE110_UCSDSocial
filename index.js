@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const jwt = require('express-jwt');
 const path = require('path');
 const bodyParser = require('body-parser');
 
@@ -64,6 +65,8 @@ const testEventList = [
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+
+
 // Parse application/x-www-form-urlencoded
 // Not sure if required so left commented. If you have issues receiving form
 // values after sending to backend, uncomment line below and see if they work.
@@ -83,6 +86,13 @@ app.post('/api/authentication/validateGoogleUser', (req, res) => {
     // Do magic and send client a session token
     authenticator.authenticate(req.body.id_token, res);
 });
+
+// Make every path below this point protected.
+app.use(jwt({secret: authenticator.JWT_SECRET}));
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////// INSERT ALL PROTECTED PATHS BELOW THIS LINE //////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 // An api endpoint that returns a short list of items
 app.get('/api/getList', (req,res) => {

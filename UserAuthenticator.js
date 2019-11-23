@@ -6,6 +6,9 @@ const crypto = require('crypto');
 const JWT_SIGN_SECRET = 'XBqv88W69RQS9a9f9WD6fbtZ';
 const TOKEN_KEY = Buffer.from('a6a1998373635907b329a54c1e11840a', 'hex');
 
+// need to export to be used in index.js
+exports.JWT_SECRET = JWT_SIGN_SECRET;
+
 // Authenticates a user with a token from google and respond to user with our 
 // own "session token".
 //

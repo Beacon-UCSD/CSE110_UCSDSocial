@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { ProtectedRoute } from './protected.route.js';
 
-import LoginPage   from './pages/LoginPage';
+import LoginPage   from './routes/LoginPage';
 import EventFeed   from './routes/EventFeed';
 import CreateEvent from './routes/CreateEvent';
 import Event       from './routes/Event';
@@ -26,10 +27,10 @@ class App extends Component {
             <div className="app">
                 <Router>
                     <Switch>
-                        <Route exact path='/' component={LoginPage} />
-                        <Route exact path='/EventFeed' component={EventFeed} />
-                        <Route exact path='/CreateEvent' component={CreateEvent} />
-                        <Route exact path='/Event/:EventID' component={Event} />
+                        <Route exact path='/(|login)' component={LoginPage} />
+                        <ProtectedRoute exact path='/app(|/EventFeed)' component={EventFeed} />
+                        <ProtectedRoute exact path='/app/CreateEvent' component={CreateEvent} />
+                        <ProtectedRoute exact path='/app/Event/:EventID' component={Event} />
                     </Switch>
                 </Router>
             </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
+import auth from '../auth';
 
 class LoginPage extends Component {
     onGoogleLoginSuccess(response) {
@@ -24,6 +25,10 @@ class LoginPage extends Component {
             return response.json();
         }).then((data) => {
             console.log("Backend response: ", data);
+            // Login user and redirect to main page
+            auth.login(() => {
+                this.props.history.push('/app');
+            });
         });
     }
 
@@ -40,7 +45,7 @@ class LoginPage extends Component {
                     clientId="367161453960-u7qnu0melhkcq45t3va5d1vik0fu0a5s.apps.googleusercontent.com"
                     buttonText="Sign in with Google"
                     theme='dark'
-                    onSuccess={this.onGoogleLoginSuccess}
+                    onSuccess={this.onGoogleLoginSuccess.bind(this)}
                     onFailure={this.onGoogleLoginFailure}
                     cookiePolicy={'single_host_origin'} />
             </div>
