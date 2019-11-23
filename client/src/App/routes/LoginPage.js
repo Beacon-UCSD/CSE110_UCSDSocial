@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import auth from '../auth';
+import pfetch from '../fetch.protected';
 
 class LoginPage extends Component {
     constructor(props) {
@@ -11,6 +12,19 @@ class LoginPage extends Component {
         if (auth.isAuthenticated()) {
             this.props.history.push('/app');
         }
+
+        if (this.props != null && this.props.location != null &&
+            this.props.location.state != null && this.props.location.state.from != null
+            && this.props.location.state.from.pathname != null &&
+            this.props.location.state.from.pathname.toLowerCase().startsWith('/app')) {
+            // User was sent here when they tried to visit a protected
+            // route.
+            // Once the user logs in, send them back to the page they came
+            // from.
+            this.loginRedirectTo = this.props.location.state.from.pathname;
+        } else {
+            this.loginRedirectTo = null;
+        }
     }
 
     onGoogleLoginSuccess(response) {
@@ -20,41 +34,31 @@ class LoginPage extends Component {
             return;
         }
 
-        //console.log(response);
         // Send the login token to the backend to get session token.
-        fetch('/api/authentication/validateGoogleUser', {
-            method:     'POST',
-            headers:    {
-                'Accept':       'application/json',
-                'Content-Type': 'application/json'
-            },
-            body:       JSON.stringify({
-                id_token:   response.Zi.id_token
-            })
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            if (!("sessionToken" in data)) {
-                console.log("Error. Backend didn't send session token.");
-                console.log("Backend response:", data);
-                return;
-            }
-
-            // Login user and redirect to main page
-            auth.login(data.sessionToken, () => {
-                // Redirect user to app
-                if (this.state != null && "from" in this.state
-                    && this.state.from.toLowerCase().startsWith('/app')) {
-                    // User was sent here when they tried to visit a protected
-                    // route.
-                    // Send user back to where they came from now that they've
-                    // logged in.
-                    this.props.history.push(this.state.from);
-                } else {
-                    this.props.history.push('/app');
+        var headers = {
+            'Accept':       'application/json',
+            'Content-Type': 'application/json'
+        };
+        pfetch.jsonPost('/api/authentication/validateGoogleUser', {id_token: response.Zi.id_token},
+            (data) => {
+                // Check if backend sent session token.
+                if (!("sessionToken" in data)) {
+                    console.log("Error. Backend didn't send session token.");
+                    console.log("Backend response:", data);
+                    return;
                 }
-            });
-        });
+
+                // Login user and redirect to main page
+                auth.login(data.sessionToken, () => {
+                    // Redirect user to app
+                    if (this.loginRedirectTo != null) {
+                        this.props.history.push(this.loginRedirectTo);
+                    } else {
+                        this.props.history.push('/app');
+                    }
+                });
+            }, headers
+        );
     }
 
     onGoogleLoginFailure(response) {

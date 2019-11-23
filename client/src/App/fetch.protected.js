@@ -37,13 +37,13 @@ class ProtectedFetch {
         if (method === 'GET' || method === 'HEAD' || body == null) {
             // Make request with no body.
             req = fetch(path, {
-                method:     'GET',
+                method:     method,
                 headers:    headers
             });
         } else {
             // Make request with no body.
             req = fetch(path, {
-                method:     'GET',
+                method:     method,
                 headers:    headers,
                 body:       body
             });
