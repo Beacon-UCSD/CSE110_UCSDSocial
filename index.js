@@ -6,6 +6,23 @@ const app = express();
 const bodyparser = require('body-parser');
 app.use(bodyparser.json());
 
+const testProfileList = [
+     {
+         UserID: "0",
+         GoogleUID: "00",
+         Username: "User1",
+         Password: "wordpass",
+         Email: "user1@ucsd.edu",
+         Phone: "(555) 123-4567",
+         tagIDs: "CSE110, Geisel",
+         College: "Marshall",
+         Major: "History",
+         Year: "Senior",
+         Friends: "Gary, Rick, Pradeep",
+         Hostevents: "Library Study Session",
+         Notifications: "CSE110 events"
+     }
+ ];
 
 const testEventList = [
 	{
@@ -56,6 +73,11 @@ app.get('/api/getList', (req,res) => {
 	console.log('Sent list of items');
 });
 
+app.get('/api/getUsers', (req,res) => {
+	res.json(testProfileList);
+	console.log('Sent list of items');
+});
+
 app.get('/api/getEvent', (req,res) => {
 	var eventid = req.query.EventID;
 	console.log('Attempt: Sent event ' + eventid);
@@ -80,7 +102,7 @@ app.post('/api/storeEvent', function (req,res) {
 		Private: req.body.Private,
 		Description: req.body.Description,
 		FlyerURL: req.FlyerURL,
-		Attendees: req.body.Attendees		
+		Attendees: req.body.Attendees
 	}
 	testEventList.push(newEvent);
 	console.log('Number of events now: ' + testEventList.length);

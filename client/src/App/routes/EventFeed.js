@@ -26,6 +26,9 @@ class EventFeed extends Component {
         <div>
             <h1> Event Feed </h1>
         <div>
+            <Link to={'./Profile/'}>
+            <button variant="raised"> Profile </button>
+            </Link>
             {list.map((item) => {
               return(
                 <div key={item.EventID}>
