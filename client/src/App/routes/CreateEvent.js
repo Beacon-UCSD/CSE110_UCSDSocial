@@ -1,9 +1,9 @@
-
 import React, { Component } from 'react';
 // for date pickers
 import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-
+// for http requests
+import pfetch from '../fetch.protected';
 
 class CreateEvent extends Component {
 
@@ -59,26 +59,20 @@ class CreateEvent extends Component {
     handleSubmit(event){
         //event.preventDefault();
 
-        fetch('/api/storeEvent', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify({
-                tagID: this.state.tagID,
-                Eventname: this.state.Eventname,
-                Host: "Me",
-                Startdate: this.state.startDate.toString(),
-                Enddate: this.state.endDate.toString(),
-                Private: "False",
-                Description: this.state.Description,
-                FlyerURL: "",
-                Attendees: ""
-            }),
-        });
-        this.props.history.push(`/Eventfeed`);
+        var body = {
+            tagID: this.state.tagID,
+            Eventname: this.state.Eventname,
+            Host: "Me",
+            Startdate: this.state.startDate.toString(),
+            Enddate: this.state.endDate.toString(),
+            Private: "False",
+            Description: this.state.Description,
+            FlyerURL: "",
+            Attendees: ""
+        };
+        pfetch.jsonPost('/api/storeEvent', body);
         // go to eventfeed page
+        this.props.history.push('/app/Eventfeed');
     }
 
 

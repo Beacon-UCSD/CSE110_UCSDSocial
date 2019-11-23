@@ -26,33 +26,33 @@ class EventFeed extends Component {
     }
 
     render(){
-      const { list } = this.state;
-      return(
-        <div>
-            <h1> Event Feed </h1>
-        <div>
-            {list.map((item) => {
-              return(
-                <div key={item.EventID}>
-                  <Link to={'./app/Event/' + item.EventID}>
-                    <button className="eventButton">
-                      <h2>{item.Eventname}</h2>
-                      <h3>Start: {item.Startdate}</h3>
-                      <h3>End: {item.Enddate}</h3>
-                    </button>
-                  </Link>
+        const { list } = this.state;
+        return(
+            <div>
+                <h1> Event Feed </h1>
+                <div>
+                    {list.map((item) => {
+                        return(
+                            <div key={item.EventID}>
+                                <Link to={'/app/Event/' + item.EventID}>
+                                    <button className="eventButton">
+                                        <h2>{item.Eventname}</h2>
+                                        <h3>Start: {item.Startdate}</h3>
+                                        <h3>End: {item.Enddate}</h3>
+                                    </button>
+                                </Link>
+                            </div>
+                        );
+                    })}
                 </div>
-              );
-            })}
-          </div>
-        <div>
-            <Link to={'./app/CreateEvent'}>
-            <button variant="raised"> Create Event </button>
-            </Link>
-        </div>
-        <div>
-        </div>
-        </div>
+                <div>
+                    <Link to={'/app/CreateEvent'}>
+                        <button variant="raised"> Create Event </button>
+                    </Link>
+                </div>
+                <div>
+                </div>
+            </div>
         );
     }
 

@@ -10,10 +10,6 @@ import UpdateEvent from './routes/UpdateEvent';
 
 
 class App extends Component {
-    constructor() {
-        super();
-    }
-
     componentDidMount() {
         // Set title shown in browser.
         document.title = "UCSD Social";
