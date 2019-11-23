@@ -1,39 +1,36 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { ProtectedRoute } from './protected.route.js';
 
-import EventFeed from "./routes/EventFeed";
-import Event from "./routes/Event";
-import Profile from "./routes/Profile";
-
-import { Switch } from 'react-router-dom';
-import './App.css';
+import LoginPage   from './routes/LoginPage';
+import Profile     from './routes/Profile';
+import EventFeed   from './routes/EventFeed';
+import Event       from './routes/Event';
 import CreateEvent from './routes/CreateEvent';
 import UpdateEvent from './routes/UpdateEvent';
 
 class App extends Component {
+    componentDidMount() {
+        // Set title shown in browser.
+        document.title = "UCSD Social";
+    }
 
-  render() {
-
-    const App = () => (
-      <div>
-        <Switch>
-          <Route exact path='/' component={EventFeed}/>
-          <Route exact path='/EventFeed' component={EventFeed}/>
-          <Route exact path='/CreateEvent' component={CreateEvent}/>
-          <Route exact path='/UpdateEvent' component={UpdateEvent}/>
-          <Route exact path='/Profile' component={Profile}/>
-          <Route path='/Event/:EventID' component={Event}/>
-        </Switch>
-      </div>
-    )
-
-    return (
-      <Router>
-        <App/>
-      </Router>
-    );
-  }
-
+    render() {
+        return (
+            <div className="app">
+                <Router>
+                    <Switch>
+                        <Route exact path='/(|login)' component={LoginPage} />
+                        <ProtectedRoute exact path='/app(|/EventFeed)' component={EventFeed} />
+                        <ProtectedRoute exact path='/app/CreateEvent' component={CreateEvent} />
+                        <ProtectedRoute exact path='/app/UpdateEvent' component={UpdateEvent} />
+                        <ProtectedRoute exact path='/app/Event/:EventID' component={Event} />
+                        <ProtectedRoute exact path='/app/Profile' component={Profile}/>
+                    </Switch>
+                </Router>
+            </div>
+        );
+    }
 }
 
 export default App;

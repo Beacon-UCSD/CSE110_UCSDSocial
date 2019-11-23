@@ -1,10 +1,14 @@
 const express = require('express');
-const path = require('path');
-
 const app = express();
+const jwt = require('express-jwt');
+const path = require('path');
+const bodyParser = require('body-parser');
 
-const bodyparser = require('body-parser');
-app.use(bodyparser.json());
+// Gets an instance of the database controller.
+// Enlil: File not committed yet since still working on it.
+// const dbController = require('./DatabaseController');
+// Gets an instance of the user authenticator.
+const authenticator = require('./UserAuthenticator');
 
 const testProfileList = [
      {
@@ -24,6 +28,14 @@ const testProfileList = [
      }
  ];
 
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/*
+ * FOR TESTING PURPOSES ONLY!
+ * TODO REMOVE IN FUTURE
+ */
 const testEventList = [
 	{
 		EventID: "0",
@@ -62,6 +74,39 @@ const testEventList = [
 		Attendees: ""
 	}
 ];
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+// Parse application/x-www-form-urlencoded
+// Not sure if required so left commented. If you have issues receiving form
+// values after sending to backend, uncomment line below and see if they work.
+//app.use(bodyParser.urlencoded({extended:false}));
+
+// Parse application/json
+app.use(bodyParser.json());
+
+app.post('/api/authentication/validateGoogleUser', (req, res) => {
+    // Check if id_token is sent.
+    if (req == null || req.body == null || req.body.id_token == null) {
+        // send bad request error
+        res.status(400).json({success:false,message:"Missing required params."});
+        return;
+    }
+
+    // Do magic and send client a session token
+    authenticator.authenticate(req.body.id_token, res);
+});
+
+// Make every path below this point protected.
+app.use(jwt({secret: authenticator.JWT_SECRET}));
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////// INSERT ALL PROTECTED PATHS BELOW THIS LINE //////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 // Serve the static files from the React app
 //app.use(express.static(path.join(__dirname, 'client/build')));
@@ -86,7 +131,7 @@ app.get('/api/getEvent', (req,res) => {
 	});
 	console.log('Result: ' + event[0].Eventname);
 	res.json(event[0]);
-})
+});
 
 app.post('/api/storeEvent', function (req,res) {
 	console.log('Body of Request for storing: ');
@@ -108,6 +153,7 @@ app.post('/api/storeEvent', function (req,res) {
 	console.log('Number of events now: ' + testEventList.length);
 	console.log(testEventList);
 });
+
 
 
 // Handles any requests that don't match the ones above

@@ -2,6 +2,8 @@ import React from 'react';
 // for date pickers
 import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+// for http requests
+import pfetch from '../fetch.protected';
 
 class UpdateEvent extends React.Component{
     constructor(props){
@@ -63,7 +65,7 @@ class UpdateEvent extends React.Component{
     Handles checkbox changes, so alternates the private and public boxes
     */
     handleInputChange(evt){
-        if (evt.target.name == "Private"){
+        if (evt.target.name === "Private"){
             this.setState({
                 Private: evt.target.checked,
                 Public: !evt.target.checked,
@@ -82,25 +84,19 @@ class UpdateEvent extends React.Component{
     */
     handleSubmit(evt){
         // TODO: is there an endpoint for updating event?
-        fetch('/api/storeEvent', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify({
-                tagID: this.state.tagID,
-                Eventname: this.state.Eventname,
-                Host: "Me",
-                Startdate: this.state.Startdate.toString(),
-                Enddate: this.state.Enddate.toString(),
-                Private: this.state.Private,
-                Description: this.state.Description,
-                FlyerURL: "",
-                Attendees: ""
-            }),
-        });
-        this.props.history.push(`/Eventfeed`);
+        var body = {
+            tagID: this.state.tagID,
+            Eventname: this.state.Eventname,
+            Host: "Me",
+            Startdate: this.state.Startdate.toString(),
+            Enddate: this.state.Enddate.toString(),
+            Private: this.state.Private,
+            Description: this.state.Description,
+            FlyerURL: "",
+            Attendees: ""
+        };
+        pfetch.jsonPost('/api/storeEvent', body);
+        this.props.history.push('/app/Eventfeed');
     }
 
     render(){        

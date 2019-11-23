@@ -1,7 +1,7 @@
 import React, {Component} from "react";
- import {Route} from 'react-router-dom';
+import pfetch from '../fetch.protected';
 
- class Profile extends Component {
+class Profile extends Component {
 
      constructor(props) {
          super(props);
@@ -11,9 +11,9 @@ import React, {Component} from "react";
      }
 
      componentDidMount() {
-         fetch('/api/getUsers')
-         .then(res => res.json())
-         .then(list => this.setState({list}))
+         pfetch.jsonGet('/api/getUsers', (list) => {
+             this.setState({list});
+         });
      }
 
      render() {

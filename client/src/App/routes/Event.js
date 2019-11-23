@@ -1,7 +1,5 @@
 import React, {Component} from "react";
-import {Route} from 'react-router-dom';
-import UpdateEvent from './UpdateEvent';
-import { Redirect } from 'react-router-dom';
+import pfetch from '../fetch.protected';
 
 class Event extends Component {
 
@@ -13,14 +11,18 @@ class Event extends Component {
         this.handleUpdateEvent = this.handleUpdateEvent.bind(this);
     }
 
-    componentDidMount = () =>{
-        fetch('/api/getEvent?EventID=' + this.props.match.params.EventID).then(res => res.json()).then(e => {
+    componentDidMount = () => {
+        /*fetch('/api/getEvent?EventID=' + this.props.match.params.EventID).then(res => res.json()).then(e => {
             this.setState({
                 event: e
             })
-        })
+        })*/
+        pfetch.jsonGet('/api/getEvent?EventID=' + this.props.match.params.EventID,
+            (data) => {
+                this.setState({ event: data });
+            });
     }
-
+    
     handleUpdateEvent(){
         // pass in json to updateevent
         let evt = {
@@ -32,7 +34,7 @@ class Event extends Component {
         }
         console.log(evt);
         this.props.history.push({
-            pathname: '/UpdateEvent',
+            pathname: '/app/UpdateEvent',
             state:{evt: evt}
         })
     }
