@@ -7,6 +7,7 @@ import Event from "./routes/Event";
 import { Switch } from 'react-router-dom';
 import './App.css';
 import CreateEvent from './routes/CreateEvent';
+import UpdateEvent from './routes/UpdateEvent';
 
 class App extends Component {
 
@@ -18,6 +19,7 @@ class App extends Component {
           <Route exact path='/' component={EventFeed}/>
           <Route exact path='/EventFeed' component={EventFeed}/>
           <Route exact path='/CreateEvent' component={CreateEvent}/>
+          <Route exact path='/UpdateEvent' component={UpdateEvent}/>
           <Route path='/Event/:EventID' component={Event}/>
         </Switch>
       </div>
