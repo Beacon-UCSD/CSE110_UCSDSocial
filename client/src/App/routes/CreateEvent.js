@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 // for date pickers
 import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 // for http requests
 import pfetch from '../fetch.protected';
 
+import './CreateEvent.css';
+
 class CreateEvent extends Component {
 
 
     constructor(props){
         super(props);
+        this.openNav = this.openNav.bind(this);
+        this.closeNav = this.closeNav.bind(this);
 
         this.state = {
             tagID: '',
@@ -34,7 +39,7 @@ class CreateEvent extends Component {
     handleChange(event) {
         // decide whether the event name or description attribute is being changed
         const name = event.target.name;
-        
+
         this.setState({
             [name]: event.target.value
         });
@@ -75,7 +80,16 @@ class CreateEvent extends Component {
         this.props.history.push('/app/Eventfeed');
     }
 
+    openNav() {
+      document.getElementById("mySidenav").style.width = "166px";
+      document.getElementById("main").style.marginLeft = "166px";
+    }
 
+    /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+    closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+      document.getElementById("main").style.marginLeft = "0";
+    }
     /*
     Form currently handles:
         EventID: Handled in index.js
@@ -84,16 +98,30 @@ class CreateEvent extends Component {
         Startdate:
         Enddate:
         Private: Handled automatically as "false"
-        Description: 
+        Description:
         FlyerURL: Handled automatically as ""
         Attendees: Handled automatically as ""
     */
     render(){
         return(
-            <form onSubmit={this.handleSubmit}>
-                <label>
+          <body>
+
+            <div id="mySidenav" class="sidenav">
+              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+              <Link to={'/app/Eventfeed'}>
+                <a href="#">Events</a>
+              </Link>
+              <a href="#">Notification</a>
+              <a href="#">Logout</a>
+            </div>
+
+            <div id="main">
+              <button onClick={this.openNav}>Open</button>
+              <button onClick={this.closeNav}>Close</button>
+              <form className="eventForm" onSubmit={this.handleSubmit}>
+                <label className="eventName">
                     Event Name:
-                    <input name="Eventname" type="text" value={this.state.Eventname} 
+                    <input name="Eventname" type="text" value={this.state.Eventname}
                         onChange={this.handleChange} />
                 </label>
                 <MuiPickersUtilsProvider
@@ -112,21 +140,25 @@ class CreateEvent extends Component {
                 </MuiPickersUtilsProvider>
                 <br/>
                 <label>
-                    Tags: 
+                    Tags:
                     <input name="tagID" type="text" value={this.state.tagID} onChange={this.handleChange}/>
                 </label>
                 <br/>
                 <label>
                     Event Description:
-                    <input name="Description" type="text" value={this.state.Description} 
+                    <input name="Description" type="text" value={this.state.Description}
                         onChange={this.handleChange} />
                 </label>
 
-                <input type="submit" value="Submit" />
+                <input className="submit" type="submit" value="Submit" />
             </form>
+            </div>
+          </body>
         );
     }
 
 }
+
+/* Set the width of the side navigation to 250px */
 
 export default CreateEvent;
