@@ -44,7 +44,7 @@ const testEventList = [
 		Host: "Dan Lam",
 		Startdate: (new Date(2019,0,12)).toString(),
 		Enddate: (new Date(2019,0,12,12)).toString(),
-		Private: "True",
+		Private: true,
 		Description: "We will be working on the data",
 		FlyerURL: "",
 		Attendees: "tien, andrew, cameron"
@@ -56,7 +56,7 @@ const testEventList = [
 		Host: "Gary",
 		Startdate: (new Date(2019,1,12)).toString(),
 		Enddate: (new Date(2019,1,12,12)).toString(),
-		Private: "True",
+		Private: true,
 		Description: "Lunch meet-up at price center! Lets just chill and not talk about the project for once!",
 		FlyerURL: "",
 		Attendees: "tien, andrew, cameron, rujvi, dan"
@@ -68,7 +68,7 @@ const testEventList = [
 		Host: "Teemo",
 		Startdate: (new Date(2019,0,13,3)).toString(),
 		Enddate: (new Date(2019,0,14,12)).toString(),
-		Private: "False",
+		Private: false,
 		Description: "Lunch meet-up at price center! Lets just chill and we have free cookies!",
 		FlyerURL: "",
 		Attendees: ""
