@@ -19,6 +19,7 @@ class Event extends Component {
         })*/
         pfetch.jsonGet('/api/getEvent?EventID=' + this.props.match.params.EventID,
             (data) => {
+                data.tagID = data.tagID.join(', ');
                 this.setState({ event: data });
             });
     }

@@ -10,23 +10,6 @@ const bodyParser = require('body-parser');
 // Gets an instance of the user authenticator.
 const authenticator = require('./UserAuthenticator');
 
-const testProfileList = [
-     {
-         UserID: "0",
-         GoogleUID: "00",
-         Username: "User1",
-         Password: "wordpass",
-         Email: "user1@ucsd.edu",
-         Phone: "(555) 123-4567",
-         tagIDs: "CSE110, Geisel",
-         College: "Marshall",
-         Major: "History",
-         Year: "Senior",
-         Friends: "Gary, Rick, Pradeep",
-         Hostevents: "Library Study Session",
-         Notifications: "CSE110 events"
-     }
- ];
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,7 +22,7 @@ const testProfileList = [
 const testEventList = [
 	{
 		EventID: "0",
-		tagID: "CSE110, Project",
+		tagID: ["CSE110", "Project"],
 		Eventname: "CSE110 Project Meeting",
 		Host: "Dan Lam",
 		Startdate: (new Date(2019,0,12)).toString(),
@@ -51,7 +34,7 @@ const testEventList = [
 	},
 	{
 		EventID: "1",
-		tagID: "Hangout, Lunch, Price Center",
+		tagID: ["Hangout", "Lunch", "Price Center"],
 		Eventname: "Team Lunch",
 		Host: "Gary",
 		Startdate: (new Date(2019,1,12)).toString(),
@@ -63,7 +46,7 @@ const testEventList = [
 	},
 	{
 		EventID: "2",
-		tagID: "Hangout, Lunch, Price Center",
+		tagID: ["Hangout", "Lunch", "Price Center"],
 		Eventname: "Lonely During Lunch?",
 		Host: "Teemo",
 		Startdate: (new Date(2019,0,13,3)).toString(),
@@ -73,6 +56,23 @@ const testEventList = [
 		FlyerURL: "",
 		Attendees: ""
 	}
+];
+const testProfileList = [
+    {
+        UserID: "0",
+        GoogleUID: "00",
+        Username: "User1",
+        Password: "wordpass",
+        Email: "user1@ucsd.edu",
+        Phone: "(555) 123-4567",
+        tagIDs: ["CSE110", "Geisel"],
+        College: "Marshall",
+        Major: "History",
+        Year: "Senior",
+        Friends: "Gary, Rick, Pradeep",
+        Hostevents: "Library Study Session",
+        Notifications: "CSE110 events"
+    }
 ];
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
