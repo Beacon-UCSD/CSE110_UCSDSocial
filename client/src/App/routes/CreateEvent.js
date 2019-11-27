@@ -70,7 +70,7 @@ class CreateEvent extends Component {
             Host: "Me",
             Startdate: this.state.startDate.toString(),
             Enddate: this.state.endDate.toString(),
-            Private: "False",
+            Private: false,
             Description: this.state.Description,
             FlyerURL: "",
             Attendees: ""
