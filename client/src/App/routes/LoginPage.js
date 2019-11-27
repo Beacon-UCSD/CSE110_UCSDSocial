@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import auth from '../auth';
 import pfetch from '../fetch.protected';
+import './LoginPage.css';
+import logo from '../assets/images/logo.png';
+import background from '../assets/images/background.jpg';
 
 class LoginPage extends Component {
     constructor(props) {
@@ -65,18 +68,26 @@ class LoginPage extends Component {
         console.log("GOOGLE FAILURE:");
         console.log(response);
     }
-
     render() {
         return(
+
             <div>
-                <p>{"To get started, sign in with your ucsd account."}</p>
-                <GoogleLogin
+
+                <p>To get started, sign in with your ucsd account.</p>
+                <img src= {background} />
+                <div class = "img1"> 
+                    <img src= {logo} />
+                </div>
+                <div class="google"> 
+                    <GoogleLogin
                     clientId="367161453960-u7qnu0melhkcq45t3va5d1vik0fu0a5s.apps.googleusercontent.com"
                     buttonText="Sign in with Google"
                     theme='dark'
                     onSuccess={this.onGoogleLoginSuccess.bind(this)}
                     onFailure={this.onGoogleLoginFailure}
                     cookiePolicy={'single_host_origin'} />
+                </div>
+                
             </div>
         );
     }
