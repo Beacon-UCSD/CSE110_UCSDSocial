@@ -51,7 +51,7 @@ class Event extends Component {
                 </h2>
                 <h3>Tags: {this.state.event.tagID}</h3>
                 <h3>Host: {this.state.event.Host}</h3>
-                <h3>This is a {this.state.event.Private === "True" ? "Private": "Public"} event</h3>
+                <h3>This is a {this.state.event.Private === true ? "Private": "Public"} event</h3>
                 <p>{this.state.event.Description}</p>
                 <h4>Attendees: {this.state.event.Attendees}</h4>
                 <button onClick={this.handleUpdateEvent}>Update Event</button>
