@@ -22,7 +22,8 @@ class CreateEvent extends Component {
             Description:'',
             startDate: new Date(),
             endDate: new Date(),
-            Private: "False",
+            Private: false,
+            Public: true,
             flyerURL: '',
             Attendees: ''
         };
@@ -31,9 +32,25 @@ class CreateEvent extends Component {
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
 
         console.log("Check Date object's toString method: " + this.state.endDate);
 
+    }
+
+    handleInputChange(evt){
+        if (evt.target.name === "Private"){
+            this.setState({
+                Private: evt.target.checked,
+                Public: !evt.target.checked,
+            })
+        }   
+        else{
+            this.setState({
+                Private: !evt.target.checked,
+                Public: evt.target.checked,
+            })
+        }
     }
 
     handleChange(event) {
@@ -70,7 +87,7 @@ class CreateEvent extends Component {
             Host: "Me",
             Startdate: this.state.startDate.toString(),
             Enddate: this.state.endDate.toString(),
-            Private: false,
+            Private: this.state.Private,
             Description: this.state.Description,
             FlyerURL: "",
             Attendees: ""
@@ -149,7 +166,16 @@ class CreateEvent extends Component {
                     <input name="Description" type="text" value={this.state.Description}
                         onChange={this.handleChange} />
                 </label>
-
+                <label>
+                        <input name="Private" type="checkbox" checked={this.state.Private}
+                            onChange={this.handleInputChange} />
+                        Private
+                    </label>
+                    <label>
+                        <input name="Public" type="checkbox" checked={this.state.Public}
+                            onChange={this.handleInputChange} />
+                        Public
+                    </label>
                 <input className="submit" type="submit" value="Submit" />
             </form>
             </div>
