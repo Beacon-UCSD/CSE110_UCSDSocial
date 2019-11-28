@@ -86,9 +86,69 @@ exports.authenticate = function(idToken, clientRes) {
 
 };
 
-// Random note
-// TODO Use express-jwt for authorization to allow/reject users from accessing certain apis.
+// Gives user a session token that expires in 3 hours, for the tester 1 account. 
+//
+// param object res:        Response object to respond to user.
+exports.authenticateTester1 = function(clientRes) {
+    // TODO get tester 1 user data from database.
+    var testerToken = {
+        exp: Math.round((Date.now()+10800000)/1000),
+        sub: -1, // TODO get user id of tester 1
+        name: "Tester 1", // TODO get name of tester 1
+        email: "tester1@ucsdsocial.club", // TODO get email of tester 1
+        picture: "https://i.imgur.com/siKNmai.jpg", // TODO get tester profile pic
+    };
 
+    generateTesterSessionToken(testerToken, function(err, token) {
+        if (err) {
+            console.log("Error generating session token for tester 1.");
+            console.log(err);
+            clientRes.status(500).json({success:false});
+            return;
+        }
+        clientRes.status(200).json({success:true, sessionToken:token});
+    });
+};
+
+// Gives user a session token that expires in 3 hours, for the tester 2 account. 
+//
+// param object res:        Response object to respond to user.
+exports.authenticateTester2 = function(clientRes) {
+    // TODO get tester 1 user data from database.
+    var testerToken = {
+        exp: Math.round((Date.now()+10800000)/1000),
+        sub: -1, // TODO get user id of tester 2
+        name: "Tester 2", // TODO get name of tester 2
+        email: "tester2@ucsdsocial.club", // TODO get email of tester 2
+        picture: "https://i.imgur.com/siKNmai.jpg", // TODO get tester profile pic
+    };
+
+    generateTesterSessionToken(testerToken, function(err, token) {
+        if (err) {
+            console.log("Error generating session token for tester 2.");
+            console.log(err);
+            clientRes.status(500).json({success:false});
+            return;
+        }
+        clientRes.status(200).json({success:true, sessionToken:token});
+    });
+};
+
+// Random note
+// We use express-jwt for authorization to allow/reject users from accessing certain apis.
+
+
+var generateTesterSessionToken = function(token, callback) {
+    // Create a session token..
+    jwt.sign({
+        exp:        parseInt(token.exp),
+        sub:        -1, // TODO get user id from google_id from db
+        name:       token.name,
+        email:      token.email,
+        picture:    token.picture,
+        ref:        "tester.no-token"
+    }, JWT_SIGN_SECRET, {algorithm:'HS256'}, callback);
+};
 
 // This function responds with a session token based on a token from Google sign-in.
 //

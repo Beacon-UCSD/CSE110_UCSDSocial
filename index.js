@@ -101,6 +101,16 @@ app.post('/api/authentication/validateGoogleUser', (req, res) => {
     authenticator.authenticate(req.body.id_token, res);
 });
 
+// Login tester 1 -- remove in production
+app.post('/api/authentication/validateTester1', (req, res) => {
+    authenticator.authenticateTester1(res);
+});
+
+// Login tester 2 -- remove in production
+app.post('/api/authentication/validateTester2', (req, res) => {
+    authenticator.authenticateTester2(res);
+});
+
 // Make every path below this point protected.
 app.use(jwt({secret: authenticator.JWT_SECRET}));
 

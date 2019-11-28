@@ -21,6 +21,10 @@ class App extends Component {
                 <Router>
                     <Switch>
                         <Route exact path='/(|login)' component={LoginPage} />
+                        <Route exact path='/loginTester1'
+                            render={(routeProps) => (<LoginPage {...routeProps} useTester={"1"} />)} />
+                        <Route exact path='/loginTester2'
+                            render={(routeProps) => (<LoginPage {...routeProps} useTester={"2"} />)} />
                         <ProtectedRoute exact path='/app(|/EventFeed)' component={EventFeed} />
                         <ProtectedRoute exact path='/app/CreateEvent' component={CreateEvent} />
                         <ProtectedRoute exact path='/app/UpdateEvent' component={UpdateEvent} />
