@@ -1,0 +1,56 @@
+/*#background {
+	background-image: url('../assets/images/building.jpg');
+	background-repeat:no-repeat;
+	background-size: cover;
+	box-shadow:inset 1px 1px 150px 150px rgba(0, 0, 0, .5);
+ 	padding: 6%;
+}*/
+/*.my-container {
+    position: relative;
+    overflow: hidden;
+}*/
+/*.my-container h1 {
+    padding: 200px;
+    position: relative;
+    z-index: 2;
+} */
+img {
+    position: relative;
+    background-position:center;
+    z-index:-1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    opacity: 0.3;
+}
+
+.img1 {
+    background-position:center;
+    position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 200px;
+	height: auto;
+}
+
+p {
+	/* Style for "Sign in wi" */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	color: #000000;
+	transform: translate(-50%, -50%);
+	font-family: "Segoe UI";
+	font-size: 25px;
+	font-weight: 600;
+}
+
+.google {
+	/* Style for "Sign in wi" */
+	position: absolute;
+	top: 65%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
