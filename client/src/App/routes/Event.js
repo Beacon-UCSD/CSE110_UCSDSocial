@@ -19,7 +19,7 @@ class Event extends Component {
         })*/
         pfetch.jsonGet('/api/getEvent?EventID=' + this.props.match.params.EventID,
             (data) => {
-                data.tagID = data.tagID.join(', ');
+                //data.tagID = data.tagID.join(', ');
                 this.setState({ event: data });
             });
     }
@@ -50,7 +50,7 @@ class Event extends Component {
                     End date: {this.state.event.Enddate}
                     <br/> 
                 </h2>
-                <h3>Tags: {this.state.event.tagID}</h3>
+                <h3>Tags: {this.state.event.Tags}</h3>
                 <h3>Host: {this.state.event.Host}</h3>
                 <h3>This is a {this.state.event.Private === true ? "Private": "Public"} event</h3>
                 <p>{this.state.event.Description}</p>
