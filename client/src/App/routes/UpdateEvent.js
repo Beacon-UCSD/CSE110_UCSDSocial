@@ -10,7 +10,7 @@ class UpdateEvent extends React.Component{
         super(props);
         const {evt} = this.props.location.state;
         this.state = {
-            tagID: '',
+            Tags: '',
             Eventname: evt.Eventname,
             Description: evt.Description,
             Startdate: evt.Startdate,
@@ -85,7 +85,7 @@ class UpdateEvent extends React.Component{
     handleSubmit(evt){
         // TODO: is there an endpoint for updating event?
         var body = {
-            tagID: this.state.tagID,
+            Tags: this.state.Tags,
             Eventname: this.state.Eventname,
             Host: "Me",
             Startdate: this.state.Startdate.toString(),
