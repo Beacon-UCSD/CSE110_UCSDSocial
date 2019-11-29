@@ -4,6 +4,11 @@ const jwt = require('express-jwt');
 const path = require('path');
 const bodyParser = require('body-parser');
 
+const DbController = require( './databaseController.js')
+
+//create our db instance
+const db = new DbController();
+
 // Gets an instance of the database controller.
 // Enlil: File not committed yet since still working on it.
 // const dbController = require('./DatabaseController');
@@ -11,52 +16,6 @@ const bodyParser = require('body-parser');
 const authenticator = require('./UserAuthenticator');
 
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-/*
- * FOR TESTING PURPOSES ONLY!
- * TODO REMOVE IN FUTURE
- */
-const testEventList = [
-	{
-		EventID: "0",
-		tagID: ["CSE110", "Project"],
-		Eventname: "CSE110 Project Meeting",
-		Host: "Dan Lam",
-		Startdate: (new Date(2019,0,12)).toString(),
-		Enddate: (new Date(2019,0,12,12)).toString(),
-		Private: true,
-		Description: "We will be working on the data",
-		FlyerURL: "",
-		Attendees: "tien, andrew, cameron"
-	},
-	{
-		EventID: "1",
-		tagID: ["Hangout", "Lunch", "Price Center"],
-		Eventname: "Team Lunch",
-		Host: "Gary",
-		Startdate: (new Date(2019,1,12)).toString(),
-		Enddate: (new Date(2019,1,12,12)).toString(),
-		Private: true,
-		Description: "Lunch meet-up at price center! Lets just chill and not talk about the project for once!",
-		FlyerURL: "",
-		Attendees: "tien, andrew, cameron, rujvi, dan"
-	},
-	{
-		EventID: "2",
-		tagID: ["Hangout", "Lunch", "Price Center"],
-		Eventname: "Lonely During Lunch?",
-		Host: "Teemo",
-		Startdate: (new Date(2019,0,13,3)).toString(),
-		Enddate: (new Date(2019,0,14,12)).toString(),
-		Private: false,
-		Description: "Lunch meet-up at price center! Lets just chill and we have free cookies!",
-		FlyerURL: "",
-		Attendees: ""
-	}
-];
 const testProfileList = [
     {
         UserID: "0",
@@ -78,8 +37,6 @@ const testProfileList = [
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 // Parse application/x-www-form-urlencoded
 // Not sure if required so left commented. If you have issues receiving form
@@ -123,9 +80,16 @@ app.use(jwt({secret: authenticator.JWT_SECRET}));
 
 // An api endpoint that returns a short list of items
 app.get('/api/getList', (req,res) => {
-	//var list = ["Event1", "Event2", "Event3"];
-	res.json(testEventList);
-	console.log('Sent list of items');
+
+    allEventsQuery = db.getAllEvents()
+
+    allEventsQuery.then(function( allEvents ){
+
+        res.json( allEvents );
+        console.log('Sent list of items');
+
+    })
+
 });
 
 app.get('/api/getUsers', (req,res) => {
@@ -133,22 +97,37 @@ app.get('/api/getUsers', (req,res) => {
 	console.log('Sent list of items');
 });
 
+///endpoint to get an event
 app.get('/api/getEvent', (req,res) => {
-	var eventid = req.query.EventID;
-	console.log('Attempt: Sent event ' + eventid);
-	var event = testEventList.filter(e => {
-		return e.EventID === eventid;
-	});
-	console.log('Result: ' + event[0].Eventname);
-	res.json(event[0]);
+
+    singleEventQuery = db.getEvent( req.query.EventID )
+
+    singleEventQuery.then(function( singleEvent ){
+
+        res.json( singleEvent[0] );
+
+        console.log( 'Sent event ' );
+
+    })
+
+});
+
+//endpoint to delete an event
+app.get('/api/deleteEvent', (req,res) => {
+
+    deleteEventQuery = db.deleteEvent( req.query.EventID )
+
+    deleteEventQuery.then(function( deleteEventResponse ){
+
+        console.log( 'Deleted event ' );
+
+    })
+
 });
 
 app.post('/api/storeEvent', function (req,res) {
-	console.log('Body of Request for storing: ');
-	console.log(req.body);
-	console.log('Attempt: Store new event: ' + req.body.Eventname);
-	var newEvent = {
-		EventID: testEventList.length.toString(10),
+
+	var eventObj = {
 		tagID: req.body.tagID,
 		Eventname: req.body.Eventname,
 		Host: req.body.Host,
@@ -159,16 +138,22 @@ app.post('/api/storeEvent', function (req,res) {
 		FlyerURL: req.FlyerURL,
 		Attendees: req.body.Attendees
 	}
-	testEventList.push(newEvent);
-	console.log('Number of events now: ' + testEventList.length);
-	console.log(testEventList);
+
+    storeEventQuery = db.storeEvent( eventObj )
+
+    storeEventQuery.then(function( storeEventResponse ){
+
+        console.log( 'Store event response: ' + storeEventResponse );
+
+    })
+
 });
 
 
 
 // Handles any requests that don't match the ones above
 app.get('*', (req,res) =>{
-	//res.sendFile(path.join(__dirname+'/client/build/index.html'));
+	res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
 const port = process.env.PORT || 5000;
