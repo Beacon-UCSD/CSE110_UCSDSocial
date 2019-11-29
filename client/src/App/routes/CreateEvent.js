@@ -17,7 +17,7 @@ class CreateEvent extends Component {
         this.closeNav = this.closeNav.bind(this);
 
         this.state = {
-            tagID: '',
+            Tags: '',
             Eventname:'',
             Description:'',
             startDate: new Date(),
@@ -82,7 +82,7 @@ class CreateEvent extends Component {
         //event.preventDefault();
 
         var body = {
-            tagID: this.state.tagID,
+            Tags: this.state.Tags,
             Eventname: this.state.Eventname,
             Host: "Me",
             Startdate: this.state.startDate.toString(),
@@ -111,7 +111,7 @@ class CreateEvent extends Component {
     Form currently handles:
         EventID: Handled in index.js
         Eventname:
-        tagID: but not with any tag functionality just a string
+        Tags: but not with any tag functionality just a string
         Startdate:
         Enddate:
         Private: Handled automatically as "false"
@@ -158,7 +158,7 @@ class CreateEvent extends Component {
                 <br/>
                 <label>
                     Tags:
-                    <input name="tagID" type="text" value={this.state.tagID} onChange={this.handleChange}/>
+                    <input name="Tags" type="text" value={this.state.tagID} onChange={this.handleChange}/>
                 </label>
                 <br/>
                 <label>
