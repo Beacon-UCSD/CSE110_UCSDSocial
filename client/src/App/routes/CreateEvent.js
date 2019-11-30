@@ -44,7 +44,7 @@ class CreateEvent extends Component {
                 Private: evt.target.checked,
                 Public: !evt.target.checked,
             })
-        }   
+        }
         else{
             this.setState({
                 Private: !evt.target.checked,
@@ -125,6 +125,9 @@ class CreateEvent extends Component {
 
             <div id="mySidenav" class="sidenav">
               <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+              <Link to={'/app/Profile'}>
+                <a href="#">Profile</a>
+              </Link>
               <Link to={'/app/Eventfeed'}>
                 <a href="#">Events</a>
               </Link>
