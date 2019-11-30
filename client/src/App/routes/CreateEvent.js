@@ -13,8 +13,6 @@ class CreateEvent extends Component {
 
     constructor(props){
         super(props);
-        this.openNav = this.openNav.bind(this);
-        this.closeNav = this.closeNav.bind(this);
 
         this.state = {
             Tags: '',
@@ -97,16 +95,8 @@ class CreateEvent extends Component {
         this.props.history.push('/app/Eventfeed');
     }
 
-    openNav() {
-      document.getElementById("mySidenav").style.width = "166px";
-      document.getElementById("main").style.marginLeft = "166px";
-    }
 
     /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
-    closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
-      document.getElementById("main").style.marginLeft = "0";
-    }
     /*
     Form currently handles:
         EventID: Handled in index.js
@@ -124,25 +114,24 @@ class CreateEvent extends Component {
           <body>
 
             <div id="mySidenav" class="sidenav">
-              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
               <Link to={'/app/Profile'}>
                 <a href="#">Profile</a>
               </Link>
               <Link to={'/app/Eventfeed'}>
                 <a href="#">Events</a>
               </Link>
-              <a href="#">Notification</a>
+              <Link to={'/app/CreateEvent'}>
+                <a href="#">Create Event</a>
+              </Link>
               <a href="#">Logout</a>
             </div>
 
             <div id="main">
-              <button onClick={this.openNav}>Open</button>
-              <button onClick={this.closeNav}>Close</button>
               <form className="eventForm" onSubmit={this.handleSubmit}>
-                <label className="eventName">
-                    Event Name:
-                    <input name="Eventname" type="text" value={this.state.Eventname}
-                        onChange={this.handleChange} />
+                <label >
+
+                    <input className="eventName" name="Eventname" type="text" value={this.state.Eventname}
+                        onChange={this.handleChange} placeholder="Event Name" />
                 </label>
                 <MuiPickersUtilsProvider
                     className='date-picker'
@@ -160,22 +149,23 @@ class CreateEvent extends Component {
                 </MuiPickersUtilsProvider>
                 <br/>
                 <label>
-                    Tags:
-                    <input name="Tags" type="text" value={this.state.tagID} onChange={this.handleChange}/>
+
+                    <input name="Tags" type="text" value={this.state.tagID} onChange={this.handleChange}
+                    placeholder="Tags"/>
                 </label>
                 <br/>
                 <label>
-                    Event Description:
+
                     <input name="Description" type="text" value={this.state.Description}
-                        onChange={this.handleChange} />
+                        onChange={this.handleChange} placeholder="Event Description" />
                 </label>
                 <label>
-                        <input name="Private" type="checkbox" checked={this.state.Private}
+                        <input class="Private" name="Private" type="checkbox" checked={this.state.Private}
                             onChange={this.handleInputChange} />
                         Private
                     </label>
                     <label>
-                        <input name="Public" type="checkbox" checked={this.state.Public}
+                        <input class="Public" name="Public" type="checkbox" checked={this.state.Public}
                             onChange={this.handleInputChange} />
                         Public
                     </label>

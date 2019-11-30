@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import auth from '../auth';
 import pfetch from '../fetch.protected';
 import './Profile.css'
+import { Link } from 'react-router-dom';
 
 class Profile extends Component {
 
@@ -25,8 +26,23 @@ class Profile extends Component {
 
      render() {
          return (
+
              <div key={this.state.event.UserID}>
-              <div className="background-profile">
+
+               <div id="mySidenav" class="sidenav">
+                 <Link to={'/app/Profile'}>
+                   <a href="#">Profile</a>
+                 </Link>
+                 <Link to={'/app/Eventfeed'}>
+                   <a href="#">Events</a>
+                 </Link>
+                 <Link to={'/app/CreateEvent'}>
+                   <a href="#">Create Event</a>
+                 </Link>
+                 <a href="#">Logout</a>
+               </div>
+
+              <div id="main" className="background-profile">
                 <img className="profile" src={this.userInfo.pictureSrc}/>
                 <h2 className="title">{this.userInfo.name}</h2>
                 <div className="info">

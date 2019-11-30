@@ -4,6 +4,7 @@ import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 // for http requests
 import pfetch from '../fetch.protected';
+import { Link } from 'react-router-dom';
 
 class UpdateEvent extends React.Component{
     constructor(props){
@@ -70,7 +71,7 @@ class UpdateEvent extends React.Component{
                 Private: evt.target.checked,
                 Public: !evt.target.checked,
             })
-        }   
+        }
         else{
             this.setState({
                 Private: !evt.target.checked,
@@ -99,12 +100,24 @@ class UpdateEvent extends React.Component{
         this.props.history.push('/app/Eventfeed');
     }
 
-    render(){        
+    render(){
         // Eventname, Date, Starttime, Endtime, Date, tagID, Host, Private, Description, Attendees
         // cannot edit host or attendees
         return(
             <div className="container">
-                <form onSubmit={this.handleSubmit}>
+                <div id="mySidenav" class="sidenav">
+                  <Link to={'/app/Profile'}>
+                    <a href="#">Profile</a>
+                  </Link>
+                  <Link to={'/app/Eventfeed'}>
+                    <a href="#">Events</a>
+                  </Link>
+                  <Link to={'/app/CreateEvent'}>
+                    <a href="#">Create Event</a>
+                  </Link>
+                  <a href="#">Logout</a>
+                </div>
+                <form id="main" onSubmit={this.handleSubmit}>
                     <input name="Eventname" type="text" value={this.state.Eventname}
                         onChange={this.handleChange}/>
                     <input name="Description" type="text" value={this.state.Description}

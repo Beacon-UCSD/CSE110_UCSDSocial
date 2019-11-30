@@ -30,10 +30,20 @@ class EventFeed extends Component {
         return(
             <div>
                 <h1> Event Feed </h1>
-                <div>
-                    <Link to={'/app/Profile'}>
-                        <button variant="raised"> Profile </button>
-                    </Link>
+                <div id="mySidenav" class="sidenav">
+                  <Link to={'/app/Profile'}>
+                    <a href="#">Profile</a>
+                  </Link>
+                  <Link to={'/app/Eventfeed'}>
+                    <a href="#">Events</a>
+                  </Link>
+                  <Link to={'/app/CreateEvent'}>
+                    <a href="#">Create Event</a>
+                  </Link>
+                  <a href="#">Logout</a>
+                </div>
+                <div id="main">
+
                     {list.map((item) => {
                         return(
                             <div key={item.EventID}>
@@ -48,11 +58,7 @@ class EventFeed extends Component {
                         );
                     })}
                 </div>
-                <div>
-                    <Link to={'/app/CreateEvent'}>
-                        <button variant="raised"> Create Event </button>
-                    </Link>
-                </div>
+
                 <div>
                 </div>
             </div>
