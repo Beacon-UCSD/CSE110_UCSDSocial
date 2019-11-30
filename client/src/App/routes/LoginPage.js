@@ -111,10 +111,10 @@ class LoginPage extends Component {
 
                 <p>To get started, sign in with your ucsd account.</p>
                 <img src= {background} />
-                <div class = "img1"> 
+                <div className = "img1"> 
                     <img src= {logo} />
                 </div>
-                <div class="google"> 
+                <div className="google"> 
                     <GoogleLogin
                     clientId="367161453960-u7qnu0melhkcq45t3va5d1vik0fu0a5s.apps.googleusercontent.com"
                     buttonText="Sign in with Google"

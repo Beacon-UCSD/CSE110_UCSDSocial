@@ -128,7 +128,7 @@ app.get('/api/deleteEvent', (req,res) => {
 app.post('/api/storeEvent', function (req,res) {
 
 	var eventObj = {
-		tagID: req.body.tagID,
+		Tags: req.body.Tags,
 		Eventname: req.body.Eventname,
 		Host: req.body.Host,
 		Startdate: req.body.Startdate,
