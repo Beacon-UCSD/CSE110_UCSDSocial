@@ -12,11 +12,6 @@ class Event extends Component {
     }
 
     componentDidMount = () => {
-        /*fetch('/api/getEvent?EventID=' + this.props.match.params.EventID).then(res => res.json()).then(e => {
-            this.setState({
-                event: e
-            })
-        })*/
         pfetch.jsonGet('/api/getEvent?EventID=' + this.props.match.params.EventID,
             (data) => {
                 //data.tagID = data.tagID.join(', ');

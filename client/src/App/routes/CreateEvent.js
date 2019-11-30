@@ -6,18 +6,17 @@ import DateFnsUtils from '@date-io/date-fns';
 // for http requests
 import pfetch from '../fetch.protected';
 
+import TagButton from '../components/TagButton';
+
 import './CreateEvent.css';
 
 class CreateEvent extends Component {
 
-
     constructor(props){
         super(props);
-        this.openNav = this.openNav.bind(this);
-        this.closeNav = this.closeNav.bind(this);
 
         this.state = {
-            Tags: '',
+            Tags: [],
             Eventname:'',
             Description:'',
             startDate: new Date(),
@@ -31,7 +30,6 @@ class CreateEvent extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
 
         console.log("Check Date object's toString method: " + this.state.endDate);
@@ -67,8 +65,7 @@ class CreateEvent extends Component {
         this.setState({
             startDate: new Date(+date),
         })
-    }
-
+    } 
     handleEndDateChange = (date) => {
         console.log('Input Date: ' + date);
 
@@ -78,7 +75,7 @@ class CreateEvent extends Component {
         console.log(this.state.endDate);
     }
 
-    handleSubmit(event){
+    handleCreateEvent(event){
         //event.preventDefault();
 
         var body = {
@@ -95,6 +92,30 @@ class CreateEvent extends Component {
         pfetch.jsonPost('/api/storeEvent', body);
         // go to eventfeed page
         this.props.history.push('/app/Eventfeed');
+    }
+
+    addTag() {
+        var tagToAdd = this.refs.tagInputField.value;
+        // Clean up tag to only have letters and numbers
+        tagToAdd = tagToAdd.replace(/[^\s\dA-Z]/gi, '').replace(/ /g, '');
+        if (tagToAdd.length <= 3) {
+            console.error("Tag must be at least 4 characters long.");
+            return;
+        }
+
+        // Convert tag to uppercase.
+        tagToAdd = tagToAdd.toUpperCase();
+
+        if (this.state.Tags.indexOf(tagToAdd) != -1) {
+            console.log("The tag '" + tagToAdd + "' is already added to the event.");
+        } else {
+            // Add Tag
+            this.setState({
+                Tags: [...this.state.Tags, tagToAdd]
+            });
+        }
+
+        this.refs.tagInputField.value = "";
     }
 
     openNav() {
@@ -121,21 +142,18 @@ class CreateEvent extends Component {
     */
     render(){
         return(
-          <body>
-
-            <div id="mySidenav" class="sidenav">
-              <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-              <Link to={'/app/Eventfeed'}>
-                <a href="#">Events</a>
-              </Link>
-              <a href="#">Notification</a>
-              <a href="#">Logout</a>
+          <div>
+            <div id="mySidenav" className="sidenav">
+              <a href="javascript:void(0)" className="closebtn" onClick={this.closeNav}>&times;</a>
+              <Link to='/app/Eventfeed'>Events</Link>
+              <Link to='#'>Notification</Link>
+              <Link to='#'>Logout</Link>
             </div>
 
             <div id="main">
               <button onClick={this.openNav}>Open</button>
               <button onClick={this.closeNav}>Close</button>
-              <form className="eventForm" onSubmit={this.handleSubmit}>
+              <form className="eventForm" onSubmit={this.handleCreateEvent.bind(this)}>
                 <label className="eventName">
                     Event Name:
                     <input name="Eventname" type="text" value={this.state.Eventname}
@@ -158,8 +176,15 @@ class CreateEvent extends Component {
                 <br/>
                 <label>
                     Tags:
-                    <input name="Tags" type="text" value={this.state.tagID} onChange={this.handleChange}/>
+                    <input name="Tags" type="text" placeholder={"Type tag to add..."}
+                        ref='tagInputField' />
                 </label>
+                <button type='button' onClick={this.addTag.bind(this)}>Add Tag</button>
+                <div ref='eventTags'>
+                    {this.state.Tags.map((tag, i) => (
+                        <TagButton key={i} tag={tag} />
+                    ))}
+                </div>
                 <br/>
                 <label>
                     Event Description:
@@ -179,7 +204,7 @@ class CreateEvent extends Component {
                 <input className="submit" type="submit" value="Submit" />
             </form>
             </div>
-          </body>
+          </div>
         );
     }
 

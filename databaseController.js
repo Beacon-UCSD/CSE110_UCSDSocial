@@ -7,7 +7,7 @@ function eventToStr( eventObj ) {
     
     valsStr      = ""
     eventObjVals = [ eventObj.Eventname,
-                     eventObj.tagID,
+                     eventObj.Tags,
                      eventObj.Host,
                      eventObj.Hostemail,
                      eventObj.Startdate,
@@ -25,13 +25,17 @@ function eventToStr( eventObj ) {
 
         if ( typeof(eventObjVals[idx] ) == "undefined" ) eventObjVals[idx] = ""
 
-        stripped = eventObjVals[idx].toString().replace(/[^a-z0-9@.]+/gi, " ")
+        if (idx == 1 && typeof(eventObjVals[idx] == 'object')) {
+            stripped = JSON.stringify(eventObjVals[idx]);
+        } else {
+            stripped = eventObjVals[idx].toString().replace(/[^a-z0-9@.]+/gi, " ");
+        }
 
         valsStr += (idx==0 ? "" : ", ") + "\'" + stripped +"\'" ;    
 
     }
 
-    return valsStr
+    return valsStr;
 }
 
 //class for the databse interface
