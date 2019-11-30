@@ -33,6 +33,7 @@ Link {
   border-radius: 10px;
   border: 1px solid #818181;
   background-color: #d8e9f1;
+  text-align: center;
 }
 
 .className {
@@ -59,6 +60,7 @@ Link {
   border-radius: 10px;
   border: 1px solid #818181;
   background-color: #d8e9f1;
+  text-align: center;
 }
 
 .Public {

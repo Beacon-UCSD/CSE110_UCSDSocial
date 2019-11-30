@@ -150,6 +150,11 @@ class CreateEvent extends Component {
                     <input className="eventName" name="Eventname" type="text" value={this.state.Eventname}
                         onChange={this.handleChange} placeholder="Event Name" />
                 </label>
+                <label>
+
+                    <input className="description" name="Description" type="text" value={this.state.Description}
+                        onChange={this.handleChange} placeholder="Event Description" />
+                </label>
                 <MuiPickersUtilsProvider
                     className='date-picker'
                     utils={DateFnsUtils}>
@@ -178,11 +183,6 @@ class CreateEvent extends Component {
                     ))}
                 </div>
                 <br/>
-                <label>
-
-                    <input className="description" name="Description" type="text" value={this.state.Description}
-                        onChange={this.handleChange} placeholder="Event Description" />
-                </label>
                 <label>
                         <input class="Private" name="Private" type="checkbox" checked={this.state.Private}
                             onChange={this.handleInputChange} />
