@@ -1,0 +1,33 @@
+img {
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 234px;
+  height: 234px;
+}
+
+
+div {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  display: block;
+}
+
+h3 {
+  color: #000000;
+  font-family: "Segoe UI";
+  font-size: 20px;
+}
+
+h2 {
+  color: #000000;
+  font-family: "Segoe UI";
+  font-size: 49px;
+}
+
+p {
+  color: #000000;
+  font-family: "Segoe UI";
+  font-size: 15px;
+}

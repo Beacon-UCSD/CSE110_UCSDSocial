@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import auth from '../auth';
 import pfetch from '../fetch.protected';
+import './Profile.css'
 
 class Profile extends Component {
 
