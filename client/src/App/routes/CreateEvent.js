@@ -138,10 +138,10 @@ class CreateEvent extends Component {
           <div>
 
             <div id="mySidenav" class="sidenav">
-              <Link to={'/app/Profile'}><a href="#">Profile</a></Link>
-              <Link to={'/app/Eventfeed'}><a href="#">Events</a></Link>
-              <Link to={'/app/CreateEvent'}><a href="#">Create Event</a></Link>
-              <a href="#">Logout</a>
+              <a href="/app/Profile">Profile</a>
+              <a href="/app/Eventfeed">Events</a>
+              <a href="/app/CreateEvent">Create Event</a>
+              <a href="/app/Profile">Logout</a>
             </div>
 
             <div id="main">
@@ -166,7 +166,7 @@ class CreateEvent extends Component {
                 </MuiPickersUtilsProvider>
                 <br/>
                 <label>
-                    <input name="Tags" type="text" placeholder={"Type tag to add..."}
+                    <input className="tag" name="Tags" type="text" placeholder={"Type tag to add..."}
                         ref='tagInputField' />
                     <br/>
                     <button className="tags" type='button' onClick={this.addTag.bind(this)}>Add Tag</button>
@@ -180,7 +180,7 @@ class CreateEvent extends Component {
                 <br/>
                 <label>
 
-                    <input name="Description" type="text" value={this.state.Description}
+                    <input className="description" name="Description" type="text" value={this.state.Description}
                         onChange={this.handleChange} placeholder="Event Description" />
                 </label>
                 <label>

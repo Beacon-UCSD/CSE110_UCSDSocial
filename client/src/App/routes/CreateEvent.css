@@ -22,9 +22,40 @@ body {
   text-align: center;
 }
 
+Link {
+  justify-content: center;
+  align-items: center;
+}
+
+.eventName {
+  width: 705px;
+  height: 59px;
+  border-radius: 10px;
+  border: 1px solid #818181;
+  background-color: #d8e9f1;
+}
+
 .className {
   width: 705px;
   height: 59px;
+  border-radius: 10px;
+  border: 1px solid #818181;
+  background-color: #d8e9f1;
+}
+
+.description {
+  width: 705px;
+  height: 200px;
+  border-radius: 10px;
+  border: 1px solid #959da0;
+  background-color: #d8e9f1;
+  text-align: center;
+  resize: none;
+}
+
+.tag {
+  width: 586px;
+  height: 41px;
   border-radius: 10px;
   border: 1px solid #818181;
   background-color: #d8e9f1;

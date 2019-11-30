@@ -39,18 +39,12 @@ class Event extends Component {
     render() {
         return (
             <div>
-              <div id="mySidenav" class="sidenav">
-                <Link to={'/app/Profile'}>
-                  <a href="#">Profile</a>
-                </Link>
-                <Link to={'/app/Eventfeed'}>
-                  <a href="#">Events</a>
-                </Link>
-                <Link to={'/app/CreateEvent'}>
-                  <a href="#">Create Event</a>
-                </Link>
-                <a href="#">Logout</a>
-              </div>
+            <div id="mySidenav" class="sidenav">
+              <a href="/app/Profile">Profile</a>
+              <a href="/app/Eventfeed">Events</a>
+              <a href="/app/CreateEvent">Create Event</a>
+              <a href="/app/Profile">Logout</a>
+            </div>
               <div id="main">
 
                   <h1>Event Name: {this.state.event.Eventname}</h1>
