@@ -28,17 +28,17 @@ class Profile extends Component {
              <div key={this.state.event.UserID}>
               <div className="background-profile">
                 <img className="profile" src={this.userInfo.pictureSrc}/>
-                <h2>{this.userInfo.name}</h2>
+                <h2 className="title">{this.userInfo.name}</h2>
                 <div className="info">
-                  <h3>Email:<h4>{this.userInfo.email}</h4></h3>
-                  <h3>Phone Number:<h4>{this.state.event.Phone}</h4></h3>
-                  <h3>Tag IDs:<h4>{this.state.event.tagIDs}</h4></h3>
-                  <h3>College:<h4>{this.state.event.College}</h4></h3>
-                  <h3>Major:<h4>{this.state.event.Major}</h4></h3>
-                  <h3>Year:<h4>{this.state.event.Year}</h4></h3>
-                  <h3>Friends:<h4>{this.state.event.Friends}</h4></h3>
-                  <h3>Host Events:<h4>{this.state.event.Hostevents}</h4></h3>
-                  <h3>Notifications:<h4>{this.state.event.Notifications}</h4></h3>
+                  <h6 className="actuaInfo">Email:<h7>{this.userInfo.email}</h7></h6>
+                  <h6 className="actuaInfo">Phone Number:<h7>{this.state.event.Phone}</h7></h6>
+                  <h6 className="actuaInfo">Tag IDs:<h7>{this.state.event.tagIDs}</h7></h6>
+                  <h6 className="actuaInfo">College:<h7>{this.state.event.College}</h7></h6>
+                  <h6 className="actuaInfo">Major:<h7>{this.state.event.Major}</h7></h6>
+                  <h6 className="actuaInfo">Year:<h7>{this.state.event.Year}</h7></h6>
+                  <h6 className="actuaInfo">Friends:<h7>{this.state.event.Friends}</h7></h6>
+                  <h6 className="actuaInfo">Host Events:<h7>{this.state.event.Hostevents}</h7></h6>
+                  <h6 className="actuaInfo">Notifications:<h7>{this.state.event.Notifications}</h7></h6>
                 </div>
               </div>
             </div>
