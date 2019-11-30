@@ -166,11 +166,12 @@ class CreateEvent extends Component {
                 </MuiPickersUtilsProvider>
                 <br/>
                 <label>
-                    Tags:
                     <input name="Tags" type="text" placeholder={"Type tag to add..."}
                         ref='tagInputField' />
+                    <br/>
+                    <button className="tags" type='button' onClick={this.addTag.bind(this)}>Add Tag</button>
                 </label>
-                <button type='button' onClick={this.addTag.bind(this)}>Add Tag</button>
+
                 <div ref='eventTags'>
                     {this.state.Tags.map((tag, i) => (
                         <TagButton key={i} tag={tag} />

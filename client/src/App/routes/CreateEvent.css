@@ -49,10 +49,19 @@ body {
   height: 70px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
   background-color: #00c6d7;
+  border-radius: 10px;
 }
 
 #main {
   margin-left: 8.6%;
+}
+
+.tags {
+  width: 112px;
+  height: 41px;
+  border-radius: 10px;
+  border: 1px solid #979a9c;
+  background-color: #00c6d7;
 }
 
 /* The side navigation menu */
