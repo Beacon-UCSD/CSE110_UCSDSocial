@@ -26,12 +26,13 @@ const tagDeleteBtnStyle = {
     color: '#a5a5a5',
     position: 'relative',
     top: '-1px',
-    left: '-6px',
+    left: '1px',
     cursor: 'pointer'
 };
 
 const tagTextStyle = {
     color: '#5a5a5a',
+    marginLeft: '5px',
     position: 'relative',
     top: '-1px'
 };

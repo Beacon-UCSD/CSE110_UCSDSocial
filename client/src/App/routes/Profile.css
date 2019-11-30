@@ -1,33 +1,56 @@
-img {
-  border-radius: 50%;
+.background-profile {
+
+
   margin-left: auto;
   margin-right: auto;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+}
+
+img, .profile {
+  display: block;
+  border-radius: 50%;
   width: 234px;
   height: 234px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
 }
 
 
-div {
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  display: block;
-}
-
-h3 {
+h6, .actualInfo {
   color: #000000;
   font-family: "Segoe UI";
   font-size: 20px;
+  text-align: center;
+  width: 189px;
+  height: 65px;
+  border-radius: 78px;
+  border: 1px solid #707070;
+  background-color: white;
+  margin:0;
+  padding:0, 0, 0, 0;
 }
 
-h2 {
+h7 {
   color: #000000;
   font-family: "Segoe UI";
-  font-size: 49px;
+  font-size: 16px;
+  text-align: center;
+  display: block;
+  margin:0;
+  padding:0, 0, 0, 0;
 }
 
-p {
+h2, .title {
   color: #000000;
   font-family: "Segoe UI";
-  font-size: 15px;
+  font-size: 80px;
+  text-align: center;
+  margin:0;
+  padding-top: 100px;
+  padding-bottom: 100px
 }
