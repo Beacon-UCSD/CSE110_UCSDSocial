@@ -11,48 +11,42 @@ class Profile extends Component {
          this.userInfo = auth.getUserInfo();
 
          this.state = {
-             list: []
+             event: {}
          }
      }
 
      componentDidMount() {
-         pfetch.jsonGet('/api/getUsers', (list) => {
-             this.setState({list});
+         pfetch.jsonGet('/api/getUsers', (data) => {
+             //this.setState({list});
+             this.setState({ event: data });
          });
      }
 
      render() {
-         const {list} = this.state;
          return (
-             <div>
-                 {list.map((item) => {
-                     return (
-                         <div key={item.UserID}>
-                             <img src={this.userInfo.pictureSrc} alt={"You, "+this.userInfo.name} height={"100"} width={"100"} />
-                             <h1>{this.userInfo.name}</h1>
-                             <h3>Email:</h3>
-                             <p>{this.userInfo.email}</p>
-                             <h3>Phone Number:</h3>
-                             <p>{item.Phone}</p>
-                             <h3>Tag IDs:</h3>
-                             <p>{item.tagIDs}</p>
-                             <h3>College:</h3>
-                             <p>{item.College}</p>
-                             <h3>Major:</h3>
-                             <p>{item.Major}</p>
-                             <h3>Year:</h3>
-                             <p>{item.Year}</p>
-                             <h3>Friends:</h3>
-                             <p>{item.Friends}</p>
-                             <h3>Host Events:</h3>
-                             <p>{item.Hostevents}</p>
-                             <h3>Notifications:</h3>
-                             <p>{item.Notifications}</p>
-                         </div>
-                     );
-                 })}
-             </div>
-         );
+             <div key={this.state.event.UserID}>
+                <img src={this.userInfo.pictureSrc} alt={"You, "+this.userInfo.name} height={"100"} width={"100"} />
+                <h1>{this.userInfo.name}</h1>
+                <h3>Email:</h3>
+                <h4>{this.userInfo.email}</h4>
+                <h3>Phone Number:</h3>
+                <h4>{this.state.event.Phone}</h4>
+                <h3>Tag IDs:</h3>
+                <h4>{this.state.event.tagIDs}</h4>
+                <h3>College:</h3>
+                <h4>{this.state.event.College}</h4>
+                <h3>Major:</h3>
+                <h4>{this.state.event.Major}</h4>
+                <h3>Year:</h3>
+                <h4>{this.state.event.Year}</h4>
+                <h3>Friends:</h3>
+                <h4>{this.state.event.Friends}</h4>
+                <h3>Host Events:</h3>
+                <h4>{this.state.event.Hostevents}</h4>
+                <h3>Notifications:</h3>
+                <h4>{this.state.event.Notifications}</h4>
+              </div>
+          );
      }
  }
  export default Profile;

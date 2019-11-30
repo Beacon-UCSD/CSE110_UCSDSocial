@@ -93,7 +93,7 @@ app.get('/api/getList', (req,res) => {
 });
 
 app.get('/api/getUsers', (req,res) => {
-	res.json(testProfileList);
+	res.json(testProfileList[0]);
 	console.log('Sent list of items');
 });
 
