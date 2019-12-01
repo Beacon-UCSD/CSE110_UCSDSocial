@@ -11,6 +11,16 @@ import TagButton from '../components/TagButton';
 
 import './CreateEvent.css';
 
+const AWS = require('aws-sdk');
+const ID = 'AKIAJ5OIQS2D43QAEFMQ';
+const SECRET = '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';
+
+const BUCKET = 'ucsdsocial';
+const s3 = new AWS.S3({
+    accessKeyId: ID,
+    secretAccessKey: SECRET
+});
+
 class CreateEvent extends Component {
 
     constructor(props){
@@ -29,8 +39,9 @@ class CreateEvent extends Component {
             endDate: new Date(Date.now()+5400000), // default end date = 30 minutes after start time
             Private: false,
             Public: true,
-            flyerURL: '',
-            Attendees: ''
+            flyerURL: "https://ucsdsocial.s3.amazonaws.com/Default.png",
+            Attendees: '',
+            objectFile: {}
         };
 
         this.handleCreateEvent = this.handleCreateEvent.bind(this);
@@ -42,6 +53,16 @@ class CreateEvent extends Component {
         console.log("Check Date object's toString method: " + this.state.endDate);
 
     }
+
+    //Handler for image file upload
+    fileChangedHandler = event => {
+        let uploadPic = event.target.files[0];
+
+        this.setState({
+            objectFile: uploadPic,
+            flyerURL: URL.createObjectURL(event.target.files[0])
+        });
+      }
 
     handleInputChange(evt){
         if (evt.target.name === "Private"){
@@ -141,6 +162,35 @@ class CreateEvent extends Component {
             return;
         }
 
+        var reader = new FileReader();
+
+        reader.name = this.state.objectFile.name;
+        var location = "";
+        if(reader.name === undefined || reader.name === null){
+            location = "https://ucsdsocial.s3.amazonaws.com/Default.png";
+        }
+        else{
+            reader.onload = function(e) {
+            var params = {
+                Bucket: BUCKET,
+                //This is a quick-fix (very bad) prefferably a unique string to the event
+                Key: this.name,
+                ContentType: 'image/jpeg',
+                Body: e.target.result,
+                ACL: 'public-read'
+            };
+            console.log(params);
+            s3.upload(params, function(s3Err, data) {
+                if (s3Err) throw s3Err
+                console.log(`File uploaded successfully at ${data.Location}`);
+                });
+            };
+            reader.readAsArrayBuffer(this.state.objectFile);
+    
+            location = "https://ucsdsocial.s3.amazonaws.com/" + this.state.objectFile.name;
+        }
+        
+
         var reqParams = {
             Tags: this.state.Tags,
             Eventname: this.state.Eventname,
@@ -150,7 +200,7 @@ class CreateEvent extends Component {
             Enddate: this.state.endDate.getTime(),
             Private: this.state.Private,
             Description: this.state.Description,
-            FlyerURL: "",
+            FlyerURL: location,
             Attendees: ""
         };
         pfetch.jsonPost('/api/storeEvent', reqParams, (json) => {
@@ -267,6 +317,8 @@ class CreateEvent extends Component {
                             onChange={this.handleInputChange} disabled={this.state.formDisabled} />
                         Public
                 </label>
+                <input type="file" onChange={this.fileChangedHandler}/>
+                <img id="testImg" src={this.state.flyerURL} width="150" height="150"/>
                 <input className="submit" type="submit" value="Submit" disabled={this.state.formDisabled} />
             </form>
             </div>

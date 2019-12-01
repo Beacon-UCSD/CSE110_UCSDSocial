@@ -64,6 +64,7 @@ class Event extends Component {
                   <h3>This is a {this.state.event.Private === true ? "Private": "Public"} event</h3>
                   <p>{this.state.event.Description}</p>
                   <h4>Attendees: {this.state.event.Attendees}</h4>
+                  <img src={this.state.event.FlyerURL} height="150" width="150"/>
                   {showUpdate}
               </div>
             </div>
