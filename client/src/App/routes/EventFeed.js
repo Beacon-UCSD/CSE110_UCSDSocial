@@ -53,17 +53,19 @@ class EventFeed extends Component {
                   </Link>
                   <a href="#">Logout</a>
                 </div>
+            <div className="searchBar">
 					 <label>
                          Search:
                          <input name="Tags" type="text" placeholder={"Type tag to filter..."}
                              ref='tagInputField' />
                      </label>
                      <button type='button' onClick={this.addTag.bind(this)}>Add Tag</button>
-                     <div ref='eventTags'>
+            </div>
+            <div className="tags">
                          {this.state.Tags.map((tag, i) => (
                              <TagButton key={i} tag={tag} />
                          ))}
-                     </div>
+            </div>
                 <div id="main">
 
                     {list.map((item) => {
