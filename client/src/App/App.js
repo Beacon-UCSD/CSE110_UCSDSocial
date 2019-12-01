@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { ProtectedRoute } from './protected.route.js';
 
+import './App.css';
+
 import LoginPage   from './routes/LoginPage';
 import Profile     from './routes/Profile';
 import EventFeed   from './routes/EventFeed';
