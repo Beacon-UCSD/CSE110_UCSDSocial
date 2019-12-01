@@ -1,11 +1,15 @@
 import React, {Component} from "react";
 import pfetch from '../fetch.protected';
+import auth from '../auth';
+
 import { Link } from 'react-router-dom';
 
 class Event extends Component {
 
     constructor(props) {
         super(props);
+        this.userInfo = auth.getUserInfo();
+
         this.state = {
             event: {}
         }
@@ -18,6 +22,7 @@ class Event extends Component {
                 //data.tagID = data.tagID.join(', ');
                 data.Startdate = new Date(data.Startdate).getTime();
                 data.Enddate = new Date(data.Enddate).getTime();
+                data.Tags = data.Tags.replace(/[\[\]"]+/gi, "").replace(/[,]+/gi, ", ");
                 this.setState({ event: data });
             });
     }
@@ -30,6 +35,7 @@ class Event extends Component {
             Startdate: this.state.event.Startdate,
             Enddate: this.state.event.Enddate,
             Private: this.state.event.Private,
+            Tags: this.state.event.Tags,
         }
         console.log(evt);
         this.props.history.push({
@@ -39,6 +45,9 @@ class Event extends Component {
     }
 
     render() {
+        let showUpdate = this.userInfo.email == this.state.event.Hostemail ? 
+            <button onClick={this.handleUpdateEvent}>Update Event</button> : null;
+        console.log(this.state.event);
         return (
             <div>
               <div id="main">
@@ -51,11 +60,11 @@ class Event extends Component {
                       <br/>
                   </h2>
                   <h3>Tags: {this.state.event.Tags}</h3>
-                  <h3>Host: {this.state.event.Host}</h3>
+                  <h3>Host: {this.state.event.Hostname}</h3>
                   <h3>This is a {this.state.event.Private === true ? "Private": "Public"} event</h3>
                   <p>{this.state.event.Description}</p>
                   <h4>Attendees: {this.state.event.Attendees}</h4>
-                  <button onClick={this.handleUpdateEvent}>Update Event</button>
+                  {showUpdate}
               </div>
             </div>
         );

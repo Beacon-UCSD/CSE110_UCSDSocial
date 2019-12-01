@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import auth from '../auth';
 import { Link } from 'react-router-dom';
 // for date pickers
 import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
@@ -14,6 +15,7 @@ class CreateEvent extends Component {
 
     constructor(props){
         super(props);
+        this.userInfo = auth.getUserInfo();
 
         this.state = {
             // Set to true to disable form from being able to be submitted and
@@ -142,7 +144,8 @@ class CreateEvent extends Component {
         var reqParams = {
             Tags: this.state.Tags,
             Eventname: this.state.Eventname,
-            Host: "Me",
+            Host: this.userInfo.name,
+            Hostemail: this.userInfo.email,
             Startdate: this.state.startDate.getTime(),
             Enddate: this.state.endDate.getTime(),
             Private: this.state.Private,
@@ -162,6 +165,7 @@ class CreateEvent extends Component {
                 });
                 return;
             }
+            console.log(reqParams);
             // Redirect to events feed page.
             this.props.history.push('/app/Eventfeed');
         });
