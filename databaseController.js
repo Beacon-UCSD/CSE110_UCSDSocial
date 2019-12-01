@@ -97,6 +97,23 @@ class DbController {
 
     }
 
+    //function to get user from db using their google account id
+    //return a promise to the query
+    getUserByGoogleUID(googleUID) {
+        var getUserQuery = "SELECT * FROM Users WHERE GoogleUID='"+
+            cleanString(googleUID.toString())+"' LIMIT 1;";
+
+        return this.makeQuery(getUserQuery);
+    }
+
+    //function to get user from db using their userid
+    //return a promise to the query
+    getUserById(id) {
+        if (isNaN(id)) return null;
+        var getUserQuery = "SELECT * FROM Users Where UserID='"+id+"' LIMIT 1;";
+        return this.makeQuery(getUserQuery);
+    }
+
     //function to query for all events
     //returns a promise to the query return obj
     getAllEvents() {
