@@ -137,7 +137,7 @@ app.post('/api/storeEvent', function (req,res) {
 
     // TODO validate everything before adding to db
 
-    storeEventQuery = db.storeEvent( eventObj );
+    storeEventQuery = db.createEvent( eventObj );
 
     storeEventQuery.then(function( storeEventResponse ){
 

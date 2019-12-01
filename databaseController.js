@@ -1,5 +1,17 @@
 var mysql = require('mysql2');
 
+//function to clean string of symbols
+function cleanString(str) {
+    return str.replace(/[^a-z0-9@.]+/gi, " ");
+}
+
+//function to return javascript date in string format for storing in db
+function getMySQLDate(jsDate) {
+    return jsDate.getUTCFullYear() + '-' + (jsDate.getUTCMonth()+1) + '-' 
+        + jsDate.getUTCDate() + ' ' + jsDate.getUTCHours() + ':' 
+        + jsDate.getUTCMinutes() + ':' + jsDate.getUTCSeconds();
+}
+
 //function to concatenate event object values to string for db query
 function eventToStr( eventObj ) {
 
@@ -26,15 +38,13 @@ function eventToStr( eventObj ) {
         if ( typeof(eventObjVals[idx] ) == "undefined" ) eventObjVals[idx] = ""
 
         if (idx == 1 && typeof(eventObjVals[idx] == 'object')) {
+            // tags, convert array to json string
             stripped = JSON.stringify(eventObjVals[idx]);
         } else if ((idx == 4 || idx == 5) && eventObjVals[idx] instanceof Date) {
             // this is a date object, convert to mysql date.
-            var date = eventObjVals[idx];
-            stripped = date.getUTCFullYear() + '-' + (date.getUTCMonth()+1) + '-' 
-                + date.getUTCDate() + ' ' + date.getUTCHours() + ':' 
-                + date.getUTCMinutes() + ':' + date.getUTCSeconds();
+            stripped = getMySQLDate(eventObjVals[idx]);
         } else {
-            stripped = eventObjVals[idx].toString().replace(/[^a-z0-9@.]+/gi, " ");
+            stripped = cleanString(eventObjVals[idx].toString());
         }
 
         valsStr += (idx==0 ? "" : ", ") + "\'" + stripped +"\'" ;    
@@ -91,34 +101,55 @@ class DbController {
     //returns a promise to the query return obj
     getAllEvents() {
 
-        var allEventsQuery = "SELECT * FROM Events;";
+        var allEventsQuery = "SELECT * FROM EventsNewTable;";
 
         return this.makeQuery( allEventsQuery );
 
     }
 
     //function to store a new event to db
-    //currently overwrites any existing data so for update use this too
+    //eventObj holds all the fields for an event
+    //returns a promise to the result of the insertion
+    createEvent(eventObj) {
+        // Add event query
+        var query = "INSERT INTO EventsNewTable(Eventname,Tags,Hostname,Hostemail," +
+            "Startdate,Enddate,Private,Description,FlyerURL,Attendees,Forum) " +
+            "VALUES(" + eventToStr(eventObj) + ");";
+        return this.makeQuery(query);
+    }
+
+    //function to update an existing event in the database
     //eventObj holds the all the fields for an event
     //returns a promise to the result of the insertion
-    storeEvent( eventObj ) {
+    updateEvent( eventObj ) {
 
-        //get the max event id first 
-        var maxIDQuery = "SELECT MAX(EventID) FROM Events;"
-        var tmp = this
+        if (typeof(eventObj.Tags == 'object')) {
+            // tags, convert array to json string
+            eventObj.Tags = JSON.stringify(eventObj.Tags);
+        }
+        if (eventObj.Startdate instanceof Date) {
+            // startdate, convert to string
+            eventObj.Startdate = getMySQLDate(eventObj.Startdate);;
+        }
+        if (eventObj.Enddate instanceof Date) {
+            // enddate, convert to string
+            eventObj.Enddate = getMySQLDate(eventObj.Enddate);;
+        }
 
-        return this.makeQuery( maxIDQuery ).then(function( maxID ) {
-    
-            var maxID = Number(maxID[0]['MAX(EventID)'])
-            var newID = ('000'+(Number(maxID) + 1)).substr(-3)
-            var storeEventQuery = "REPLACE INTO Events(EventID,Eventname,Tags,"+
-                "Hostname,Hostemail,Startdate,Enddate,Private,Description,"+
-                "FlyerURL,Attendees,Forum) VALUES('"+newID+"',"+
-                eventToStr( eventObj )+");";
-                        
-            return tmp.makeQuery( storeEventQuery );
-        })
+        // Update event query
+        var query = "UPDATE EventsNewTable SET " +
+            "Eventname='"+cleanString(eventObj.Eventname.toString())+"'," +
+            "Tags='"+eventObj.Tags+"'," +
+            "Hostname='"+cleanString(eventObj.Hostname.toString())+"'," +
+            "Hostemail='"+cleanString(eventObj.Hostemail.toString())+"'," +
+            "Startdate='"+eventObj.Startdate+"'," +
+            "Enddate='"+eventObj.Enddate+"'," +
+            "Private='"+cleanString(eventObj.Privacy.toString())+"'," +
+            "Description='"+cleanString(eventObj.Description.toString())+"'," +
+            "FlyerURL='"+cleanString(eventObj.FlyerURL.toString())+"' " +
+            "WHERE EventID='"+eventObj.EventID+"' LIMIT 1;";
 
+        return this.makeQuery(query);
     }
 
     //function to delete event from table
@@ -126,7 +157,7 @@ class DbController {
     //returns a promise to the result of the insertion
     deleteEvent( eventID ) {
 
-        var deleteEventQuery = "DELETE FROM Events where EventID="+eventID+";";
+        var deleteEventQuery = "DELETE FROM EventsNewTable where EventID="+eventID+";";
 
         return this.makeQuery( deleteEventQuery );
 
@@ -139,7 +170,7 @@ class DbController {
     //returns a promise to the query return obj
     getEvent( eventID ) {
 
-        var specificEventQuery = 'SELECT * FROM Events where EventID =' + 
+        var specificEventQuery = 'SELECT * FROM EventsNewTable where EventID =' + 
                                                                 eventID + ' ;';
 
         return this.makeQuery( specificEventQuery );
