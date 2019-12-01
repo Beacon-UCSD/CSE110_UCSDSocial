@@ -142,6 +142,7 @@ class EventFeed extends Component {
                 <div>
                 </div>
             </div>
+            </div>
         );
     }
 
