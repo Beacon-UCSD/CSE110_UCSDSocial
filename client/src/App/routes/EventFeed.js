@@ -55,7 +55,7 @@ class EventFeed extends Component {
                      </label>
                      <button type='button' onClick={this.addTag.bind(this)}>Add Tag</button>
             </div>
-            <div className="tags">
+            <div className="tagBubbles">
                          {this.state.Tags.map((tag, i) => (
                              <TagButton key={i} tag={tag} />
                          ))}
