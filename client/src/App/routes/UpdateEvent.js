@@ -105,22 +105,16 @@ class UpdateEvent extends React.Component{
         // cannot edit host or attendees
         return(
             <div className="container">
-                <div id="mySidenav" class="sidenav">
-                  <Link to={'/app/Profile'}>
-                    <a href="#">Profile</a>
-                  </Link>
-                  <Link to={'/app/Eventfeed'}>
-                    <a href="#">Events</a>
-                  </Link>
-                  <Link to={'/app/CreateEvent'}>
-                    <a href="#">Create Event</a>
-                  </Link>
-                  <a href="#">Logout</a>
-                </div>
+            <div id="mySidenav" class="sidenav">
+              <a href="/app/Profile">Profile</a>
+              <a href="/app/Eventfeed">Events</a>
+              <a href="/app/CreateEvent">Create Event</a>
+              <a href="/app/Profile">Logout</a>
+            </div>
                 <form id="main" onSubmit={this.handleSubmit}>
-                    <input name="Eventname" type="text" value={this.state.Eventname}
+                    <input className="eventName" name="Eventname" type="text" value={this.state.Eventname}
                         onChange={this.handleChange}/>
-                    <input name="Description" type="text" value={this.state.Description}
+                    <input className="description" name="Description" type="text" value={this.state.Description}
                         onChange={this.handleChange}/>
                     <MuiPickersUtilsProvider
                         className='date-picker'
@@ -138,16 +132,16 @@ class UpdateEvent extends React.Component{
                     </MuiPickersUtilsProvider>
                     <br/>
                     <label>
-                        <input name="Private" type="checkbox" checked={this.state.Private}
+                        <input className="Private" name="Private" type="checkbox" checked={this.state.Private}
                             onChange={this.handleInputChange} />
                         Private
                     </label>
                     <label>
-                        <input name="Public" type="checkbox" checked={this.state.Public}
+                        <input className="Public" name="Public" type="checkbox" checked={this.state.Public}
                             onChange={this.handleInputChange} />
                         Public
                     </label>
-                    <input type="submit" value="Update Event" />
+                    <input className="submit" type="submit" value="Update Event" />
                 </form>
             </div>
         );

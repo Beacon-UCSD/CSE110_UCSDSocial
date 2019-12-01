@@ -22,12 +22,45 @@ body {
   text-align: center;
 }
 
+Link {
+  justify-content: center;
+  align-items: center;
+}
+
+.eventName {
+  width: 705px;
+  height: 59px;
+  border-radius: 10px;
+  border: 1px solid #818181;
+  background-color: #d8e9f1;
+  text-align: center;
+}
+
 .className {
   width: 705px;
   height: 59px;
   border-radius: 10px;
   border: 1px solid #818181;
   background-color: #d8e9f1;
+}
+
+.description {
+  width: 705px;
+  height: 200px;
+  border-radius: 10px;
+  border: 1px solid #959da0;
+  background-color: #d8e9f1;
+  text-align: center;
+  resize: none;
+}
+
+.tag {
+  width: 586px;
+  height: 41px;
+  border-radius: 10px;
+  border: 1px solid #818181;
+  background-color: #d8e9f1;
+  text-align: center;
 }
 
 .Public {
@@ -49,10 +82,19 @@ body {
   height: 70px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
   background-color: #00c6d7;
+  border-radius: 10px;
 }
 
 #main {
   margin-left: 8.6%;
+}
+
+.tags {
+  width: 112px;
+  height: 41px;
+  border-radius: 10px;
+  border: 1px solid #979a9c;
+  background-color: #00c6d7;
 }
 
 /* The side navigation menu */
