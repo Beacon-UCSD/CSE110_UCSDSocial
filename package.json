@@ -58,10 +58,12 @@
     },
     "homepage": "https://github.com/Beacon-UCSD/CSE110_UCSDSocial#readme",
     "dependencies": {
+        "aws-sdk": "^2.580.0",
         "body-parser": "^1.19.0",
         "bootstrap": "^4.4.1",
         "express": "^4.17.1",
         "express-jwt": "^5.3.1",
+        "filereader": "^0.10.3",
         "jquery": "^3.4.1",
         "jsonwebtoken": "^8.5.1",
         "mysql2": "^2.0.0",

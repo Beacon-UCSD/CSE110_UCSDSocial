@@ -5,16 +5,28 @@ import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 // for http requests
 import pfetch from '../fetch.protected';
-
+import auth from '../auth';
 import TagButton from '../components/TagButton';
 
 import './CreateEvent.css';
+
+
+const AWS = require('aws-sdk');
+const ID = 'AKIAJ5OIQS2D43QAEFMQ';
+const SECRET = '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';
+
+const BUCKET = 'ucsdsocial';
+const s3 = new AWS.S3({
+    accessKeyId: ID,
+    secretAccessKey: SECRET
+});
+
 
 class CreateEvent extends Component {
 
     constructor(props){
         super(props);
-
+        this.userInfo = auth.getUserInfo();
         this.state = {
             // Set to true to disable form from being able to be submitted and
             // from being able to update component state.
@@ -27,8 +39,10 @@ class CreateEvent extends Component {
             endDate: new Date(Date.now()+5400000), // default end date = 30 minutes after start time
             Private: false,
             Public: true,
-            flyerURL: '',
-            Attendees: ''
+            FlyerURL: '',
+            Attendees: '',
+            selectedFile: "",
+            objectFile: {}
         };
 
         this.handleCreateEvent = this.handleCreateEvent.bind(this);
@@ -36,10 +50,22 @@ class CreateEvent extends Component {
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.fileChangedHandler = this.fileChangedHandler.bind(this);
 
         console.log("Check Date object's toString method: " + this.state.endDate);
 
     }
+
+    fileChangedHandler = event => {
+        console.log(this.state.objectFile);
+        console.log(event.target.files[0]);
+        let uploadPic = event.target.files[0];
+
+        this.setState({
+            objectFile: uploadPic,
+            selectedFile: URL.createObjectURL(event.target.files[0])
+        });
+      }
 
     handleInputChange(evt){
         if (evt.target.name === "Private"){
@@ -138,18 +164,50 @@ class CreateEvent extends Component {
             });
             return;
         }
+        var reader = new FileReader();
+
+        reader.name = this.state.objectFile.name;
+        var location = "";
+        if(this.state.objectFile.name === undefined || this.state.objectFile.name === null){
+            location = "https://ucsdsocial.s3.amazonaws.com/Default.png";
+        }
+        else{
+            reader.onload = function(e) {
+            var params = {
+                Bucket: BUCKET,
+                //This is a quick-fix (very bad) prefferably a unique string to the event
+                Key: this.name,
+                ContentType: 'image/jpeg',
+                Body: e.target.result,
+                ACL: 'public-read'
+            };
+            console.log(params);
+            s3.upload(params, function(s3Err, data) {
+                if (s3Err) throw s3Err
+                console.log(`File uploaded successfully at ${data.Location}`);
+                });
+            };
+            reader.readAsArrayBuffer(this.state.objectFile);
+    
+            location = "https://ucsdsocial.s3.amazonaws.com/" + this.state.objectFile.name;
+        }
+        
 
         var reqParams = {
             Tags: this.state.Tags,
             Eventname: this.state.Eventname,
-            Host: "Me",
+            Host: this.userInfo.name,
+            Hostemail: this.userInfo.email,
             Startdate: this.state.startDate.getTime(),
             Enddate: this.state.endDate.getTime(),
             Private: this.state.Private,
             Description: this.state.Description,
-            FlyerURL: "",
+            FlyerURL: location,
             Attendees: ""
         };
+
+        console.log("creating: " + this.state.Eventname);
+
         pfetch.jsonPost('/api/storeEvent', reqParams, (json) => {
             if (!json.success) {
                 console.error("Error! Could not post event.");
@@ -180,7 +238,7 @@ class CreateEvent extends Component {
         // Convert tag to uppercase.
         tagToAdd = tagToAdd.toUpperCase();
 
-        if (this.state.Tags.indexOf(tagToAdd) != -1) {
+        if (this.state.Tags.indexOf(tagToAdd) !== -1) {
             console.log("The tag '" + tagToAdd + "' is already added to the event.");
         } else {
             // Add Tag

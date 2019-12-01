@@ -15,6 +15,8 @@ const db = new DbController();
 // Gets an instance of the user authenticator.
 const authenticator = require('./UserAuthenticator');
 
+var FileReader = require('filereader');
+
 
 const testProfileList = [
     {
@@ -100,12 +102,16 @@ app.get('/api/getUsers', (req,res) => {
 ///endpoint to get an event
 app.get('/api/getEvent', (req,res) => {
 
-    singleEventQuery = db.getEvent( req.query.EventID );
+    singleEventQuery = db.getEvent( req.query.EventID )
 
     singleEventQuery.then(function( singleEvent ){
-        res.json(singleEvent[0]);
-        console.log('Sent event');
-    });
+
+        res.json( singleEvent[0] );
+
+        console.log( 'Sent event ' );
+
+    })
+
 });
 
 //endpoint to delete an event
@@ -127,27 +133,50 @@ app.post('/api/storeEvent', function (req,res) {
 		Tags: req.body.Tags,
 		Eventname: req.body.Eventname,
 		Host: req.body.Host,
-		Startdate: new Date(req.body.Startdate),
-		Enddate: new Date(req.body.Enddate),
+		Startdate: req.body.Startdate,
+		Enddate: req.body.Enddate,
 		Private: req.body.Private,
 		Description: req.body.Description,
-		FlyerURL: req.FlyerURL,
+		FlyerURL: req.body.FlyerURL,
 		Attendees: req.body.Attendees
-	};
+	}
 
-    // TODO validate everything before adding to db
+    console.log(eventObj.FlyerURL);
 
-    storeEventQuery = db.storeEvent( eventObj );
+    storeEventQuery = db.storeEvent( eventObj )
 
     storeEventQuery.then(function( storeEventResponse ){
 
         console.log( 'Store event response: ' + storeEventResponse );
-        res.json({success:true});
 
-    });
+    })
 
 });
 
+app.post('/api/updateEvent', function (req,res) {
+
+    var eventObj = {
+        Tags: req.body.Tags,
+        Eventname: req.body.Eventname,
+        Host: req.body.Host,
+        Startdate: req.body.Startdate,
+        Enddate: req.body.Enddate,
+        Private: req.body.Private,
+        Description: req.body.Description,
+        FlyerURL: req.body.FlyerURL,
+        Attendees: req.body.Attendees
+    }
+
+    console.log(eventObj.FlyerURL);
+    
+    updateEventQuery = db.updateEvent( eventObj )
+    updateEventQuery.then(function( updateEventResponse ){
+
+        console.log( 'Store event response: ' + updateEventResponse );
+
+    })
+
+});
 
 
 // Handles any requests that don't match the ones above

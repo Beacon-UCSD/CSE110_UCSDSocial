@@ -33,7 +33,11 @@ function eventToStr( eventObj ) {
             stripped = date.getUTCFullYear() + '-' + (date.getUTCMonth()+1) + '-' 
                 + date.getUTCDate() + ' ' + date.getUTCHours() + ':' 
                 + date.getUTCMinutes() + ':' + date.getUTCSeconds();
-        } else {
+        }
+        else if(idx == 8){
+            stripped = eventObjVals[idx].toString();
+        } 
+        else {
             stripped = eventObjVals[idx].toString().replace(/[^a-z0-9@.]+/gi, " ");
         }
 
@@ -132,7 +136,34 @@ class DbController {
 
     }
 
+    //fucntion to update the designated event
+    //eventObj holds the all the fields for an event
+    //returns a promise to the result of the insertion / update
+    updateEvent (eventObj){
 
+        var getIDQuery = "SELECT EventID FROM Events where Eventname = '" + eventObj.Eventname.toString() + "';";
+        var tmp = this;
+        /*
+         + " AND Hostname = " + eventObj.Host.toString()
+                            + " AND Hostemail = " + eventObj.Hostemail.toString() 
+                            */
+
+        return this.makeQuery( getIDQuery ).then(function( getID ){
+            var getID = Number(getID[0]['EventID'])
+            var ID = ('000'+(Number(getID) + 1)).substr(-3)
+            console.log("the EventID you trying to update is: " + ID);
+            //then need to do the update
+            //REPLACE works exactly like INSERT, 
+            //except that if an old row in the table has the same value as a new row for a PRIMARY KEY
+            //the old row is deleted before the new row is inserted.
+            var updateEventQuery = "REPLACE INTO Events(EventID,Eventname,Tags,"+
+                "Hostname,Hostemail,Startdate,Enddate,Private,Description,"+
+                "FlyerURL,Attendees,Forum) VALUES('"+ID+"',"+
+                eventToStr( eventObj )+");";
+            return tmp.makeQuery(updateEventQuery);
+        })
+        
+    }
 
     //function to query for a specific event events
     //eventID : the id of the queried event
