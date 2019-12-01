@@ -173,7 +173,31 @@ app.post('/api/storeEvent', function (req,res) {
 
 });
 
+app.post('/api/updateEvent', function (req,res) {
 
+    var eventObj = {
+        Tags: req.body.Tags,
+        Eventname: req.body.Eventname,
+        Host: req.body.Host,
+        Startdate: req.body.Startdate,
+        Enddate: req.body.Enddate,
+        Private: req.body.Private,
+        Description: req.body.Description,
+        FlyerURL: req.body.FlyerURL,
+        Attendees: req.body.Attendees
+    }
+
+    console.log(eventObj.FlyerURL);
+
+    updateEventQuery = db.updateEvent( eventObj )
+
+    updateEventQuery.then(function( updateEventResponse ){
+
+        console.log( 'Store event response: ' + updateEventResponse );
+
+    })
+
+});
 
 // Handles any requests that don't match the ones above
 app.get('*', (req,res) =>{

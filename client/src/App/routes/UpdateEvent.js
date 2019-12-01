@@ -1,33 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // for date pickers
 import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 // for http requests
 import pfetch from '../fetch.protected';
 import auth from '../auth';
-import TagButton from '../components/TagButton';
-
-import { Link } from 'react-router-dom';
 
 class UpdateEvent extends React.Component{
     constructor(props){
         super(props);
-        const {evt} = this.props.location.state;
         this.userInfo = auth.getUserInfo();
 
-        // parse evt.tags
-        const tags = evt.Tags.replace(/[\[\]"]+/gi, "");
-        const tagsArr = tags.split(",");
-        console.log(tagsArr);
+        const {evt} = this.props.location.state;
+        
         this.state = {
-            Tags: tagsArr,
+            Tags: '',
             Eventname: evt.Eventname,
             Description: evt.Description,
             Startdate: evt.Startdate,
             Enddate: evt.Enddate,
             Private: evt.Private,
             Public: !evt.Private,
-            flyerURL: '',
+            FlyerURL: evt.FlyerURL,
             Attendees: ''
         };
 
@@ -36,39 +31,8 @@ class UpdateEvent extends React.Component{
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-    }
+        console.log("Check Date object's toString method: " + this.state.endDate);
 
-    /*
-    Handles changes of any basic input text
-    */
-    handleChange(event) {
-        // decide whether the event name or description attribute is being changed
-        const name = event.target.name;
-        this.setState({
-            [name]: event.target.value
-        });
-    }
-
-    /*
-    Handles changing the date of the start date
-    */
-    handleStartDateChange = (date) => {
-        console.log(date);
-        this.setState({
-            Startdate: new Date(+date),
-        })
-    }
-
-    /*
-    Handles changing the date of the end date
-    */
-    handleEndDateChange = (date) => {
-        console.log('Input Date: ' + date);
-
-        this.setState({
-            Enddate: new Date(+date),
-        })
-        console.log(this.state.endDate);
     }
 
     /*
@@ -88,26 +52,89 @@ class UpdateEvent extends React.Component{
             })
         }
     }
+    /*
+    Handles changes of any basic input text
+    */
+    handleChange(evt) {
+        // decide whether the event name or description attribute is being changed
+        const name = evt.target.name;
+        this.setState({
+            [name]: evt.target.value
+        });
+    }
+
+    /*
+    Handles changing the date of the start date
+    */
+    handleStartDateChange = (date) => {
+        console.log(date);
+        this.setState({
+            Startdate: new Date(+date),
+        });
+        // Check if start date is after end date, if so update end date.
+        if (date > this.state.endDate) {
+            console.log("Changing end date");
+            // Set end date to be 5 minutes after start time.
+            this.setState({
+                endDate: new Date(date.getTime()+5*60000) // set end date 5 minutes after start date
+            });
+        }
+    }
+
+    /*
+    Handles changing the date of the end date
+    */
+    handleEndDateChange = (date) => {
+        console.log('Input Date: ' + date);
+
+        this.setState({
+            Enddate: new Date(+date),
+        })
+        console.log(this.state.endDate);
+    }
+
+    
 
     /*
     Makes POST request to update the event info
     */
     handleSubmit(evt){
+        evt.preventDefault();
+
+        this.setState({
+            Eventname: this.state.Eventname.trim(),
+            Description: this.state.Description.trim()
+        });
         // TODO: is there an endpoint for updating event?
         var body = {
             Tags: this.state.Tags,
             Eventname: this.state.Eventname,
             Host: this.userInfo.name,
-            Hostemail: this.userInfo.email,
             Startdate: this.state.Startdate.toString(),
             Enddate: this.state.Enddate.toString(),
             Private: this.state.Private,
             Description: this.state.Description,
-            FlyerURL: "",
+            FlyerURL: this.state.FlyerURL,
             Attendees: ""
         };
-        pfetch.jsonPost('/api/storeEvent', body);
-        this.props.history.push('/app/Eventfeed');
+
+        console.log("updating: " + this.state.Eventname);
+
+        pfetch.jsonPost('/api/updateEvent', body, (json) => {
+            if (!json.success) {
+                console.error("Error! Could not post event.");
+                if ('message' in json) {
+                    console.error(json.message);
+                }
+                // Re-enable form.
+                this.setState({
+                    formDisabled: false
+                });
+                return;
+            }
+            // Redirect to events feed page.
+            this.props.history.push('/app/Eventfeed');
+        });
     }
 
     addTag() {
@@ -122,7 +149,7 @@ class UpdateEvent extends React.Component{
         // Convert tag to uppercase.
         tagToAdd = tagToAdd.toUpperCase();
 
-        if (this.state.Tags.indexOf(tagToAdd) != -1) {
+        if (this.state.Tags.indexOf(tagToAdd) !== -1) {
             console.log("The tag '" + tagToAdd + "' is already added to the event.");
         } else {
             // Add Tag
@@ -137,7 +164,6 @@ class UpdateEvent extends React.Component{
     render(){
         // Eventname, Date, Starttime, Endtime, Date, tagID, Host, Private, Description, Attendees
         // cannot edit host or attendees
-        console.log(this.state.Tags);
         return(
             <div className="container">
                 <form id="main" onSubmit={this.handleSubmit}>
@@ -160,19 +186,6 @@ class UpdateEvent extends React.Component{
                                 onChange={this.handleEndDateChange} />
                     </MuiPickersUtilsProvider>
                     <br/>
-                    <label>
-                    <input className="tag" name="Tags" type="text" placeholder={"Type tag to add..."}
-                        ref='tagInputField' disabled={this.state.formDisabled} />
-                        <br/>
-                        <button className="tags" type='button'
-                            onClick={this.addTag.bind(this)}
-                            disabled={this.state.formDisabled}>Add Tag</button>
-                    </label>
-                    <div ref='eventTags'>
-                        {this.state.Tags.map((tag, i) => (
-                            <TagButton key={i} tag={tag} />
-                        ))}
-                    </div>
                     <label>
                         <input className="Private" name="Private" type="checkbox" checked={this.state.Private}
                             onChange={this.handleInputChange} />
