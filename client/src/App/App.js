@@ -25,7 +25,7 @@ class App extends Component {
                 <div className="row">
                     <Router>
                         <div className="col-md-1">
-                            <Route path='/app' component={NavBar} />
+                            <ProtectedRoute path='/app' component={NavBar} />
                         </div>
                         <div className="col-md-11">
                             <Switch>
