@@ -4,14 +4,23 @@ import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 // for http requests
 import pfetch from '../fetch.protected';
+import auth from '../auth';
+import TagButton from '../components/TagButton';
+
 import { Link } from 'react-router-dom';
 
 class UpdateEvent extends React.Component{
     constructor(props){
         super(props);
         const {evt} = this.props.location.state;
+        this.userInfo = auth.getUserInfo();
+
+        // parse evt.tags
+        const tags = evt.Tags.replace(/[\[\]"]+/gi, "");
+        const tagsArr = tags.split(",");
+        console.log(tagsArr);
         this.state = {
-            Tags: '',
+            Tags: tagsArr,
             Eventname: evt.Eventname,
             Description: evt.Description,
             Startdate: evt.Startdate,
@@ -88,7 +97,8 @@ class UpdateEvent extends React.Component{
         var body = {
             Tags: this.state.Tags,
             Eventname: this.state.Eventname,
-            Host: "Me",
+            Host: this.userInfo.name,
+            Hostemail: this.userInfo.email,
             Startdate: this.state.Startdate.toString(),
             Enddate: this.state.Enddate.toString(),
             Private: this.state.Private,
@@ -100,9 +110,34 @@ class UpdateEvent extends React.Component{
         this.props.history.push('/app/Eventfeed');
     }
 
+    addTag() {
+        var tagToAdd = this.refs.tagInputField.value;
+        // Clean up tag to only have letters and numbers
+        tagToAdd = tagToAdd.replace(/[^\s\dA-Z]/gi, '').replace(/ /g, '');
+        if (tagToAdd.length <= 3) {
+            console.error("Tag must be at least 4 characters long.");
+            return;
+        }
+
+        // Convert tag to uppercase.
+        tagToAdd = tagToAdd.toUpperCase();
+
+        if (this.state.Tags.indexOf(tagToAdd) != -1) {
+            console.log("The tag '" + tagToAdd + "' is already added to the event.");
+        } else {
+            // Add Tag
+            this.setState({
+                Tags: [...this.state.Tags, tagToAdd]
+            });
+        }
+
+        this.refs.tagInputField.value = "";
+    }
+
     render(){
         // Eventname, Date, Starttime, Endtime, Date, tagID, Host, Private, Description, Attendees
         // cannot edit host or attendees
+        console.log(this.state.Tags);
         return(
             <div className="container">
                 <form id="main" onSubmit={this.handleSubmit}>
@@ -125,6 +160,19 @@ class UpdateEvent extends React.Component{
                                 onChange={this.handleEndDateChange} />
                     </MuiPickersUtilsProvider>
                     <br/>
+                    <label>
+                    <input className="tag" name="Tags" type="text" placeholder={"Type tag to add..."}
+                        ref='tagInputField' disabled={this.state.formDisabled} />
+                        <br/>
+                        <button className="tags" type='button'
+                            onClick={this.addTag.bind(this)}
+                            disabled={this.state.formDisabled}>Add Tag</button>
+                    </label>
+                    <div ref='eventTags'>
+                        {this.state.Tags.map((tag, i) => (
+                            <TagButton key={i} tag={tag} />
+                        ))}
+                    </div>
                     <label>
                         <input className="Private" name="Private" type="checkbox" checked={this.state.Private}
                             onChange={this.handleInputChange} />
