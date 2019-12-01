@@ -43,6 +43,8 @@ function eventToStr( eventObj ) {
             stripped = date.getUTCFullYear() + '-' + (date.getUTCMonth()+1) + '-' 
                 + date.getUTCDate() + ' ' + date.getUTCHours() + ':' 
                 + date.getUTCMinutes() + ':' + date.getUTCSeconds();
+        } else if(idx == 8) {
+            stripped = eventObjVals[idx].toString();
         } else {
             stripped = cleanString(eventObjVals[idx]);
         }

@@ -156,7 +156,7 @@ app.post('/api/storeEvent', function (req,res) {
 		Enddate: new Date(req.body.Enddate),
 		Private: req.body.Private,
 		Description: req.body.Description,
-		FlyerURL: req.FlyerURL,
+		FlyerURL: req.body.FlyerURL,
 		Attendees: req.body.Attendees
 	};
 
