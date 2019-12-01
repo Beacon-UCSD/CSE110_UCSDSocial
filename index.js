@@ -4,14 +4,9 @@ const jwt = require('express-jwt');
 const path = require('path');
 const bodyParser = require('body-parser');
 
-const DbController = require( './databaseController.js')
+//get our db instance
+const db = require( './databaseController.js')
 
-//create our db instance
-const db = new DbController();
-
-// Gets an instance of the database controller.
-// Enlil: File not committed yet since still working on it.
-// const dbController = require('./DatabaseController');
 // Gets an instance of the user authenticator.
 const authenticator = require('./UserAuthenticator');
 

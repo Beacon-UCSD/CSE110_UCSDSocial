@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 var getUserInfo = function(sessionToken) {
     var decodedToken = jwt.decode(sessionToken);
     var userInfo = {
+        id:         decodedToken.sub,
         name:       decodedToken.name,
         email:      decodedToken.email,
         pictureSrc: decodedToken.picture

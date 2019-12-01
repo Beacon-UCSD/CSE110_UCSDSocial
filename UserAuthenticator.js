@@ -2,6 +2,8 @@ const request = require('request');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
+const db = require('./databaseController');
+
 // SECRETS. DO NOT expose to client.
 const JWT_SIGN_SECRET = 'XBqv88W69RQS9a9f9WD6fbtZ';
 const TOKEN_KEY = Buffer.from('a6a1998373635907b329a54c1e11840a', 'hex');
@@ -71,16 +73,33 @@ exports.authenticate = function(idToken, clientRes) {
             }
 
             // Token has been validated!!!
-
-            generateSessionToken(idToken, token, function(err, token) {
-                if (err) {
-                    console.log("Error generating session token.");
-                    console.log(err);
-                    clientRes.status(500).json({success:false});
-                    return;
+            
+            // Get user id from db if user already exists.
+            var userIdQuery = db.getUserIDByGoogleUID(googleUserId);
+            userIdQuery.then((queryRes) => {
+                if (queryRes.length <= 0) {
+                    // New user!!
+                    var createQuery = db.createUser(googleUserId, userName, email);
+                    createQuery.then((createRes) => {
+                        sendSessionToClient(createRes.insertId);
+                    });
+                } else {
+                    sendSessionToClient(queryRes[0].UserID);
                 }
-                clientRes.status(200).json({success:true, sessionToken:token});
             });
+
+
+            function sendSessionToClient(userId) {
+                generateSessionToken(userId, idToken, token, function(err, token) {
+                    if (err) {
+                        console.log("Error generating session token.");
+                        console.log(err);
+                        clientRes.status(500).json({success:false});
+                        return;
+                    }
+                    clientRes.status(200).json({success:true, sessionToken:token});
+                });
+            }
         }
     );
 
@@ -152,10 +171,11 @@ var generateTesterSessionToken = function(token, callback) {
 
 // This function responds with a session token based on a token from Google sign-in.
 //
+// param int userId:        The user's id.
 // param string idToken:    The encoded token as received from Google.
 // param object token:      The validated and parsed token from Google sign-in.
 // param object callback:   Function is called with arguments (err, token)
-var generateSessionToken = function(idToken, token, callback) {
+var generateSessionToken = function(userId, idToken, token, callback) {
     // Our session token is short-lived and expires soon.
     // We have to create a refresh token to be used to continue the session.
     // We will use our id token from Google as a refresh token, but this token
@@ -168,13 +188,10 @@ var generateSessionToken = function(idToken, token, callback) {
     // current session token is not expired yet.
     var encryptedIdToken = encryptGoogleToken(idToken);
 
-    // Our session token swaps the Google user id with our own id.
-    // TODO To do this we have to first get the user's id from the database.
-    
     // Create a session token..
     jwt.sign({
         exp:        parseInt(token.exp),
-        sub:        -1, // TODO get user id from google_id from db
+        sub:        userId,
         name:       token.name,
         email:      token.email,
         picture:    token.picture,

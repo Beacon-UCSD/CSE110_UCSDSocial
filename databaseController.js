@@ -1,5 +1,15 @@
 var mysql = require('mysql2');
 
+//function to escape quotations from string
+function escapeQuotations(str) {
+    return str.replace(/"/g, '\\"').replace(/'/g, "\\'");
+}
+
+// function to clean string of symbols
+function cleanString(str) {
+    return str.toString().replace(/[^a-z0-9@.]+/gi, " ");
+}
+
 //function to concatenate event object values to string for db query
 function eventToStr( eventObj ) {
 
@@ -34,7 +44,7 @@ function eventToStr( eventObj ) {
                 + date.getUTCDate() + ' ' + date.getUTCHours() + ':' 
                 + date.getUTCMinutes() + ':' + date.getUTCSeconds();
         } else {
-            stripped = eventObjVals[idx].toString().replace(/[^a-z0-9@.]+/gi, " ");
+            stripped = cleanString(eventObjVals[idx]);
         }
 
         valsStr += (idx==0 ? "" : ", ") + "\'" + stripped +"\'" ;    
@@ -43,6 +53,7 @@ function eventToStr( eventObj ) {
 
     return valsStr;
 }
+
 
 //class for the databse interface
 
@@ -85,6 +96,58 @@ class DbController {
         //not sure why but storing in obj up there messes up async so did here
         this.connection = connection;
 
+    }
+
+    //function to query for user id from google account id
+    getUserIDByGoogleUID(googleUID) {
+        // escape quotations
+        googleUID = escapeQuotations(googleUID);
+
+        var getUserIDQuery = "SELECT UserID FROM Users WHERE GoogleUID='" +
+            googleUID + "' LIMIT 1;";
+
+        return this.makeQuery(getUserIDQuery);
+    }
+
+    //function go get user from userid
+    getUserByUserID(userID) {
+        // Make sure userID is an integer.
+        if (isNaN(userID)) {
+            return;
+        }
+        
+        var getUserQuery = "SELECT UserID,Username,Email,Phone,Tags,College," +
+            "Major,Year,Friends,Hostevents,Notifications " +
+            "FROM Users WHERE UserID='"+userID+"' LIMIT 1;";
+
+        return this.makeQuery(getUserQuery);
+    }
+
+    //function to create new user
+    createUser(googleUID, userName, userEmail) {
+        var insertUserQuery = "INSERT INTO Users (GoogleUID,Username,Email) VALUES('" +
+            cleanString(googleUID)+"','"+cleanString(userName)+"','"+
+            escapeQuotations(userEmail.toString())+"');"
+        return this.makeQuery(insertUserQuery);
+    }
+
+    //function to update user information
+    updateUserInformation(userId, userObj) {
+        try {
+            var updateUserQuery = "UPDATE Users SET " +
+                "Username='"+cleanString(userObj.Name)+"',"+
+                "Email='"+escapeQuotations(userObj.Email.toString())+"',"+
+                "Phone='"+escapeQuotations(userObj.Phone.toString())+"',"+
+                "Tags='"+JSON.stringify(userObj.Tags)+"',"+
+                "College='"+cleanString(userObj.College)+"',"+
+                "Major='"+cleanString(userObj.Major)+"',"+
+                "Year='"+cleanString(userObj.Year)+"' "+
+                "WHERE UserID='"+userId+"' LIMIT 1;";
+            return this.makeQuery(updateUserQuery);
+        } catch(e) {
+            console.error("Failed to send UPDATE user sql query.");
+            return null;
+        }
     }
 
     //function to query for all events
@@ -190,4 +253,4 @@ class DbController {
 
 }
 
-module.exports = DbController
+module.exports = new DbController();
