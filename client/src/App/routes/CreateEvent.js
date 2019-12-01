@@ -208,14 +208,7 @@ class CreateEvent extends Component {
     */
     render(){
         return(
-          <div>
-
-            <div id="mySidenav" className="sidenav">
-              <a href="/app/Profile">Profile</a>
-              <a href="/app/Eventfeed">Events</a>
-              <a href="/app/CreateEvent">Create Event</a>
-              <a href="/app/Profile">Logout</a>
-            </div>
+        <div>
 
             <div id="main">
               <form className="eventForm" onSubmit={this.handleCreateEvent}>

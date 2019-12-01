@@ -29,13 +29,6 @@ class Profile extends Component {
 
              <div key={this.state.event.UserID}>
 
-             <div id="mySidenav" class="sidenav">
-               <a href="/app/Profile">Profile</a>
-               <a href="/app/Eventfeed">Events</a>
-               <a href="/app/CreateEvent">Create Event</a>
-               <a href="/app/Profile">Logout</a>
-             </div>
-
               <div id="main" className="background-profile">
                 <img className="profile" src={this.userInfo.pictureSrc}/>
                 <h2 className="title">{this.userInfo.name}</h2>

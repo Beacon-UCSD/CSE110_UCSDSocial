@@ -1,0 +1,95 @@
+/* Side Navigation Menu */
+.sidenav {
+    height: 100%; /* Full-height */
+    width: 8.6%; /* Changed within javascript. */
+    min-width: 130px;
+    max-width: 210px;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    display: block;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+
+    background-color: #00c6d7;
+}
+
+/* Navbar header (profile image) */
+.sidenav-head {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+}
+.sidenav-profile-img {
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+}
+.sidenav-profile-name {
+    font-size: 25px;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+.sidenav-head a {
+    transition: 0.2s;
+}
+.sidenav-head a:hover {
+    filter: brightness(120%);
+}
+
+/* Navbar menu */
+.sidenav-menu {
+    position: relative;
+}
+
+/* Remove all styling from navbar buttons */
+.sidenav button {
+    all: unset;
+    width: 100%; /* If calc not supported on browser */
+    width: calc(100% - 16px); /* Remove padding from 100% */
+}
+
+/* Side Navigation Links/Buttons */
+.sidenav-menu a, .sidenav-menu button
+.sidenav-foot a, .sidenav-foot button {
+    display: block;
+    padding: 20px 8px 20px 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 25px;
+    /*color: #818181;*/
+    color: #ffffff;
+    transition: 0.15s;
+}
+
+/* Change color on mouse hover over navbar links */
+.sidenav-menu a:hover, .sidenav-menu button:hover
+.sidenav-foot a:hover, .sidenav-foot button:hover {
+    background-color: #00b0bf;
+    text-decoration: none;
+    color: #f1f1f1;
+}
+
+.sidenav-foot {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.sidenav-logo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    padding: 0;
+}

@@ -16,6 +16,7 @@ body {
   background-image: url('https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/04/17/22/istock-157642939.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
+  background-size: cover;
 }
 
 .eventForm {
@@ -95,49 +96,6 @@ Link {
   border-radius: 10px;
   border: 1px solid #979a9c;
   background-color: #00c6d7;
-}
-
-/* The side navigation menu */
-.sidenav {
-  height: 100%; /* 100% Full-height */
-  width: 8.6%; /* 0 width - change this with JavaScript */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
-  left: 0;
-  background-color: #00c6d7; /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 60px; /* Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-  display: block;
-  align-items: center;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
-}
-
-/* The navigation menu links */
-.sidenav a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
-}
-
-/* When you mouse over the navigation links, change their color */
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-/* Position and style the close button (top right corner) */
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */

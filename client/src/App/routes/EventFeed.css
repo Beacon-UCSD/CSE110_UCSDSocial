@@ -36,14 +36,7 @@ h3 {
   margin-left: auto;
   margin-right: auto;
 }
-.sidebar {
-  /* Style for "Sidebar Ba" */
-  position: relative;
-  z-index:-1;
-  width: 166px;
-  height: 3000px;
-  background-color: #00c6d7;
-}
+
 .searchBar {
   display: block;
   text-align: center;

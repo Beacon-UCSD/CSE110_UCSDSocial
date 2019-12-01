@@ -105,12 +105,6 @@ class UpdateEvent extends React.Component{
         // cannot edit host or attendees
         return(
             <div className="container">
-            <div id="mySidenav" class="sidenav">
-              <a href="/app/Profile">Profile</a>
-              <a href="/app/Eventfeed">Events</a>
-              <a href="/app/CreateEvent">Create Event</a>
-              <a href="/app/Profile">Logout</a>
-            </div>
                 <form id="main" onSubmit={this.handleSubmit}>
                     <input className="eventName" name="Eventname" type="text" value={this.state.Eventname}
                         onChange={this.handleChange}/>
