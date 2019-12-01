@@ -1,10 +1,10 @@
 h1 {
   width: 164px;
   height: 41px;
-  color: #000000;
+  color: #FFFFFF;
   font-family: "Segoe UI";
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 30px;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -15,7 +15,18 @@ h2 {
   font-weight: 600;
 }
 
+h3 {
+  color: #000000;
+  font-family: "Segoe UI";
+  font-size: 20px;
+  top: 50%;
+  left: 50%;
+  font-weight: 400;
+  transform: translate(0%, -250%);
+}
+
 .eventButton {
+  position: relative;
   width: 700px;
   height: 300px;
   border-radius: 28px;
@@ -24,4 +35,13 @@ h2 {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.sidebar {
+  /* Style for "Sidebar Ba" */
+  position: relative;
+  z-index:-1;
+  width: 166px;
+  height: 3000px;
+  background-color: #00c6d7;
 }

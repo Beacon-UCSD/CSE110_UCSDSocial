@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import pfetch from '../fetch.protected';
-
 import './EventFeed.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
+
 
 class EventFeed extends Component {
 
@@ -28,12 +33,24 @@ class EventFeed extends Component {
     render(){
         const { list } = this.state;
         return(
-            <div>
-                <h1> Event Feed </h1>
-                <div>
-                    <Link to={'/app/Profile'}>
-                        <button variant="raised"> Profile </button>
-                    </Link>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <h1 className="sidebar"> Event Feed </h1>
+
+                    
+                </div>
+                
+                <div className="col-md-10"> 
+                    <h2> Your Events </h2>
+                    <div class="col-md-4">
+                        <Link to={'/app/Profile'}>
+                            <button variant="raised"> Profile </button>
+                        </Link>
+                        <Link to={'/app/CreateEvent'}>
+                            <button variant="raised"> Create Event </button>
+                        </Link>
+                    </div>
                     {list.map((item) => {
                         return(
                             <div key={item.EventID}>
@@ -47,13 +64,6 @@ class EventFeed extends Component {
                             </div>
                         );
                     })}
-                </div>
-                <div>
-                    <Link to={'/app/CreateEvent'}>
-                        <button variant="raised"> Create Event </button>
-                    </Link>
-                </div>
-                <div>
                 </div>
             </div>
         );
