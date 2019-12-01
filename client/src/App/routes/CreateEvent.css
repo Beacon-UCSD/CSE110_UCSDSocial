@@ -13,25 +13,94 @@ form {
 }
 
 body {
-  background-image: url('https://images.wallpaperscraft.com/image/lighthouse_starry_sky_shore_127472_1920x1080.jpg');
+  background-image: url('https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/04/17/22/istock-157642939.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.eventForm {
+  text-align: center;
+}
+
+Link {
+  justify-content: center;
+  align-items: center;
 }
 
 .eventName {
+  width: 705px;
+  height: 59px;
+  border-radius: 10px;
+  border: 1px solid #818181;
+  background-color: #d8e9f1;
+  text-align: center;
+}
 
+.className {
+  width: 705px;
+  height: 59px;
+  border-radius: 10px;
+  border: 1px solid #818181;
+  background-color: #d8e9f1;
+}
+
+.description {
+  width: 705px;
+  height: 200px;
+  border-radius: 10px;
+  border: 1px solid #959da0;
+  background-color: #d8e9f1;
+  text-align: center;
+  resize: none;
+}
+
+.tag {
+  width: 586px;
+  height: 41px;
+  border-radius: 10px;
+  border: 1px solid #818181;
+  background-color: #d8e9f1;
+  text-align: center;
+}
+
+.Public {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #707070;
+  background-color: #e6e6e6;
+}
+
+.Private {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #707070;
+  background-color: #e6e6e6;
 }
 
 .submit {
   width: 206px;
   height: 70px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-  border-radius: 0 0 20px;
+  background-color: #00c6d7;
+  border-radius: 10px;
+}
+
+#main {
+  margin-left: 8.6%;
+}
+
+.tags {
+  width: 112px;
+  height: 41px;
+  border-radius: 10px;
+  border: 1px solid #979a9c;
   background-color: #00c6d7;
 }
 
 /* The side navigation menu */
 .sidenav {
   height: 100%; /* 100% Full-height */
-  width: 0; /* 0 width - change this with JavaScript */
+  width: 8.6%; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
   z-index: 1; /* Stay on top */
   top: 0; /* Stay at the top */
@@ -40,6 +109,11 @@ body {
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  display: block;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
 }
 
 /* The navigation menu links */
