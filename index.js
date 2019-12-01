@@ -73,6 +73,36 @@ app.use(jwt({secret: authenticator.JWT_SECRET}));
 // Serve the static files from the React app
 //app.use(express.static(path.join(__dirname, 'client/build')));
 
+// endpoint to get logged in users profile
+app.get('/api/getMyProfile', (req,res) => {
+    var userQuery = db.getUserByUserID(req.user.sub);
+    userQuery.then((queryRes) => {
+        if (queryRes.length <= 0) {
+            res.status(401);
+        }
+        try {
+            var user = {
+                UserID: queryRes[0].UserID,
+                Name: queryRes[0].Username,
+                Email: queryRes[0].Email,
+                Phone: queryRes[0].Phone,
+                Tags: queryRes[0].Tags,
+                College: queryRes[0].College,
+                Major: queryRes[0].Major,
+                Year: queryRes[0].Year,
+                Friends: queryRes[0].Friends,
+                Events: queryRes[0].Hostevents,
+                Notifications: queryRes[0].Notification
+            };
+            res.status(200).json(user);
+        } catch (e) {
+            console.error("Error getting user profile.");
+            console.error(e);
+            res.status(500);
+        }
+    });
+});
+
 // An api endpoint that returns a short list of items
 app.get('/api/getList', (req,res) => {
 

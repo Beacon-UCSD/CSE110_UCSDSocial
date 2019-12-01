@@ -13,35 +13,68 @@ class Profile extends Component {
          this.userInfo = auth.getUserInfo();
 
          this.state = {
-             event: {}
-         }
+             name:      this.userInfo.name,
+             picture:   this.userInfo.pictureSrc,
+             email:     this.userInfo.email,
+             phone:     "",
+             tags:      [],
+             college:   "",
+             major:     "",
+             year:      "",
+             friends:   "",
+             events:    [],
+             notifications: []
+         };
      }
 
      componentDidMount() {
-         pfetch.jsonGet('/api/getUsers', (data) => {
-             //this.setState({list});
-             this.setState({ event: data });
+         pfetch.jsonGet('/api/getMyProfile', (user) => {
+             // Init null fields to empty string/array
+             for (var key in user) {
+                 if (user[key] == null) {
+                     if (key == 'Tags' || key == 'Notifications' ||
+                         key == 'Events' || key == 'Friends') {
+                         user[key] = [];
+                     } else {
+                         user[key] = "";
+                     }
+                 }
+             }
+             this.setState({
+                 name:  user.Name,
+                 picture:   this.state.picture,
+                 email:     user.Email,
+                 phone:     user.Phone,
+                 tags:      user.Tags,
+                 college:   user.College,
+                 major:     user.Major,
+                 year:      user.Year,
+                 friends:   user.Friends,
+                 events:    user.Events,
+                 notifications: user.Notifications
+             });
+             //this.setState({ event: data });
          });
      }
 
      render() {
          return (
 
-             <div key={this.state.event.UserID}>
+             <div key={this.state.UserID}>
 
               <div id="main" className="background-profile">
-                <img className="profile" src={this.userInfo.pictureSrc}/>
-                <h2 className="title">{this.userInfo.name}</h2>
+                <img className="profile" src={this.state.picture}/>
+                <h2 className="title">{this.state.name}</h2>
                 <div className="info">
-                  <h8 className="actuaInfo">Email:<h7>{this.userInfo.email}</h7></h8>
-                  <h8 className="actuaInfo">Phone Number:<h7>{this.state.event.Phone}</h7></h8>
-                  <h8 className="actuaInfo">Tag IDs:<h7>{this.state.event.tagIDs}</h7></h8>
-                  <h8 className="actuaInfo">College:<h7>{this.state.event.College}</h7></h8>
-                  <h8 className="actuaInfo">Major:<h7>{this.state.event.Major}</h7></h8>
-                  <h8 className="actuaInfo">Year:<h7>{this.state.event.Year}</h7></h8>
-                  <h8 className="actuaInfo">Friends:<h7>{this.state.event.Friends}</h7></h8>
-                  <h8 className="actuaInfo">Host Events:<h7>{this.state.event.Hostevents}</h7></h8>
-                  <h8 className="actuaInfo">Notifications:<h7>{this.state.event.Notifications}</h7></h8>
+                  <div className="actualInfo">Email:<div className="h7">{this.state.email}</div></div>
+                  <div className="actualInfo">Phone Number:<div className="h7">{this.state.phone}</div></div>
+                  <div className="actualInfo">Tags:<div className="h7">{this.state.tags}</div></div>
+                  <div className="actualInfo">College:<div className="h7">{this.state.college}</div></div>
+                  <div className="actualInfo">Major:<div className="h7">{this.state.major}</div></div>
+                  <div className="actualInfo">Year:<div className="h7">{this.state.year}</div></div>
+                  <div className="actualInfo">Friends:<div className="h7">{this.state.friends}</div></div>
+                  <div className="actualInfo">Host Events:<div className="h7">{this.state.events}</div></div>
+                  <div className="actualInfo">Notifications:<div className="h7">{this.state.notifications}</div></div>
                 </div>
               </div>
             </div>

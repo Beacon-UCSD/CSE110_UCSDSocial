@@ -117,7 +117,7 @@ class DbController {
         }
         
         var getUserQuery = "SELECT UserID,Username,Email,Phone,Tags,College," +
-            "Major,Year,Friends,Hostevents,Notifications " +
+            "Major,Year,Friends,Hostevents,Notification " +
             "FROM Users WHERE UserID='"+userID+"' LIMIT 1;";
 
         return this.makeQuery(getUserQuery);

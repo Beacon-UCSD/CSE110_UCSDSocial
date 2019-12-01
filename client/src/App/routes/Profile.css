@@ -19,7 +19,7 @@ img, .profile {
 }
 
 
-h8, .actualInfo {
+.actualInfo {
   color: #000000;
   font-family: "Segoe UI";
   font-size: 17px;
@@ -33,7 +33,7 @@ h8, .actualInfo {
   padding:0, 0, 0, 0;
 }
 
-h7 {
+.h7 {
   color: #000000;
   font-family: "Segoe UI";
   font-size: 13px;
