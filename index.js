@@ -100,16 +100,12 @@ app.get('/api/getUsers', (req,res) => {
 ///endpoint to get an event
 app.get('/api/getEvent', (req,res) => {
 
-    singleEventQuery = db.getEvent( req.query.EventID )
+    singleEventQuery = db.getEvent( req.query.EventID );
 
     singleEventQuery.then(function( singleEvent ){
-
-        res.json( singleEvent[0] );
-
-        console.log( 'Sent event ' );
-
-    })
-
+        res.json(singleEvent[0]);
+        console.log('Sent event');
+    });
 });
 
 //endpoint to delete an event
@@ -131,21 +127,24 @@ app.post('/api/storeEvent', function (req,res) {
 		Tags: req.body.Tags,
 		Eventname: req.body.Eventname,
 		Host: req.body.Host,
-		Startdate: req.body.Startdate,
-		Enddate: req.body.Enddate,
+		Startdate: new Date(req.body.Startdate),
+		Enddate: new Date(req.body.Enddate),
 		Private: req.body.Private,
 		Description: req.body.Description,
 		FlyerURL: req.FlyerURL,
 		Attendees: req.body.Attendees
-	}
+	};
 
-    storeEventQuery = db.storeEvent( eventObj )
+    // TODO validate everything before adding to db
+
+    storeEventQuery = db.storeEvent( eventObj );
 
     storeEventQuery.then(function( storeEventResponse ){
 
         console.log( 'Store event response: ' + storeEventResponse );
+        res.json({success:true});
 
-    })
+    });
 
 });
 

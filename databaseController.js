@@ -1,4 +1,4 @@
-var mysql = require('mysql');                                                    
+var mysql = require('mysql2');
 
 //function to concatenate event object values to string for db query
 function eventToStr( eventObj ) {
@@ -27,6 +27,12 @@ function eventToStr( eventObj ) {
 
         if (idx == 1 && typeof(eventObjVals[idx] == 'object')) {
             stripped = JSON.stringify(eventObjVals[idx]);
+        } else if ((idx == 4 || idx == 5) && eventObjVals[idx] instanceof Date) {
+            // this is a date object, convert to mysql date.
+            var date = eventObjVals[idx];
+            stripped = date.getUTCFullYear() + '-' + (date.getUTCMonth()+1) + '-' 
+                + date.getUTCDate() + ' ' + date.getUTCHours() + ':' 
+                + date.getUTCMinutes() + ':' + date.getUTCSeconds();
         } else {
             stripped = eventObjVals[idx].toString().replace(/[^a-z0-9@.]+/gi, " ");
         }
@@ -56,8 +62,9 @@ class DbController {
         var connection = mysql.createConnection({                                        
             host     : "beacon.cx82s6pkrof3.us-east-1.rds.amazonaws.com",                
             user     : "root",                                                           
-            password : "Beacon110",                                                      
-            port     : "3306"                                                            
+            password : "Beacon110", 
+            port     : "3306",
+            timezone : "UTC"
         }); 
 
         connection.connect(function(err) {

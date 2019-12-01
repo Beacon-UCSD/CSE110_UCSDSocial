@@ -16,6 +16,8 @@ class Event extends Component {
         pfetch.jsonGet('/api/getEvent?EventID=' + this.props.match.params.EventID,
             (data) => {
                 //data.tagID = data.tagID.join(', ');
+                data.Startdate = new Date(data.Startdate).getTime();
+                data.Enddate = new Date(data.Enddate).getTime();
                 this.setState({ event: data });
             });
     }
@@ -49,9 +51,9 @@ class Event extends Component {
 
                   <h1>Event Name: {this.state.event.Eventname}</h1>
                   <h2>
-                      Start date: {this.state.event.Startdate}
+                      Start date: {(new Date(this.state.event.Startdate)).toLocaleString()}
                       <br/>
-                      End date: {this.state.event.Enddate}
+                      End date: {(new Date(this.state.event.Enddate)).toLocaleString()}
                       <br/>
                   </h2>
                   <h3>Tags: {this.state.event.Tags}</h3>
