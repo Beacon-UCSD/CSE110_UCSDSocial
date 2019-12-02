@@ -311,6 +311,7 @@ class UpdateEvent extends React.Component{
                     </label>
                     <input type="file" onChange={this.fileChangedHandler}/>
                     <img id="testImg" src={this.state.flyerURL} width="150" height="150"/>
+                    <h2> To update an event, please upload a new Flyer and reselect the event time </h2>
                     <input className="submit" type="submit" value="Update Event" />
                 </form>
             </div>
