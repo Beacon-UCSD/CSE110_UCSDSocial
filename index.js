@@ -149,7 +149,7 @@ app.post('/api/updateMyProfile', (req,res) => {
         }
         try {
             // Get user id.
-            var userID = query[0].UserID;
+            var userID = queryRes[0].UserID;
             // Get all parameters sent with the http request.
             // For all missing parameters, use the existing value in db.
             var userObj = {
@@ -251,23 +251,26 @@ app.post('/api/updateEvent', function (req,res) {
     var eventObj = {
         Tags: req.body.Tags,
         Eventname: req.body.Eventname,
-        Host: req.body.Host,
-        Startdate: req.body.Startdate,
-        Enddate: req.body.Enddate,
+        Host: req.user.name,
+        Hostemail: req.user.email,
+        Startdate: new Date(req.body.Startdate),
+        Enddate: new Date(req.body.Enddate),
         Private: req.body.Private,
         Description: req.body.Description,
         FlyerURL: req.body.FlyerURL,
         Attendees: req.body.Attendees
     }
 
-    console.log(eventObj.FlyerURL);
+    console.log("Updating event");
 
     updateEventQuery = db.updateEvent( eventObj )
+
+    console.log("Done updating database");
 
     updateEventQuery.then(function( updateEventResponse ){
 
         console.log( 'Store event response: ' + updateEventResponse );
-
+        res.json({success:true});
     })
 
 });
