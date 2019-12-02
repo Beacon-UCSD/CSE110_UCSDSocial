@@ -275,6 +275,40 @@ app.post('/api/updateEvent', function (req,res) {
 
 });
 
+app.post('/api/joinEvent', function (req,res){
+    var eventID = req.body.EventID;
+    var Attendee = {
+        userID: req.user.sub,
+        userName: req.user.name
+    };
+
+    var joinEventQuery = db.addEventAttendee(eventID, Attendee);
+    console.log("Done add User: " + req.user.sub + " | event: " + eventID);
+
+    joinEventQuery.then(function( joinEventResponse ){
+
+        console.log( 'Join event response: ' + joinEventResponse );
+        res.json({success:true});
+    });
+});
+
+app.post('/api/leaveEvent', function (req,res){
+    var eventID = req.body.EventID;
+    var Attendee = {
+        userID: req.user.sub,
+        userName: req.user.name
+    };
+
+    var leaveEventQuery = db.leaveEventAttendee(eventID, Attendee);
+    console.log("Done add User: " + req.user.sub + " | event: " + eventID);
+
+    leaveEventQuery.then(function( leaveEventResponse ){
+
+        console.log( 'Leave event response: ' + leaveEventResponse );
+        res.json({success:true});
+    });
+});
+
 // Handles any requests that don't match the ones above
 app.get('*', (req,res) =>{
 	res.sendFile(path.join(__dirname+'/client/build/index.html'));
