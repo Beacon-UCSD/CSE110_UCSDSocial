@@ -193,7 +193,9 @@ class DbController {
     //returns a promise to the result of the insertion / update
     updateEvent ( eventObj ){
 
-        var getIDQuery = "SELECT EventID FROM Events where Eventname = '" + eventObj.Eventname.toString() + "';";
+        var getIDQuery = "SELECT EventID FROM Events where Eventname = '" + 
+                         eventObj.Eventname.toString() + "' AND Hostname = '" +
+                         eventObj.Host.toString() + "';";
         var tmp = this;
         /*
          + " AND Hostname = " + eventObj.Host.toString()
