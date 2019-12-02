@@ -151,7 +151,8 @@ app.post('/api/storeEvent', function (req,res) {
 	var eventObj = {
 		Tags: req.body.Tags,
 		Eventname: req.body.Eventname,
-		Host: req.body.Host,
+        	Host: req.user.name,
+        	Hostemail: req.user.email,
 		Startdate: new Date(req.body.Startdate),
 		Enddate: new Date(req.body.Enddate),
 		Private: req.body.Private,
