@@ -90,21 +90,16 @@ class EventFeed extends Component {
         return(
         <div>
             <div className="row">
-                <div className="col-8">
-                    <h2> Your Events </h2>
-                </div>
-                <div className="col-md-4">
-                        <Link to={'/app/CreateEvent'}>
-                        <button variant="raised"> Create Event </button>
-                    </Link>
+                <div className="col-md-12">
+                    <h2>Events Feed</h2>
                 </div>
             </div>
 
-            <div className="searchBar row">
-                <div className="col-md-12">
+            <div className="row text-center">
+                <div className="searchBox col-md-12">
                     <label>
                          <input name="Tags" type="text"
-                            placeholder={"Search"}
+                            placeholder={"Type tag to search..."}
                             ref='tagInputField' />
                     </label>
                     <button type='button' onClick={this.addTagToFilter.bind(this)}>Add Tag to Filter</button>
@@ -116,7 +111,7 @@ class EventFeed extends Component {
                 </div>
             </div>
 
-            <div className="row">
+            <div className="eventfeed row d-flex justify-content-center align-items-center">
                 {
                     // need to filter out private events that are not the users
                     list.map((item) => {
@@ -136,19 +131,37 @@ class EventFeed extends Component {
                                         // if curr user's private event, show in different color
                                         let eventBtn = item.Hostemail === this.userInfo.email &&
                                             item.Private ?
-                                            <button className="privateEventButton">
-                                                <h2>{item.Eventname}</h2>
-                                                <h3>Start: {(new Date(item.Startdate)).toLocaleString()}</h3>
-                                                <h3>End: {(new Date(item.Enddate)).toLocaleString()}</h3>
-                                            </button> :
-                                            <button className="eventButton">
-                                                <h2>{item.Eventname}</h2>
-                                                <h3>Start: {(new Date(item.Startdate)).toLocaleString()}</h3>
-                                                <h3>End: {(new Date(item.Enddate)).toLocaleString()}</h3>
-                                            </button>
+                                            <div className="private-eventbutton eventButton">
+                                                <div className="eventpic">
+                                                    <img src={item.FlyerURL} />
+                                                </div>
+                                                <div className="event-body-container">
+                                                    <div className="eventname">{item.Eventname}</div>
+                                                    <div className="alt">Event Host: {item.Hostname}</div>
+                                                    <div className="desc">{item.Description}</div>
+                                                    <div className="datetime">
+                                                        <div className="starttime">Start: {(new Date(item.Startdate)).toLocaleString()}</div>
+                                                        <div className="endtime">End: {(new Date(item.Enddate)).toLocaleString()}</div>
+                                                    </div>
+                                                </div>
+                                            </div> : 
+                                            <div className="eventButton">
+                                                <div className="eventpic">
+                                                    <img src={item.FlyerURL} />
+                                                </div>
+                                                <div className="event-body-container">
+                                                    <div className="eventname">{item.Eventname}</div>
+                                                    <div className="alt">Event Host: {item.Hostname}</div>
+                                                    <div className="desc">{item.Description}</div>
+                                                    <div className="datetime">
+                                                        <div className="starttime">Start: {(new Date(item.Startdate)).toLocaleString()}</div>
+                                                        <div className="endtime">End: {(new Date(item.Enddate)).toLocaleString()}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         return(
-                                        <div key={item.EventID} className="col-md-12">
+                                        <div key={item.EventID} className="col-md-5">
                                             <Link to={'/app/Event/' + item.EventID}>
                                                 {eventBtn}
                                             </Link>
@@ -163,18 +176,36 @@ class EventFeed extends Component {
                         // if curr user's private event, show in different color
                         let eventBtn = item.Hostemail === this.userInfo.email &&
                                         item.Private ?
-                                        <button className="privateEventButton">
-                                            <h2>{item.Eventname}</h2>
-                                            <h3>Start: {(new Date(item.Startdate)).toLocaleString()}</h3>
-                                            <h3>End: {(new Date(item.Enddate)).toLocaleString()}</h3>
-                                        </button> :
-                                        <button className="eventButton">
-                                            <h2>{item.Eventname}</h2>
-                                            <h3>Start: {(new Date(item.Startdate)).toLocaleString()}</h3>
-                                            <h3>End: {(new Date(item.Enddate)).toLocaleString()}</h3>
-                                        </button>
+                                        <div className="private-eventbutton eventButton">
+                                            <div className="eventpic">
+                                                <img src={item.FlyerURL} />
+                                            </div>
+                                            <div className="event-body-container">
+                                                <div className="eventname">{item.Eventname}</div>
+                                                <div className="alt">Event Host: {item.Hostname}</div>
+                                                <div className="desc">{item.Description}</div>
+                                                <div className="datetime">
+                                                    <div className="starttime">Start: {(new Date(item.Startdate)).toLocaleString()}</div>
+                                                    <div className="endtime">End: {(new Date(item.Enddate)).toLocaleString()}</div>
+                                                </div>
+                                            </div>
+                                        </div> : 
+                                        <div className="eventButton">
+                                            <div className="eventpic">
+                                                <img src={item.FlyerURL} />
+                                            </div>
+                                            <div className="event-body-container">
+                                                <div className="eventname">{item.Eventname}</div>
+                                                <div className="alt">Event Host: {item.Hostname}</div>
+                                                <div className="desc">{item.Description}</div>
+                                                <div className="datetime">
+                                                    <div className="starttime">Start: {(new Date(item.Startdate)).toLocaleString()}</div>
+                                                    <div className="endtime">End: {(new Date(item.Enddate)).toLocaleString()}</div>
+                                                </div>
+                                            </div>
+                                        </div>
                         return(
-                        <div key={item.EventID} className="col-md-12">
+                        <div key={item.EventID} className="col-md-5">
                             <Link to={'/app/Event/' + item.EventID}>
                                 {eventBtn}
                             </Link>

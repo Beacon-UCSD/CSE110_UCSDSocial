@@ -1,48 +1,90 @@
-h1 {
-  width: 164px;
-  height: 41px;
-  color: #FFFFFF;
-  font-family: "Segoe UI";
-  font-size: 30px;
-  font-weight: 700;
-  text-align: center;
-}
-
-h2 {
-  color: #000000;
-  font-family: "Segoe UI";
-  font-size: 28px;
-  font-weight: 600;
-}
-
-h3 {
-  color: #000000;
-  font-family: "Segoe UI";
-  font-size: 20px;
-  top: 50%;
-  left: 50%;
-  font-weight: 400;
-  transform: translate(0%, -250%);
-}
-
 .eventButton {
-  position: relative;
-  width: 700px;
-  height: 300px;
-  border-radius: 28px;
-  border: 3px solid #b6b1a9;
-  background-color: #ffffff;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+    background-color: #ffffff;
+    height: 250px;
+    max-width: 720px;
+    border-radius: 25px;
+    border: 1px solid #cacaca;
+    
+    margin: 10px;
+    
+    text-decoration: none;
+    color: #000000;
+    
+    transition: 0.1s;
 }
 
-.searchBar {
-  display: block;
-  text-align: center;
+.eventButton:hover {
+    background-color: #e5f9ff;
 }
 
-.tagBubbles {
-  display: block;
-  text-align: center;
+.private-eventbutton {
+    background-color: #ffcbcb;
 }
+
+.private-eventbutton:hover {
+    background-color: #ffe5e5;
+}
+
+.eventButton .eventpic {
+    background-color: #cacaca;
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+    /*width: 16vw;*/
+    width:45%;
+    /*width: 300px;*/
+    height: 100%;
+    overflow: hidden;
+}
+
+.eventButton .eventpic img {
+    width: 100%;
+    height: auto;
+}
+
+.eventButton .event-body-container {
+    position: absolute;
+    top: 10px;
+    left: 45%;
+    /*left: 325px;*/
+    margin: 0px 10px;
+    
+    width: 40%;
+    height: 100%;
+}
+
+.eventButton .eventname {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.eventButton .alt {
+    font-size: 10px;
+}
+
+.eventButton .desc {
+    margin-top: 10px;
+    height: calc(100% - 150px);
+    overflow: hidden;
+}
+
+.eventButton .datetime {
+    position: absolute;
+    left: 0;
+    bottom: 25px;
+}
+
+.searchBox input {
+    width: 400px;
+    margin: 0px 10px;
+}
+
+.create-event-btn {
+    position: absolute;
+    top: 8%;
+    left: 85%;
+}
+
+/*.create-event-btn button {
+    width: 150px;
+    height: 60px;
+}*/

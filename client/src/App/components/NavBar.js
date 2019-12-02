@@ -58,6 +58,9 @@ class NavBar extends Component {
                         <li className='nav-item'>
                             <Link to='/app/Eventfeed'>Events</Link>
                         </li>
+                        <li className='nav-item'>
+                            <Link to='/app/CreateEvent'>Create Event</Link>
+                        </li>
                     </ul>
                     <div className='sidenav-foot'>
                         <button type='button' onClick={this.logout.bind(this)}>
