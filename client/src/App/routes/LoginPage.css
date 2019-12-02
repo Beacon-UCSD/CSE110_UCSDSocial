@@ -1,39 +1,27 @@
-img {
-    position: relative;
-    background-position:center;
-    z-index:-1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: auto;
+.login-page {
+    position: fixed;
+    left: 25%;
 }
 
-.img1 {
-    background-position:center;
-    position: absolute;
-	top: 30%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 200px;
-	height: auto;
+.login-logo {
+    margin: 0;
+    margin-top: 20vh;
+    margin-bottom: 10vh;
+    padding: 0;
+}
+.login-logo img {
+    width: 10vw;
 }
 
-p {
-	/* Style for "Sign in wi" */
-	position: absolute;
-	top: 50%;
-	left: 50%;
+/* Style for login screen message */
+.login-msg {
 	color: #000000;
-	transform: translate(-50%, -50%);
 	font-family: "Segoe UI";
-	font-size: 25px;
+	font-size: 20px;
 	font-weight: 600;
 }
 
-.google {
-	/* Style for "Sign in wi" */
-	position: absolute;
-	top: 65%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+/* Style for Sign in button */
+.login-button{
+    margin-top: 10px;
 }

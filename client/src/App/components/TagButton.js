@@ -39,6 +39,14 @@ const tagTextStyle = {
 
 class TagButton extends Component {
     componentDidMount() {
+        this.resize();
+    }
+
+    componentDidUpdate() {
+        this.resize();
+    }
+
+    resize() {
         // Calcaulate and set tag width so that it all appears on one line
         var tagWidth = this.refs.tagDeleteBtn.offsetWidth +
             this.refs.tagText.offsetWidth;
