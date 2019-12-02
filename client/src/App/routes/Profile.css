@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-img, .profile {
+.profile-img {
   display: block;
   border-radius: 50%;
   width: 234px;

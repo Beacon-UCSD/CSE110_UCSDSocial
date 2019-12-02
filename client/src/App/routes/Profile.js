@@ -63,7 +63,7 @@ class Profile extends Component {
              <div key={this.state.UserID}>
 
               <div id="main" className="background-profile">
-                <img className="profile" src={this.state.picture}/>
+                <img className="profile-img" src={this.state.picture}/>
                 <h2 className="title">{this.state.name}</h2>
                 <div className="info">
                   <div className="actualInfo">Email:<div className="h7">{this.state.email}</div></div>
