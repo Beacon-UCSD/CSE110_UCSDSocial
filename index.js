@@ -206,9 +206,9 @@ app.get('/api/getEvent', (req,res) => {
 });
 
 //endpoint to delete an event
-app.get('/api/deleteEvent', (req,res) => {
+app.post('/api/deleteEvent', (req,res) => {
 
-    deleteEventQuery = db.deleteEvent( req.query.EventID )
+    deleteEventQuery = db.deleteEvent( req.body.EventID )
 
     deleteEventQuery.then(function( deleteEventResponse ){
 

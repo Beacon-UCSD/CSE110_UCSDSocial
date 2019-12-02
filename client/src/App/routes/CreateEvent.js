@@ -187,10 +187,11 @@ class CreateEvent extends Component {
         }
         // Check if any errors
         if (errors.length > 0) {
-            console.error("Error! Cannot post event due to the following errors:");
+            var err_str = "Error! Cannot post event due to the following errors:";
             for (var i = 0; i < errors.length; i++) {
-                console.error("  - " + errors[i]);
+                err_str += "  - " + errors[i];
             }
+            alert(err_str)
 
             // Re-enable form
             this.setState({
