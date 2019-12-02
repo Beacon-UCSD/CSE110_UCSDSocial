@@ -12,8 +12,8 @@ import TagButton from '../components/TagButton';
 import './CreateEvent.css';
 
 const AWS = require('aws-sdk');
-const ID = 'AKIAJ5OIQS2D43QAEFMQ';
-const SECRET = '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';
+const ID = 'AKIAQI57SY65EFA5UHTF';
+const SECRET = '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';
 
 const BUCKET = 'ucsdsocial';
 const s3 = new AWS.S3({
@@ -264,8 +264,8 @@ class CreateEvent extends Component {
         var tagToAdd = this.refs.tagInputField.value;
         // Clean up tag to only have letters and numbers
         tagToAdd = tagToAdd.replace(/[^\s\dA-Z]/gi, '').replace(/ /g, '');
-        if (tagToAdd.length <= 3) {
-            console.error("Tag must be at least 4 characters long.");
+        if (tagToAdd.length <= 2) {
+            console.error("Tag must be at least 3 characters long.");
             return;
         }
 

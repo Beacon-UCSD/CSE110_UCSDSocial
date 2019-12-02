@@ -8,8 +8,8 @@ import pfetch from '../fetch.protected';
 import auth from '../auth';
 
 const AWS = require('aws-sdk');
-const ID = 'AKIAJ5OIQS2D43QAEFMQ';
-const SECRET = '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';
+const ID = 'AKIAQI57SY65EFA5UHTF';
+const SECRET = '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';
 
 const BUCKET = 'ucsdsocial';
 const s3 = new AWS.S3({
@@ -161,13 +161,13 @@ class UpdateEvent extends React.Component{
         if (this.state.Description.length < 15) {
             errors.push("Event description must be at least 15 characters long.");
         }
-        /*if (this.state.startDate < (Date.now()+300000)) {
+        if (this.state.startDate < (Date.now()+300000)) {
             errors.push("Event must start at least 5 minutes into the future.");
         }
         if ((this.state.endDate-this.state.startDate) < 300000) {
             errors.push("Event must have a duration of at least 5 minutes.");
         }
-        if (this.state.Tags.length <= 0) {
+        /*if (this.state.Tags.length <= 0) {
             errors.push("At least one event tag is required.");
         }*/
         // Check if any errors
@@ -187,10 +187,11 @@ class UpdateEvent extends React.Component{
         var reader = new FileReader();
 
         reader.name = this.state.objectFile.name;
-        var location = this.state.FlyerURL;
+        var location = "";
         if(reader.name === undefined || reader.name === null){
             // do nothing
             console.log("no file attached");
+            location = this.state.FlyerURL;
         }
         else{
             reader.onload = function(e) {
@@ -212,6 +213,9 @@ class UpdateEvent extends React.Component{
     
             location = "https://ucsdsocial.s3.amazonaws.com/" + this.state.objectFile.name;
         }
+        console.log("OG " + this.state.FlyerURL);
+        console.log("NW " + this.state.objectFile.name);
+        console.log("The Location for Flyer is: " + location);
 
         var body = {
             Tags: this.state.Tags,
