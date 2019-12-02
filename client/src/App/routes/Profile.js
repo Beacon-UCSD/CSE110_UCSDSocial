@@ -42,6 +42,7 @@ class Profile extends Component {
                      }
                  }
              }
+
              this.setState({
                  name:  user.Name,
                  picture:   this.state.picture,
@@ -64,6 +65,7 @@ class Profile extends Component {
              userId: this.state.UserID,
              picture: this.state.picture,
              name: this.state.name,
+             phone: this.state.phone,
              tags: this.state.tags,
              college: this.state.college,
              major: this.state.major,
