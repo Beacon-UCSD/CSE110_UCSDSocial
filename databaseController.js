@@ -202,7 +202,7 @@ class DbController {
 
         return this.makeQuery( getIDQuery ).then(function( getID ){
             var getID = Number(getID[0]['EventID'])
-            var ID = ('000'+(Number(getID) + 1)).substr(-3)
+            var ID = ('000'+(Number(getID) + 0)).substr(-3)
             console.log("the EventID you trying to update is: " + ID);
             //then need to do the update
             //REPLACE works exactly like INSERT, 
