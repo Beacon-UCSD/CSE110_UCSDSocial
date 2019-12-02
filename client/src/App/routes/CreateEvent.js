@@ -312,41 +312,49 @@ class CreateEvent extends Component {
         <div>
 
             <div id="main">
+              <div className="create-event-head">Create Event</div>
               <form className="eventForm" onSubmit={this.handleCreateEvent}>
                 <label>
-                    <input className="eventName" name="Eventname" type="text" value={this.state.Eventname}
-                        onChange={this.handleChange} placeholder="Event Name" disabled={this.state.formDisabled} />
+                    <input className="eventName" name="Eventname" type="text" 
+                        value={this.state.Eventname} onChange={this.handleChange} 
+                        placeholder="Event Name" disabled={this.state.formDisabled} />
                 </label>
                 <label>
 
                     <input className="description" name="Description" type="text" value={this.state.Description}
                         onChange={this.handleChange} placeholder="Event Description" disabled={this.state.formDisabled} />
                 </label>
+                <div className="datepicker-container">
                 <MuiPickersUtilsProvider
                     className='date-picker'
                     utils={DateFnsUtils}>
                         <DateTimePicker
+                            className="datetimepicker"
                             name ='startDate'
                             label='Choose a start time'
                             value={this.state.startDate}
                             onChange={this.handleStartDateChange}
                             disabled={this.state.formDisabled} />
                         <DateTimePicker
+                            className="datetimepicker"
                             name='endDate'
                             label='Choose an end time'
                             value={this.state.endDate}
                             onChange={this.handleEndDateChange}
                             disabled={this.state.formDisabled} />
                 </MuiPickersUtilsProvider>
+                </div>
                 <br/>
-                <label>
-                    <input className="tag" name="Tags" type="text" placeholder={"Type tag to add..."}
-                        ref='tagInputField' disabled={this.state.formDisabled} />
-                    <br/>
-                    <button className="tags" type='button'
-                        onClick={this.addTag.bind(this)}
-                        disabled={this.state.formDisabled}>Add Tag</button>
-                </label>
+                <div className="create-event-tags">
+                    <label>
+                        <input className="tag" name="Tags" type="text" placeholder={"Type tag to add..."}
+                            ref='tagInputField' disabled={this.state.formDisabled} />
+                        <br/>
+                        <button className="tags" type='button'
+                            onClick={this.addTag.bind(this)}
+                            disabled={this.state.formDisabled}>Add Tag</button>
+                    </label>
+                </div>
 
                 <div ref='eventTags'>
                     {this.state.Tags.map((tag, i) => (
@@ -354,6 +362,7 @@ class CreateEvent extends Component {
                     ))}
                 </div>
                 <br/>
+                <div className="create-event-visibility">Event Visibility</div>
                 <label>
                         <input className="Private" name="Private" type="checkbox" checked={this.state.PrivateBool}
                             onChange={this.handleInputChange} disabled={this.state.formDisabled} />
@@ -364,7 +373,8 @@ class CreateEvent extends Component {
                             onChange={this.handleInputChange} disabled={this.state.formDisabled} />
                         Public
                 </label>
-                <input type="file" onChange={this.fileChangedHandler}/>
+                <div>Upload Flyer Image</div>
+                <input className="imageupload" type="file" onChange={this.fileChangedHandler}/>
                 <img id="testImg" src={this.state.flyerURL} width="150" height="150"/>
                 <input className="submit" type="submit" value="Submit" disabled={this.state.formDisabled} />
             </form>

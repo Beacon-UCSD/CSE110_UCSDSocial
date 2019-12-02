@@ -5,6 +5,29 @@ input {
   padding: 12px 30px;
 }
 
+.imageupload {
+    height: 50px;
+}
+
+.create-event-head {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.create-event-visibility {
+    margin-bottom: 10px;
+}
+
+.datetimepicker {
+    width: 400px;
+}
+
+.datepicker-container {
+    margin-bottom: 10px;
+}
+
 form {
   align-items: center;
   display: grid;
@@ -14,6 +37,7 @@ form {
 
 body {
   background-image: url('https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/04/17/22/istock-157642939.jpg');
+  background-image: url('../assets/images/background-light.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -96,6 +120,9 @@ Link {
   border-radius: 10px;
   border: 1px solid #979a9c;
   background-color: #00c6d7;
+}
+
+.create-event-tags {
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
