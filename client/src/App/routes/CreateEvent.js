@@ -246,6 +246,15 @@ class CreateEvent extends Component {
         this.refs.tagInputField.value = "";
     }
 
+    removeTag(tagIndex) {
+        // Remove tag
+        this.state.Tags.splice(tagIndex, 1);
+        // Update state
+        this.setState({
+            Tags: this.state.Tags
+        });
+    }
+
 
     /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
     /*
@@ -303,7 +312,7 @@ class CreateEvent extends Component {
 
                 <div ref='eventTags'>
                     {this.state.Tags.map((tag, i) => (
-                        <TagButton key={i} tag={tag} />
+                        <TagButton key={i} tag={tag} deleteHandler={this.removeTag.bind(this, i)}/>
                     ))}
                 </div>
                 <br/>

@@ -41,13 +41,29 @@ class EventFeed extends Component {
     }
 
 	addTagToFilter() {
-         var tagToAdd = this.refs.tagInputField.value;
+        var tagToAdd = this.refs.tagInputField.value;
+        tagToAdd = tagToAdd.toUpperCase();
 
-         this.setState({
-             FilterTags: [...this.state.FilterTags, tagToAdd]
-         });
-         this.refs.tagInputField.value = "";
-     }
+        if (this.state.FilterTags.indexOf(tagToAdd) != -1) {
+            console.log("Tag '" + tagToAdd + "' is already in filter.");
+        } else {
+             this.setState({
+                 FilterTags: [...this.state.FilterTags, tagToAdd]
+             });
+        }
+
+        this.refs.tagInputField.value = "";
+    }
+
+    removeTagFromFilter(tagIndex) {
+        // Remove tag
+        this.state.FilterTags.splice(tagIndex, 1);
+        // Update state
+        this.setState({
+            FilterTags: this.state.FilterTags
+        });
+    }
+
 
     render(){
         const { list } = this.state;
@@ -75,7 +91,7 @@ class EventFeed extends Component {
                     <button type='button' onClick={this.addTagToFilter.bind(this)}>Add Tag to Filter</button>
                     <div className="tagBubbles">
                          {this.state.FilterTags.map((tag, i) => (
-                             <TagButton key={i} tag={tag} />
+                             <TagButton key={i} tag={tag} deleteHandler={this.removeTagFromFilter.bind(this, i)} />
                          ))}
                     </div>
                 </div>
