@@ -283,6 +283,11 @@ app.post('/api/joinEvent', function (req,res){
     };
 
     db.addEventAttendee(eventID, Attendee, (joinEventQuery) => {
+        if (joinEventQuery == null) {
+            console.error("Error occured with joining event.");
+            res.status(500);
+            return;
+        }
         console.log("Done add User: " + req.user.sub + " | event: " + eventID);
 
         joinEventQuery.then(function( joinEventResponse ){
@@ -301,7 +306,12 @@ app.post('/api/leaveEvent', function (req,res){
     };
 
     db.leaveEventAttendee(eventID, Attendee, (leaveEventQuery) => {
-        console.log("Done add User: " + req.user.sub + " | event: " + eventID);
+        if (leaveEventQuery == null) {
+            console.error("Error occured with leaving event.");
+            res.status(500);
+            return;
+        }
+        console.log("Done remove User: " + req.user.sub + " | event: " + eventID);
 
         leaveEventQuery.then(function( leaveEventResponse ){
 

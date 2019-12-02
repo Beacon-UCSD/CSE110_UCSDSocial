@@ -9,26 +9,24 @@ class Event extends Component {
     constructor(props) {
         super(props);
         this.userInfo = auth.getUserInfo();
-        console.log(this.userInfo);
 
         this.state = {
-            event: {},
-            flag: true
+            event: null
         };
-        console.log(this.state.event);
+
+        this.handleJoinEvent   = this.handleJoinEvent.bind(this);
+        this.handleLeaveEvent   = this.handleLeaveEvent.bind(this);
         this.handleUpdateEvent = this.handleUpdateEvent.bind(this);
-        this.handleJoinEvent = this.handleJoinEvent.bind(this);
-        this.joinEventStatus = this.joinEventStatus.bind(this);
-        this.getEvent = this.getEvent.bind(this);
-        console.log(this.state.event);
+        this.hasJoinedEvent    = this.hasJoinedEvent.bind(this);
+        this.updateEventData   = this.updateEventData.bind(this);
     }
 
     componentDidMount() {
-        this.getEvent();
+        this.updateEventData();
     }
 
-    getEvent() {
-        pfetch.jsonGet('/api/getEvent?EventID=' + this.props.match.params.EventID,
+    updateEventData() {
+        pfetch.jsonGet('/api/getEvent?EventID='+this.props.match.params.EventID,
             (data) => {
                 //data.tagID = data.tagID.join(', ');
                 data.Startdate = new Date(data.Startdate).getTime();
@@ -49,9 +47,15 @@ class Event extends Component {
 
     handleJoinEvent() {
         pfetch.jsonPost('/api/joinEvent',
-            {EventID: this.props.match.params.EventID},
-            (function(json) {
-                this.getEvent();
+            {EventID: this.props.match.params.EventID}, (function(json) {
+                this.updateEventData();
+            }).bind(this));
+    }
+
+    handleLeaveEvent() {
+        pfetch.jsonPost('/api/leaveEvent',
+            {EventID: this.props.match.params.EventID}, (function(json) {
+                this.updateEventData();
             }).bind(this));
     }
 
@@ -72,48 +76,77 @@ class Event extends Component {
         })
     }
 
-    joinEventStatus() {
-        if (this.state.flag) {
-            return false;
+    hasJoinedEvent() {
+        if (this.state.event == null) {
+            return null;
         }
-        console.log(this.state.event.Attendees);
 
-        var flag2 = false;
-        this.state.event.Attendees.forEach((function (item,index) {
-            if (this.userInfo.id === item.userID) {
-                console.log("true");
-                flag2 = true;
-                return flag2;
+        for (var i = 0; i < this.state.event.Attendees.length; i++) {
+            if (this.state.event.Attendees[i].userID == this.userInfo.id) {
+                return true;
             }
-        }).bind(this));
-        console.log("false");
-        return flag2;
+        }
+
+        return false;
     }
 
     render() {
+        if (this.state.event == null) {
+            return <div></div>;
+        }
+
+        // Show update event button when you own this event
+        let showUpdate;
+        if (this.state.event.Hostemail == this.userInfo.email) {
+            showUpdate = <button onClick={this.handleUpdateEvent}>Update Event
+                </button>;
+        } else {
+            showUpdate = null;
+        }
+
+
+        // Show join or leave event button based on your attendance
+        var joinedEvent = this.hasJoinedEvent();
+        let showAttendance;
+        if (joinedEvent === false) {
+            showAttendance = <button onClick={this.handleJoinEvent}>Join Event
+                </button>;
+        } else if(joinedEvent === true) {
+            showAttendance = <button onClick={this.handleLeaveEvent}>Leave Event
+                </button>;
+        } else {
+            showAttendance = null;
+        }
+        /*
         let showUpdate = this.userInfo.email == this.state.event.Hostemail ?
             <button onClick={this.handleUpdateEvent}>Update Event</button> : null;
         let showAttendance = this.joinEventStatus() === false ?
-            <button onClick={this.handleJoinEvent}>Join Event</button> : null;
+            <button onClick={this.handleJoinEvent}>Join Event</button> : null;*/
 
-        console.log(this.state.event);
         return (
             <div>
               <div id="main">
 
-                  <h1>Event Name: {this.state.event.Eventname}</h1>
-                  <h2>
-                      Start date: {(new Date(this.state.event.Startdate)).toLocaleString()}
-                      <br/>
-                      End date: {(new Date(this.state.event.Enddate)).toLocaleString()}
-                      <br/>
-                  </h2>
-                  <h3>Tags: {this.state.event.Tags}</h3>
-                  <h3>Host: {this.state.event.Hostname}</h3>
-                  <h3>This is a {this.state.event.Private === 1 ? "Private": "Public"} event</h3>
-                  <p>{this.state.event.Description}</p>
-                  <h4>Attendees: {JSON.stringify(this.state.event.Attendees)}</h4>
                   <img src={this.state.event.FlyerURL} height="150" width="150"/>
+                  <h2>Event Name: {this.state.event.Eventname}</h2>
+                  <h4>Description:</h4>
+                  <p>{this.state.event.Description}</p>
+                  
+                  <h4>Start date:</h4>
+                  <p>{(new Date(this.state.event.Startdate)).toLocaleString()}</p>
+                  <h4>End date:</h4>
+                  <p>{(new Date(this.state.event.Enddate)).toLocaleString()}</p>
+                  
+                  <h4>Tags: {this.state.event.Tags}</h4>
+
+                  <h4>Attendees:</h4>
+                  {this.state.event.Attendees.map((attendee, i) => (
+                      <div key={i}><Link to={'/app/Profile/'+attendee.userID}>
+                        {attendee.userName}</Link></div>
+                  ))}
+
+                  <h4>Host: {this.state.event.Hostname}</h4>
+                  <p>This is a {this.state.event.Private === 1 ? "Private": "Public"} event</p>
                   {showUpdate}
                   {showAttendance}
               </div>

@@ -228,8 +228,10 @@ class DbController {
         var attendeeQuery = "SELECT Attendees FROM Events WHERE EventID='" + eventID + "';";
         attendeeQuery = this.makeQuery(attendeeQuery);
         attendeeQuery.then((res) => {
-            if (attendeeQuery.length <= 0) return;
-            console.log(res[0]);
+            if (res.length <= 0) {
+                callback(null);
+                return;
+            }
 
             var AttendieList;
             if (res[0].Attendees == "") {
@@ -255,7 +257,10 @@ class DbController {
         var attendeeQuery = "SELECT Attendees FROM Events WHERE EventID='" + eventID + "';";
         attendeeQuery = this.makeQuery(attendeeQuery);
         attendeeQuery.then((res) => {
-            if (attendeeQuery.length <= 0) return;
+            if (res.length <= 0) {
+                callback(null);
+                return;
+            }
 
             var AttendieList;
             if (res[0].Attendees == "") {
@@ -264,10 +269,18 @@ class DbController {
                 AttendieList = JSON.parse(res[0].Attendees);
 
                 //Removes the Attendee
-                var idx = AttendieList.indexOf(Attendee);
-                if (idx > -1){
-                    AttendieList.splice(idx, 1);
-                } else return;
+                var found = false;
+                for (var i = 0; i < AttendieList.length; i++) {
+                    if (AttendieList[i].userID == Attendee.userID) {
+                        AttendieList.splice(i, 1);
+                        found = true;
+                        break;
+                    }
+                }
+                if (found == false) {
+                    callback(null);
+                    return;
+                }
             }
 
             AttendieList = JSON.stringify(AttendieList);
