@@ -38,7 +38,7 @@ class EventFeed extends Component {
                     list[i].Tags = null;
                 }
             }
-            
+
             // filter list of private events that aren't the users
             console.log("list before filtering other users' privates:", list)
             list = list.filter(evt => {
@@ -93,9 +93,8 @@ class EventFeed extends Component {
             <div className="searchBar row">
                 <div className="col-md-12">
                     <label>
-                        Search:
                          <input name="Tags" type="text"
-                            placeholder={"Type tag to filter..."}
+                            placeholder={"Search"}
                             ref='tagInputField' />
                     </label>
                     <button type='button' onClick={this.addTagToFilter.bind(this)}>Add Tag to Filter</button>
@@ -113,19 +112,19 @@ class EventFeed extends Component {
                     list.map((item) => {
 
                     var itemTags = item.Tags;
-                    
+
                     if (this.state.FilterTags.length > 0) {
                         // Filter by tags.
-                        
+
                         if (itemTags == null) return;
 
                         for (var i = 0; i < itemTags.length; i++) {
                             for (var j = 0; j < this.state.FilterTags.length; j++) {
                                 if (itemTags[i].toUpperCase() ===
                                     this.state.FilterTags[j].toUpperCase()) {
-                                    
+
                                         // if curr user's private event, show in different color
-                                        let eventBtn = item.Hostemail === this.userInfo.email && 
+                                        let eventBtn = item.Hostemail === this.userInfo.email &&
                                             item.Private ?
                                             <button className="privateEventButton">
                                                 <h2>{item.Eventname}</h2>
@@ -137,7 +136,7 @@ class EventFeed extends Component {
                                                 <h3>Start: {item.Startdate}</h3>
                                                 <h3>End: {item.Enddate}</h3>
                                             </button>
-                                            
+
                                         return(
                                         <div key={item.EventID} className="col-md-12">
                                             <Link to={'/app/Event/' + item.EventID}>
@@ -152,7 +151,7 @@ class EventFeed extends Component {
                     } else {
                         // Not filtering, just show everything.
                         // if curr user's private event, show in different color
-                        let eventBtn = item.Hostemail === this.userInfo.email && 
+                        let eventBtn = item.Hostemail === this.userInfo.email &&
                                         item.Private ?
                                         <button className="privateEventButton">
                                             <h2>{item.Eventname}</h2>

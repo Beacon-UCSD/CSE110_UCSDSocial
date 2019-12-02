@@ -19,10 +19,15 @@ class Event extends Component {
         this.handleUpdateEvent = this.handleUpdateEvent.bind(this);
         this.handleJoinEvent = this.handleJoinEvent.bind(this);
         this.joinEventStatus = this.joinEventStatus.bind(this);
+        this.getEvent = this.getEvent.bind(this);
         console.log(this.state.event);
     }
 
-    componentDidMount = () => {
+    componentDidMount() {
+        this.getEvent();
+    }
+
+    getEvent() {
         pfetch.jsonGet('/api/getEvent?EventID=' + this.props.match.params.EventID,
             (data) => {
                 //data.tagID = data.tagID.join(', ');
@@ -43,16 +48,11 @@ class Event extends Component {
     }
 
     handleJoinEvent() {
-        var attendees = {
-            userID: this.userInfo.id,
-            userName: this.userInfo.name
-        }
-
-        console.log(this.state.event.Attendees);
-        this.setState({
-            Attendees: this.state.event.Attendees.push(attendees)
-        });
-        console.log(this.state.event.Attendees);
+        pfetch.jsonPost('/api/joinEvent',
+            {EventID: this.props.match.params.EventID},
+            (function(json) {
+                this.getEvent();
+            }).bind(this));
     }
 
     handleUpdateEvent(){

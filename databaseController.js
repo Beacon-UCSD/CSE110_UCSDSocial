@@ -14,7 +14,7 @@ function cleanString(str) {
 function eventToStr( eventObj ) {
 
     //put event keys into array for ordered iterating
-    
+
     valsStr      = ""
     eventObjVals = [ eventObj.Eventname,
                      eventObj.Tags,
@@ -30,7 +30,7 @@ function eventToStr( eventObj ) {
                    ]
 
     //concatenate event detail for aggregated query str
-    
+
     for ( var idx = 0; idx < eventObjVals.length; idx++ ) {
 
         if ( typeof(eventObjVals[idx] ) == "undefined" ) eventObjVals[idx] = ""
@@ -40,8 +40,8 @@ function eventToStr( eventObj ) {
         } else if ((idx == 4 || idx == 5) && eventObjVals[idx] instanceof Date) {
             // this is a date object, convert to mysql date.
             var date = eventObjVals[idx];
-            stripped = date.getUTCFullYear() + '-' + (date.getUTCMonth()+1) + '-' 
-                + date.getUTCDate() + ' ' + date.getUTCHours() + ':' 
+            stripped = date.getUTCFullYear() + '-' + (date.getUTCMonth()+1) + '-'
+                + date.getUTCDate() + ' ' + date.getUTCHours() + ':'
                 + date.getUTCMinutes() + ':' + date.getUTCSeconds();
         } else if(idx == 8) {
             stripped = eventObjVals[idx].toString();
@@ -49,7 +49,7 @@ function eventToStr( eventObj ) {
             stripped = cleanString(eventObjVals[idx]);
         }
 
-        valsStr += (idx==0 ? "" : ", ") + "\'" + stripped +"\'" ;    
+        valsStr += (idx==0 ? "" : ", ") + "\'" + stripped +"\'" ;
 
     }
 
@@ -67,32 +67,32 @@ class DbController {
     constructor() {
 
         //db name
-        
+
         this.db = "UCSDSocial";
 
         //connect to the db
 
-        var connection = mysql.createConnection({                                        
-            host     : "beacon.cx82s6pkrof3.us-east-1.rds.amazonaws.com",                
-            user     : "root",                                                           
-            password : "Beacon110", 
+        var connection = mysql.createConnection({
+            host     : "beacon.cx82s6pkrof3.us-east-1.rds.amazonaws.com",
+            user     : "root",
+            password : "Beacon110",
             port     : "3306",
             timezone : "UTC"
-        }); 
+        });
 
         connection.connect(function(err) {
 
-            if(err) { 
-                console.error('Error connecting: ' + err.stack); 
-                return; 
+            if(err) {
+                console.error('Error connecting: ' + err.stack);
+                return;
             }
 
             console.log('Connected to db as id ' + connection.threadId);
 
-        }); 
+        });
 
         //use proper db
-        
+
         connection.query( "USE " + this.db + ";" );
 
         //not sure why but storing in obj up there messes up async so did here
@@ -117,7 +117,7 @@ class DbController {
         if (isNaN(userID)) {
             return;
         }
-        
+
         var getUserQuery = "SELECT UserID,Username,Email,ProfileImage,Phone,Tags," +
             "College,Major,Year,Friends,Hostevents,Notification " +
             "FROM Users WHERE UserID='"+userID+"' LIMIT 1;";
@@ -169,37 +169,37 @@ class DbController {
     //returns a promise to the result of the insertion
     storeEvent( eventObj ) {
 
-        //get the max event id first 
+        //get the max event id first
         var maxIDQuery = "SELECT MAX(EventID) FROM Events;"
         var tmp = this
 
         return this.makeQuery( maxIDQuery ).then(function( maxID ) {
-    
+
             var maxID = Number(maxID[0]['MAX(EventID)'])
             var newID = ('000'+(Number(maxID) + 1)).substr(-3)
             var storeEventQuery = "REPLACE INTO Events(EventID,Eventname,Tags,"+
                 "Hostname,Hostemail,Startdate,Enddate,Private,Description,"+
                 "FlyerURL,Attendees,Forum) VALUES('"+newID+"',"+
                 eventToStr( eventObj )+");";
-                        
+
             return tmp.makeQuery( storeEventQuery );
         })
 
     }
-    
-    
+
+
     //fucntion to update the designated event
     //eventObj holds the all the fields for an event
     //returns a promise to the result of the insertion / update
     updateEvent ( eventObj ){
 
-        var getIDQuery = "SELECT EventID FROM Events where Eventname = '" + 
+        var getIDQuery = "SELECT EventID FROM Events where Eventname = '" +
                          eventObj.Eventname.toString() + "' AND Hostname = '" +
                          eventObj.Host.toString() + "';";
         var tmp = this;
         /*
          + " AND Hostname = " + eventObj.Host.toString()
-                            + " AND Hostemail = " + eventObj.Hostemail.toString() 
+                            + " AND Hostemail = " + eventObj.Hostemail.toString()
                             */
 
         return this.makeQuery( getIDQuery ).then(function( getID ){
@@ -207,64 +207,78 @@ class DbController {
             var ID = ('000'+(Number(getID) + 0)).substr(-3)
             console.log("the EventID you trying to update is: " + ID);
             //then need to do the update
-            //REPLACE works exactly like INSERT, 
+            //REPLACE works exactly like INSERT,
             //except that if an old row in the table has the same value as a new row for a PRIMARY KEY
             //the old row is deleted before the new row is inserted.
             var updateEventQuery = "REPLACE INTO Events(EventID,Eventname,Tags,"+
                 "Hostname,Hostemail,Startdate,Enddate,Private,Description,"+
                 "FlyerURL,Attendees,Forum) VALUES('"+ID+"',"+
                 eventToStr( eventObj )+");";
-        
+
             return tmp.makeQuery(updateEventQuery);
         })
-        
+
     }
 
     //Function to update the attendees of an event
     //Where eventID is the string id for an event ("001")
     //Where attendee is the object holding username and userID
-    addEventAttendee(eventID, Attendee){
+    addEventAttendee(eventID, Attendee, callback){
 
         var attendeeQuery = "SELECT Attendees FROM Events WHERE EventID='" + eventID + "';";
         attendeeQuery = this.makeQuery(attendeeQuery);
         attendeeQuery.then((res) => {
             if (attendeeQuery.length <= 0) return;
-            AttendieList = JSON.parse(res[0].Attendees);
+            console.log(res[0]);
+
+            var AttendieList;
+            if (res[0].Attendees == "") {
+                AttendieList = [];
+            } else {
+                AttendieList = JSON.parse(res[0].Attendees);
+            }
+
             AttendieList.push(Attendee);
             AttendieList = JSON.stringify(AttendieList);
 
             var updateQuery = "UPDATE Events SET " +
-                "Attendees='"+AttendieList+"',"+
+                "Attendees='"+AttendieList+"' "+
                 "WHERE EventID='"+eventID+"' LIMIT 1;";
-            return this.makeQuery(updateQuery);        
+            callback(this.makeQuery(updateQuery));
         });
     }
 
     //Function to update the attendees of an event
     //Where eventID is the string id for an event ("001")
     //Where attendee is the object holding username and userID
-    leaveEventAttendee(eventID, Attendee){
+    leaveEventAttendee(eventID, Attendee, callback){
         var attendeeQuery = "SELECT Attendees FROM Events WHERE EventID='" + eventID + "';";
         attendeeQuery = this.makeQuery(attendeeQuery);
         attendeeQuery.then((res) => {
             if (attendeeQuery.length <= 0) return;
-            AttendieList = JSON.parse(res[0].Attendees);
 
-            //Removes the Attendee
-            var idx = AttendieList.indexOf(Attendee);
-            if (idx > -1){
-                AttendieList.splice(idx, 1);
-            } else return;
+            var AttendieList;
+            if (res[0].Attendees == "") {
+                AttendeeList = [];
+            } else {
+                AttendieList = JSON.parse(res[0].Attendees);
+
+                //Removes the Attendee
+                var idx = AttendieList.indexOf(Attendee);
+                if (idx > -1){
+                    AttendieList.splice(idx, 1);
+                } else return;
+            }
 
             AttendieList = JSON.stringify(AttendieList);
 
             var updateQuery = "UPDATE Events SET " +
-                "Attendees='"+AttendieList+"',"+
+                "Attendees='"+AttendieList+"' "+
                 "WHERE EventID='"+eventID+"' LIMIT 1;";
-            return this.makeQuery(updateQuery);        
+            callback(this.makeQuery(updateQuery));
         });
-    }    
-    
+    }
+
     //function to delete event from table
     //eventID is the id for the event to delete
     //returns a promise to the result of the insertion
@@ -283,7 +297,7 @@ class DbController {
     //returns a promise to the query return obj
     getEvent( eventID ) {
 
-        var specificEventQuery = 'SELECT * FROM Events where EventID =' + 
+        var specificEventQuery = 'SELECT * FROM Events where EventID =' +
                                                                 eventID + ' ;';
 
         return this.makeQuery( specificEventQuery );
@@ -295,19 +309,19 @@ class DbController {
     //returns promise to the query obj
     makeQuery( query ) {
 
-        //need to store these here since promise doesn't have scope of this 
-        
+        //need to store these here since promise doesn't have scope of this
+
         var connection = this.connection;
         var db = this.db;
 
-        //create promise and perform query 
+        //create promise and perform query
 
         return new Promise(function(resolve, reject) {
 
             connection.query( query , db, function (error, results, fields) {
 
                 if ( error != null )
-                    console.log( error );                                                      
+                    console.log( error );
 
                 resolve( results )
 
@@ -327,7 +341,7 @@ class DbController {
         }
         catch (err) {
 
-            console.log("caught error in trying to close db connection" + err); 
+            console.log("caught error in trying to close db connection" + err);
 
         }
     }
