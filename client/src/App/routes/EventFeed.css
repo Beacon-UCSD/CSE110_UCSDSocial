@@ -33,6 +33,22 @@ h3 {
   border: 3px solid #b6b1a9;
   background-color: #ffffff;
   display: block;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.privateEventButton {
+  position: relative;
+  width: 700px;
+  height: 300px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border-radius: 28px;
+  border: 3px solid #b6b1a9;
+  background-color: #b6b1a9;
+  display: block;
   margin-left: auto;
   margin-right: auto;
 }

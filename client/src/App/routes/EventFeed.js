@@ -95,7 +95,7 @@ class EventFeed extends Component {
                 </div>
                 <div className="col-md-4">
                         <Link to={'/app/CreateEvent'}>
-                        <button variant="raised"> Create Event </button>
+                        <button variant="raised" className="submit"> Create Event </button>
                     </Link>
                 </div>
             </div>
