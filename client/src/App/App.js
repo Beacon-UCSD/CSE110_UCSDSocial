@@ -12,6 +12,7 @@ import EventFeed   from './routes/EventFeed';
 import Event       from './routes/Event';
 import CreateEvent from './routes/CreateEvent';
 import UpdateEvent from './routes/UpdateEvent';
+import Error404    from './routes/Error404';
 
 class App extends Component {
     componentDidMount() {
@@ -39,6 +40,7 @@ class App extends Component {
                                 <ProtectedRoute exact path='/app/UpdateEvent' component={UpdateEvent} />
                                 <ProtectedRoute exact path='/app/Event/:EventID' component={Event} />
                                 <ProtectedRoute exact path='/app/Profile' component={Profile}/>
+                                <Route path='/' component={Error404} />
                             </Switch>
                         </div>
                     </Router>
