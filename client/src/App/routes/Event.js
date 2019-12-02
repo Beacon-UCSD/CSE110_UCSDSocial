@@ -17,6 +17,7 @@ class Event extends Component {
         this.handleJoinEvent   = this.handleJoinEvent.bind(this);
         this.handleLeaveEvent   = this.handleLeaveEvent.bind(this);
         this.handleUpdateEvent = this.handleUpdateEvent.bind(this);
+        this.handleDeleteEvent = this.handleDeleteEvent.bind(this); 
         this.hasJoinedEvent    = this.hasJoinedEvent.bind(this);
         this.updateEventData   = this.updateEventData.bind(this);
     }
@@ -76,6 +77,21 @@ class Event extends Component {
         })
     }
 
+    handleDeleteEvent(){
+
+        if ( window.confirm("Delete Event?") ) {
+            pfetch.jsonPost('/api/deleteEvent',
+                {EventID: this.props.match.params.EventID}, (function(json) {
+                }).bind(this));
+
+            this.props.history.push({
+                pathname: '/app/EventFeed'
+            })
+        }
+        else return;
+
+    }
+
     hasJoinedEvent() {
         if (this.state.event == null) {
             return null;
@@ -102,6 +118,14 @@ class Event extends Component {
                 </button>;
         } else {
             showUpdate = null;
+        }
+
+        let showDelete;
+        if (this.state.event.Hostemail == this.userInfo.email) {
+            showDelete = <button onClick={this.handleDeleteEvent}>Delete Event
+                </button>;
+        } else {
+            showDelete = null;
         }
 
 
@@ -148,6 +172,7 @@ class Event extends Component {
                   <h4>Host: {this.state.event.Hostname}</h4>
                   <p>This is a {this.state.event.Private === 1 ? "Private": "Public"} event</p>
                   {showUpdate}
+                  {showDelete}
                   {showAttendance}
               </div>
             </div>
