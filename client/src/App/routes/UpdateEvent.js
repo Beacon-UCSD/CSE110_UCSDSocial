@@ -277,8 +277,7 @@ class UpdateEvent extends React.Component{
         return(
             <div className="container">
                 <form id="main" onSubmit={this.handleSubmit}>
-                    <input className="eventName" name="Eventname" type="text" value={this.state.Eventname}
-                        onChange={this.handleChange}/>
+                    <input className="eventName" name="Eventname" type="text" value={this.state.Eventname}/>
                     <input className="description" name="Description" type="text" value={this.state.Description}
                         onChange={this.handleChange}/>
                     <MuiPickersUtilsProvider
