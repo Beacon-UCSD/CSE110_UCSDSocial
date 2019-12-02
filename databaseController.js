@@ -220,6 +220,51 @@ class DbController {
         
     }
 
+    //Function to update the attendees of an event
+    //Where eventID is the string id for an event ("001")
+    //Where attendee is the object holding username and userID
+    addEventAttendee(eventID, Attendee){
+
+        var attendeeQuery = "SELECT Attendees FROM Events WHERE EventID='" + eventID + "';";
+        attendeeQuery = this.makeQuery(attendeeQuery);
+        attendeeQuery.then((res) => {
+            if (attendeeQuery.length <= 0) return;
+            AttendieList = JSON.parse(res[0].Attendees);
+            AttendieList.push(Attendee);
+            AttendieList = JSON.stringify(AttendieList);
+
+            var updateQuery = "UPDATE Events SET " +
+                "Attendees='"+AttendieList+"',"+
+                "WHERE EventID='"+eventID+"' LIMIT 1;";
+            return this.makeQuery(updateQuery);        
+        });
+    }
+
+    //Function to update the attendees of an event
+    //Where eventID is the string id for an event ("001")
+    //Where attendee is the object holding username and userID
+    leaveEventAttendee(eventID, Attendee){
+        var attendeeQuery = "SELECT Attendees FROM Events WHERE EventID='" + eventID + "';";
+        attendeeQuery = this.makeQuery(attendeeQuery);
+        attendeeQuery.then((res) => {
+            if (attendeeQuery.length <= 0) return;
+            AttendieList = JSON.parse(res[0].Attendees);
+
+            //Removes the Attendee
+            var idx = AttendieList.indexOf(Attendee);
+            if (idx > -1){
+                AttendieList.splice(idx, 1);
+            } else return;
+
+            AttendieList = JSON.stringify(AttendieList);
+
+            var updateQuery = "UPDATE Events SET " +
+                "Attendees='"+AttendieList+"',"+
+                "WHERE EventID='"+eventID+"' LIMIT 1;";
+            return this.makeQuery(updateQuery);        
+        });
+    }    
+    
     //function to delete event from table
     //eventID is the id for the event to delete
     //returns a promise to the result of the insertion
