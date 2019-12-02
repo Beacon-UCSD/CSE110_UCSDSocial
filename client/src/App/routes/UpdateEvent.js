@@ -7,6 +7,16 @@ import DateFnsUtils from '@date-io/date-fns';
 import pfetch from '../fetch.protected';
 import auth from '../auth';
 
+const AWS = require('aws-sdk');
+const ID = 'AKIAJ5OIQS2D43QAEFMQ';
+const SECRET = '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';
+
+const BUCKET = 'ucsdsocial';
+const s3 = new AWS.S3({
+    accessKeyId: ID,
+    secretAccessKey: SECRET
+});
+
 class UpdateEvent extends React.Component{
     constructor(props){
         super(props);
@@ -23,7 +33,8 @@ class UpdateEvent extends React.Component{
             Private: evt.Private,
             Public: !evt.Private,
             FlyerURL: evt.FlyerURL,
-            Attendees: ''
+            Attendees: '',
+            objectFile: {}
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -31,8 +42,19 @@ class UpdateEvent extends React.Component{
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+
         console.log("Check Date object's toString method: " + this.state.endDate);
 
+    }
+
+    //Handler for image file upload
+    fileChangedHandler = event => {
+        let uploadPic = event.target.files[0];
+
+        this.setState({
+            objectFile: uploadPic,
+            flyerURL: URL.createObjectURL(event.target.files[0])
+        });
     }
 
     /*
@@ -93,7 +115,6 @@ class UpdateEvent extends React.Component{
         console.log(this.state.endDate);
     }
 
-    
 
     /*
     Makes POST request to update the event info
@@ -105,7 +126,67 @@ class UpdateEvent extends React.Component{
             Eventname: this.state.Eventname.trim(),
             Description: this.state.Description.trim()
         });
-        // TODO: is there an endpoint for updating event?
+
+        // Check for missing required fields
+        var errors = [];
+        if (this.state.Eventname.length < 5) {
+            errors.push("Event name must be at least 5 characters long.");
+        }
+        if (this.state.Description.length < 15) {
+            errors.push("Event description must be at least 15 characters long.");
+        }
+        /*if (this.state.startDate < (Date.now()+300000)) {
+            errors.push("Event must start at least 5 minutes into the future.");
+        }
+        if ((this.state.endDate-this.state.startDate) < 300000) {
+            errors.push("Event must have a duration of at least 5 minutes.");
+        }
+        if (this.state.Tags.length <= 0) {
+            errors.push("At least one event tag is required.");
+        }*/
+        // Check if any errors
+        if (errors.length > 0) {
+            console.error("Error! Cannot post event due to the following errors:");
+            for (var i = 0; i < errors.length; i++) {
+                console.error("  - " + errors[i]);
+            }
+
+            // Re-enable form
+            this.setState({
+                formDisabled: false
+            });
+            return;
+        }
+
+        var reader = new FileReader();
+
+        reader.name = this.state.objectFile.name;
+        var location = this.state.FlyerURL;
+        if(reader.name === undefined || reader.name === null){
+            // do nothing
+            console.log("no file attached");
+        }
+        else{
+            reader.onload = function(e) {
+            var params = {
+                Bucket: BUCKET,
+                //This is a quick-fix (very bad) prefferably a unique string to the event
+                Key: this.name,
+                ContentType: 'image/jpeg',
+                Body: e.target.result,
+                ACL: 'public-read'
+            };
+            console.log(params);
+            s3.upload(params, function(s3Err, data) {
+                if (s3Err) throw s3Err
+                console.log(`File uploaded successfully at ${data.Location}`);
+                });
+            };
+            reader.readAsArrayBuffer(this.state.objectFile);
+    
+            location = "https://ucsdsocial.s3.amazonaws.com/" + this.state.objectFile.name;
+        }
+
         var body = {
             Tags: this.state.Tags,
             Eventname: this.state.Eventname,
@@ -114,7 +195,7 @@ class UpdateEvent extends React.Component{
             Enddate: this.state.Enddate.toString(),
             Private: this.state.Private,
             Description: this.state.Description,
-            FlyerURL: this.state.FlyerURL,
+            FlyerURL: location,
             Attendees: ""
         };
 
@@ -135,6 +216,8 @@ class UpdateEvent extends React.Component{
             // Redirect to events feed page.
             this.props.history.push('/app/Eventfeed');
         });
+
+        console.log("Done Updating ");
     }
 
     addTag() {
@@ -196,6 +279,8 @@ class UpdateEvent extends React.Component{
                             onChange={this.handleInputChange} />
                         Public
                     </label>
+                    <input type="file" onChange={this.fileChangedHandler}/>
+                    <img id="testImg" src={this.state.flyerURL} width="150" height="150"/>
                     <input className="submit" type="submit" value="Update Event" />
                 </form>
             </div>
