@@ -134,11 +134,10 @@ class DbController {
     }
 
     //function to update user information
-    updateUserInformation(userId, userObj) {
+    updateUserProfile(userId, userObj) {
         try {
             var updateUserQuery = "UPDATE Users SET " +
                 "Username='"+cleanString(userObj.Name)+"',"+
-                "Email='"+escapeQuotations(userObj.Email.toString())+"',"+
                 "Phone='"+escapeQuotations(userObj.Phone.toString())+"',"+
                 "Tags='"+JSON.stringify(userObj.Tags)+"',"+
                 "College='"+cleanString(userObj.College)+"',"+

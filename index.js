@@ -79,6 +79,7 @@ app.get('/api/getMyProfile', (req,res) => {
     userQuery.then((queryRes) => {
         if (queryRes.length <= 0) {
             res.status(401);
+            return;
         }
         try {
             var user = {
@@ -97,6 +98,42 @@ app.get('/api/getMyProfile', (req,res) => {
             res.status(200).json(user);
         } catch (e) {
             console.error("Error getting user profile.");
+            console.error(e);
+            res.status(500);
+        }
+    });
+});
+
+app.post('/api/updateMyProfile', (req,res) => {
+    var userQuery = db.getUserByUserID(req.user.sub);
+    userQuery.then((queryRes) => {
+        if (queryRes.length <= 0) {
+            // This user id does not exist.
+            res.status(401);
+            return;
+        }
+        try {
+            // Get user id.
+            var userID = query[0].UserID;
+            // Get all parameters sent with the http request.
+            // For all missing parameters, use the existing value in db.
+            var userObj = {
+                Name: ("Name" in req.body) ? req.body.Name : queryRes[0].Username,
+                Email: ("Email" in req.body) ? req.body.Email : queryRes[0].Email,
+                Phone: ("Phone" in req.body) ? req.body.Phone : queryRes[0].Phone,
+                Tags: ("Tags" in req.body) ? req.body.Tags : queryRes[0].Tags,
+                College: ("College" in req.body) ? req.body.College : queryRes[0].College,
+                Major: ("Major" in req.body) ? req.body.Major : queryRes[0].Major,
+                Year: ("Year" in req.body) ? req.body.Year : queryRes[0].Year
+            };
+
+            var updateUserQuery = db.updateUserProfile(userID, userObj);
+            updateUserQuery.then((createRes) => {
+                console.log(createRes);
+                res.status(200).json({success:true});
+            });
+        } catch(e) {
+            console.error("Error getting user profile [2].");
             console.error(e);
             res.status(500);
         }
