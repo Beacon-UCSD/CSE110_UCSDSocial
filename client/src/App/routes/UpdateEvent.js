@@ -8,8 +8,8 @@ import pfetch from '../fetch.protected';
 import auth from '../auth';
 
 const AWS = require('aws-sdk');
-const ID = 'AKIAQI57SY65EFA5UHTF';
-const SECRET = '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';
+const ID ='';
+const SECRET ='';
 
 const BUCKET = 'ucsdsocial';
 const s3 = new AWS.S3({
@@ -299,6 +299,7 @@ class UpdateEvent extends React.Component{
                                 onChange={this.handleEndDateChange} />
                     </MuiPickersUtilsProvider>
                     <br/>
+                    <div className="create-event-visibility">Event Visibility</div>
                     <label>
                         <input className="Private" name="Private" type="checkbox" checked={this.state.PrivateBool}
                             onChange={this.handleInputChange} />
@@ -309,9 +310,12 @@ class UpdateEvent extends React.Component{
                             onChange={this.handleInputChange} />
                         Public
                     </label>
-                    <input type="file" onChange={this.fileChangedHandler}/>
+                    <div className="text-center">Upload Flyer Image</div>
+                    <input type="file" className="imageupload" onChange={this.fileChangedHandler}/>
                     <img id="testImg" src={this.state.flyerURL} width="150" height="150"/>
-                    <h2> To update an event, please upload a new Flyer and reselect the event time </h2>
+                    <div className="text-center">
+                        To update an event, please upload a new Flyer and reselect the event time.
+                    </div>
                     <input className="submit" type="submit" value="Update Event" />
                 </form>
             </div>
