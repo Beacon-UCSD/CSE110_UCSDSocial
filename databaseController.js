@@ -118,27 +118,28 @@ class DbController {
             return;
         }
         
-        var getUserQuery = "SELECT UserID,Username,Email,Phone,Tags,College," +
-            "Major,Year,Friends,Hostevents,Notification " +
+        var getUserQuery = "SELECT UserID,Username,Email,ProfileImage,Phone,Tags," +
+            "College,Major,Year,Friends,Hostevents,Notification " +
             "FROM Users WHERE UserID='"+userID+"' LIMIT 1;";
 
         return this.makeQuery(getUserQuery);
     }
 
     //function to create new user
-    createUser(googleUID, userName, userEmail) {
-        var insertUserQuery = "INSERT INTO Users (GoogleUID,Username,Email) VALUES('" +
+    createUser(googleUID, userName, userEmail, userPicture) {
+        var insertUserQuery = "INSERT INTO Users (GoogleUID,Username,Email,ProfileImage) VALUES('" +
             cleanString(googleUID)+"','"+cleanString(userName)+"','"+
-            escapeQuotations(userEmail.toString())+"');"
+            escapeQuotations(userEmail.toString())+"','"+
+            escapeQuotations(userPicture.toString())+"');"
         return this.makeQuery(insertUserQuery);
     }
 
     //function to update user information
-    updateUserInformation(userId, userObj) {
+    updateUserProfile(userId, userObj) {
         try {
             var updateUserQuery = "UPDATE Users SET " +
                 "Username='"+cleanString(userObj.Name)+"',"+
-                "Email='"+escapeQuotations(userObj.Email.toString())+"',"+
+                "ProfileImage='"+escapeQuotations(userObj.ProfileImage.toString())+"',"+
                 "Phone='"+escapeQuotations(userObj.Phone.toString())+"',"+
                 "Tags='"+JSON.stringify(userObj.Tags)+"',"+
                 "College='"+cleanString(userObj.College)+"',"+
@@ -184,6 +185,39 @@ class DbController {
             return tmp.makeQuery( storeEventQuery );
         })
 
+    }
+    
+    
+    //fucntion to update the designated event
+    //eventObj holds the all the fields for an event
+    //returns a promise to the result of the insertion / update
+    updateEvent ( eventObj ){
+
+        var getIDQuery = "SELECT EventID FROM Events where Eventname = '" + 
+                         eventObj.Eventname.toString() + "' AND Hostname = '" +
+                         eventObj.Host.toString() + "';";
+        var tmp = this;
+        /*
+         + " AND Hostname = " + eventObj.Host.toString()
+                            + " AND Hostemail = " + eventObj.Hostemail.toString() 
+                            */
+
+        return this.makeQuery( getIDQuery ).then(function( getID ){
+            var getID = Number(getID[0]['EventID'])
+            var ID = ('000'+(Number(getID) + 0)).substr(-3)
+            console.log("the EventID you trying to update is: " + ID);
+            //then need to do the update
+            //REPLACE works exactly like INSERT, 
+            //except that if an old row in the table has the same value as a new row for a PRIMARY KEY
+            //the old row is deleted before the new row is inserted.
+            var updateEventQuery = "REPLACE INTO Events(EventID,Eventname,Tags,"+
+                "Hostname,Hostemail,Startdate,Enddate,Private,Description,"+
+                "FlyerURL,Attendees,Forum) VALUES('"+ID+"',"+
+                eventToStr( eventObj )+");";
+        
+            return tmp.makeQuery(updateEventQuery);
+        })
+        
     }
 
     //function to delete event from table

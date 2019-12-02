@@ -48,6 +48,23 @@ class LoginPage extends Component {
         }
     }
 
+    /*componentDidMount() {
+        // Dynamically remove the navigation bar container and resize
+        // the page container to span the entire page.
+        var rowItem = this.refs.loginPageContainer.parentElement;
+        var row = rowItem.parentElement;
+        if (row.childNodes.length == 2) {
+            for (var i = 0; i < row.childNodes.length; i++) {
+                if (row.childNodes[i] == rowItem) {
+                    continue;
+                }
+                row.removeChild(row.childNodes[i]);
+                break;
+            }
+            rowItem.className = 'col-md-12';
+        }
+    }*/
+
     sendLoginRequest(requestURI, token) {
         // Send the login token to the backend to get session token.
         var headers = {
@@ -93,38 +110,42 @@ class LoginPage extends Component {
         console.log(response);
     }
     render() {
-        if (this.useTester) {
-            return(
-                <div>
-                    <p>{"To get started, click the button below."}</p>
-                    <button type="button"
-                        onClick={this.handleTesterLogin}>
-                        {"Sign in with Tester " + this.testerAcc}
-                    </button>
-                </div>
-            );
-        }
-
         return(
-
-            <div>
-
-                <p>To get started, sign in with your ucsd account.</p>
-                <img src= {background} />
-                <div className = "img1"> 
-                    <img src= {logo} />
+        <div ref='loginPageContainer' className='login-page text-center'>
+            <div className="row">
+                <div className="col-12">
+                    <div className="login-logo"> 
+                        <img src= {logo} />
+                    </div>
                 </div>
-                <div className="google"> 
-                    <GoogleLogin
-                    clientId="367161453960-u7qnu0melhkcq45t3va5d1vik0fu0a5s.apps.googleusercontent.com"
-                    buttonText="Sign in with Google"
-                    theme='dark'
-                    onSuccess={this.onGoogleLoginSuccess.bind(this)}
-                    onFailure={this.onGoogleLoginFailure}
-                    cookiePolicy={'single_host_origin'} />
-                </div>
-                
             </div>
+
+            <div className="row">
+                <div className="login-msg col-12">
+                    <p>To get started, sign in with your ucsd account.</p>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-12"> 
+                    {this.useTester == true &&
+                        <button type='button' onClick={this.handleTesterLogin}>
+                            {"Sign in with Tester " + this.testerAcc}
+                        </button>
+                    }
+                    {this.useTester == false &&
+                    <GoogleLogin
+                        className="login-button"
+                        clientId="367161453960-u7qnu0melhkcq45t3va5d1vik0fu0a5s.apps.googleusercontent.com"
+                        buttonText="Sign in with Google"
+                        theme='dark'
+                        onSuccess={this.onGoogleLoginSuccess.bind(this)}
+                        onFailure={this.onGoogleLoginFailure}
+                        cookiePolicy={'single_host_origin'} />
+                    }
+                </div>
+            </div>
+        </div>
         );
     }
 }
