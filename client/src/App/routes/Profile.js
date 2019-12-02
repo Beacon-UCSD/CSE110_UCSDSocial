@@ -25,6 +25,8 @@ class Profile extends Component {
              events:    [],
              notifications: []
          };
+
+         this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
      }
 
      componentDidMount() {
@@ -57,6 +59,22 @@ class Profile extends Component {
          });
      }
 
+     handleUpdateProfile(evt){
+         let profileData = {
+             userId: this.state.UserID,
+             picture: this.state.picture,
+             name: this.state.name,
+             tags: this.state.tags,
+             college: this.state.college,
+             major: this.state.major,
+             year: this.state.year,
+         }
+         this.props.history.push({
+            pathname: '/app/UpdateProfile',
+            state:{data: profileData}
+        })
+     }
+
      render() {
          return (
 
@@ -75,6 +93,7 @@ class Profile extends Component {
                   <div className="actualInfo">Friends:<div className="h7">{this.state.friends}</div></div>
                   <div className="actualInfo">Host Events:<div className="h7">{this.state.events}</div></div>
                   <div className="actualInfo">Notifications:<div className="h7">{this.state.notifications}</div></div>
+                  <button onClick={this.handleUpdateProfile}>Update Profile</button>
                 </div>
               </div>
             </div>
