@@ -45,9 +45,9 @@ class Event extends Component {
     }
 
     render() {
+        console.log(this.state.event);
         let showUpdate = this.userInfo.email == this.state.event.Hostemail ? 
             <button onClick={this.handleUpdateEvent}>Update Event</button> : null;
-        console.log(this.state.event);
         return (
             <div>
               <div id="main">
@@ -61,7 +61,7 @@ class Event extends Component {
                   </h2>
                   <h3>Tags: {this.state.event.Tags}</h3>
                   <h3>Host: {this.state.event.Hostname}</h3>
-                  <h3>This is a {this.state.event.Private === true ? "Private": "Public"} event</h3>
+                  <h3>This is a {this.state.event.Private === 1 ? "Private": "Public"} event</h3>
                   <p>{this.state.event.Description}</p>
                   <h4>Attendees: {this.state.event.Attendees}</h4>
                   <img src={this.state.event.FlyerURL} height="150" width="150"/>

@@ -37,7 +37,8 @@ class CreateEvent extends Component {
             Description:'',
             startDate: new Date(Date.now()+3600000), // default start date = 1 hour from now
             endDate: new Date(Date.now()+5400000), // default end date = 30 minutes after start time
-            Private: false,
+            Private: "0",
+            PrivateBool: false,
             Public: true,
             flyerURL: "https://ucsdsocial.s3.amazonaws.com/Default.png",
             Attendees: '',
@@ -65,17 +66,53 @@ class CreateEvent extends Component {
       }
 
     handleInputChange(evt){
+        
         if (evt.target.name === "Private"){
+            if (evt.target.checked){
+                this.setState({
+                    Private: "1",
+                    PrivateBool: evt.target.checked,
+                    Public: !evt.target.checked,
+                })
+            }
+            else{
+                this.setState({
+                    Private: "0",
+                    PrivateBool: evt.target.checked,
+                    Public: !evt.target.checked,
+                })
+            }
+            /*
             this.setState({
-                Private: evt.target.checked,
+                Private: "1",
+                PrivateBool: evt.target.checked,
                 Public: !evt.target.checked,
             })
+            */
+
         }
         else{
+            if (evt.target.checked){
+                this.setState({
+                    Private: "0",
+                    PrivateBool: !evt.target.checked,
+                    Public: evt.target.checked,
+                })
+            }
+            else{
+                this.setState({
+                    Private: "1",
+                    PrivateBool: !evt.target.checked,
+                    Public: evt.target.checked,
+                })
+            }
+            /*
             this.setState({
-                Private: !evt.target.checked,
+                Private: "0",
+                PrivateBool: !evt.target.checked,
                 Public: evt.target.checked,
             })
+            */
         }
     }
 
@@ -203,6 +240,7 @@ class CreateEvent extends Component {
             FlyerURL: location,
             Attendees: ""
         };
+        console.log(reqParams);
         pfetch.jsonPost('/api/storeEvent', reqParams, (json) => {
             if (!json.success) {
                 console.error("Error! Could not post event.");
@@ -317,7 +355,7 @@ class CreateEvent extends Component {
                 </div>
                 <br/>
                 <label>
-                        <input className="Private" name="Private" type="checkbox" checked={this.state.Private}
+                        <input className="Private" name="Private" type="checkbox" checked={this.state.PrivateBool}
                             onChange={this.handleInputChange} disabled={this.state.formDisabled} />
                         Private
                 </label>

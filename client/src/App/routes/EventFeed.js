@@ -9,6 +9,7 @@ import Popper from 'popper.js';
 
 import NavBar from '../components/NavBar';
 import TagButton from '../components/TagButton';
+import auth from '../auth';
 
 import './EventFeed.css';
 
@@ -22,12 +23,14 @@ class EventFeed extends Component {
             list: [],
             FilterTags: []
         }
+        this.userInfo = auth.getUserInfo();
     }
 
     // Fetch the event feed on mount
     componentDidMount() {
         pfetch.jsonGet('/api/getList', (list) => {
             // Parse all tags for all events.
+
             for (var i = 0; i < list.length; i++) {
                 try {
                     list[i].Tags = JSON.parse(list[i].Tags);
@@ -35,6 +38,13 @@ class EventFeed extends Component {
                     list[i].Tags = null;
                 }
             }
+            
+            // filter list of private events that aren't the users
+            console.log("list before filtering other users' privates:", list)
+            list = list.filter(evt => {
+                return !(evt.Hostemail != this.userInfo.email && evt.Private === 1);
+            });
+            console.log("list after filtering other users' privates:", list);
             // Update state
             this.setState({ list });
         });
@@ -98,7 +108,9 @@ class EventFeed extends Component {
             </div>
 
             <div className="row">
-                {list.map((item) => {
+                {
+                    // need to filter out private events that are not the users
+                    list.map((item) => {
 
                     var itemTags = item.Tags;
                     
@@ -111,32 +123,51 @@ class EventFeed extends Component {
                             for (var j = 0; j < this.state.FilterTags.length; j++) {
                                 if (itemTags[i].toUpperCase() ===
                                     this.state.FilterTags[j].toUpperCase()) {
-                                    return(
-                                    <div key={item.EventID} className="col-md-12">
-                                        <Link to={'/app/Event/' + item.EventID}>
+                                    
+                                        // if curr user's private event, show in different color
+                                        let eventBtn = item.Hostemail === this.userInfo.email && 
+                                            item.Private ?
+                                            <button className="privateEventButton">
+                                                <h2>{item.Eventname}</h2>
+                                                <h3>Start: {item.Startdate}</h3>
+                                                <h3>End: {item.Enddate}</h3>
+                                            </button> :
                                             <button className="eventButton">
                                                 <h2>{item.Eventname}</h2>
                                                 <h3>Start: {item.Startdate}</h3>
                                                 <h3>End: {item.Enddate}</h3>
                                             </button>
-                                        </Link>
-                                    </div>
-                                    );
+                                            
+                                        return(
+                                        <div key={item.EventID} className="col-md-12">
+                                            <Link to={'/app/Event/' + item.EventID}>
+                                                {eventBtn}
+                                            </Link>
+                                        </div>
+                                        );
                                 }
                             }
                         }
 
                     } else {
                         // Not filtering, just show everything.
-                        
+                        // if curr user's private event, show in different color
+                        let eventBtn = item.Hostemail === this.userInfo.email && 
+                                        item.Private ?
+                                        <button className="privateEventButton">
+                                            <h2>{item.Eventname}</h2>
+                                            <h3>Start: {item.Startdate}</h3>
+                                            <h3>End: {item.Enddate}</h3>
+                                        </button> :
+                                        <button className="eventButton">
+                                            <h2>{item.Eventname}</h2>
+                                            <h3>Start: {item.Startdate}</h3>
+                                            <h3>End: {item.Enddate}</h3>
+                                        </button>
                         return(
                         <div key={item.EventID} className="col-md-12">
                             <Link to={'/app/Event/' + item.EventID}>
-                                <button className="eventButton">
-                                    <h2>{item.Eventname}</h2>
-                                    <h3>Start: {item.Startdate}</h3>
-                                    <h3>End: {item.Enddate}</h3>
-                                </button>
+                                {eventBtn}
                             </Link>
                         </div>
                         );
