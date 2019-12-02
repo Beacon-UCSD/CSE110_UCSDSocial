@@ -25,6 +25,37 @@ h3 {
   transform: translate(0%, -250%);
 }
 
+.eventsfeed-header {
+    margin: 0 auto;
+}
+
+.eventsfeed-header h2 {
+    margin: 0;
+    padding: 0;
+    margin-top: 40px;
+}
+
+.eventsfeed-create {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.create-event-btn {
+    margin: 10px;
+    margin-left: 0px;
+    margin-bottom: 40px;
+    padding: 0;
+}
+
+.create-event-btn button {
+    height: 40px;
+    transition: 0.05s;
+}
+
+.create-event-btn button:hover {
+    filter: brightness(105%);
+}
+
 .eventButton {
   position: relative;
   width: 700px;

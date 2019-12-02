@@ -89,13 +89,16 @@ class EventFeed extends Component {
         const { list } = this.state;
         return(
         <div>
-            <div className="row">
-                <div className="col-8">
-                    <h2> Your Events </h2>
+            <div className="eventsfeed-header row">
+                <div className="col-12">
+                    <h2> Events Feed </h2>
                 </div>
-                <div className="col-md-4">
-                        <Link to={'/app/CreateEvent'}>
-                        <button variant="raised" className="submit"> Create Event </button>
+            </div>
+            <div className="eventsfeed-create row">
+                <div className="create-event-btn col-md-12">
+                    <Link to={'/app/CreateEvent'}>
+                        <button variant="raised" className="submit"> 
+                            Create Event </button>
                     </Link>
                 </div>
             </div>

@@ -28,7 +28,11 @@ class NavBar extends Component {
     }
 
     handleResize() {
-        this.refs.sidenav.style.width = this.refs.sidenav.parentElement.offsetWidth + 'px';
+        try {
+            this.refs.sidenav.style.width = this.refs.sidenav.parentElement.offsetWidth + 'px';
+        } catch(e) {
+            console.log("Weird navbar glitch happend");
+        }
     }
 
     logout() {
