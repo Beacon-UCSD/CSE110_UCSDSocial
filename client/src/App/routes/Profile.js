@@ -41,6 +41,8 @@ class Profile extends Component {
              params += "?UserID=" + this.props.match.params.UserID;
          }
 
+         this.ownProfile = !gettingAnotherUsersProfile;
+
          // Get profile from backend.
          pfetch.jsonGet('/api/getProfile'+params, (user) => {
              // Init null fields to empty string/array
@@ -112,7 +114,9 @@ class Profile extends Component {
                   <div className="actualInfo">Friends:<div className="h7">{this.state.friends}</div></div>
                   <div className="actualInfo">Host Events:<div className="h7">{this.state.events}</div></div>
                   <div className="actualInfo">Notifications:<div className="h7">{this.state.notifications}</div></div>
-                  <button onClick={this.handleUpdateProfile}>Update Profile</button>
+                  {this.ownProfile &&
+                      <button onClick={this.handleUpdateProfile}>Update Profile</button>
+                  }
                 </div>
               </div>
             </div>

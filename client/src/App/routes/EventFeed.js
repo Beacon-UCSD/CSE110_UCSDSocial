@@ -37,6 +37,16 @@ class EventFeed extends Component {
                 } catch(e) {
                     list[i].Tags = null;
                 }
+                try {
+                    list[i].Startdate = new Date(list[i].Startdate).getTime();
+                } catch(e) {
+                    console.error("Cannot parse start date [" + i + "]");
+                }
+                try{
+                    list[i].Enddate = new Date(list[i].Enddate).getTime();
+                } catch(e) {
+                    console.error("Cannot parse end date [" + i + "]");
+                }
             }
 
             // filter list of private events that aren't the users
@@ -128,13 +138,13 @@ class EventFeed extends Component {
                                             item.Private ?
                                             <button className="privateEventButton">
                                                 <h2>{item.Eventname}</h2>
-                                                <h3>Start: {item.Startdate}</h3>
-                                                <h3>End: {item.Enddate}</h3>
+                                                <h3>Start: {(new Date(item.Startdate)).toLocaleString()}</h3>
+                                                <h3>End: {(new Date(item.Enddate)).toLocaleString()}</h3>
                                             </button> :
                                             <button className="eventButton">
                                                 <h2>{item.Eventname}</h2>
-                                                <h3>Start: {item.Startdate}</h3>
-                                                <h3>End: {item.Enddate}</h3>
+                                                <h3>Start: {(new Date(item.Startdate)).toLocaleString()}</h3>
+                                                <h3>End: {(new Date(item.Enddate)).toLocaleString()}</h3>
                                             </button>
 
                                         return(
@@ -155,13 +165,13 @@ class EventFeed extends Component {
                                         item.Private ?
                                         <button className="privateEventButton">
                                             <h2>{item.Eventname}</h2>
-                                            <h3>Start: {item.Startdate}</h3>
-                                            <h3>End: {item.Enddate}</h3>
+                                            <h3>Start: {(new Date(item.Startdate)).toLocaleString()}</h3>
+                                            <h3>End: {(new Date(item.Enddate)).toLocaleString()}</h3>
                                         </button> :
                                         <button className="eventButton">
                                             <h2>{item.Eventname}</h2>
-                                            <h3>Start: {item.Startdate}</h3>
-                                            <h3>End: {item.Enddate}</h3>
+                                            <h3>Start: {(new Date(item.Startdate)).toLocaleString()}</h3>
+                                            <h3>End: {(new Date(item.Enddate)).toLocaleString()}</h3>
                                         </button>
                         return(
                         <div key={item.EventID} className="col-md-12">
