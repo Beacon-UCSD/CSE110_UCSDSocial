@@ -191,6 +191,7 @@ class UpdateEvent extends React.Component{
             Tags: this.state.Tags,
             Eventname: this.state.Eventname,
             Host: this.userInfo.name,
+            Hostemail: this.userInfo.email,
             Startdate: this.state.Startdate.toString(),
             Enddate: this.state.Enddate.toString(),
             Private: this.state.Private,
@@ -232,7 +233,7 @@ class UpdateEvent extends React.Component{
         // Convert tag to uppercase.
         tagToAdd = tagToAdd.toUpperCase();
 
-        if (this.state.Tags.indexOf(tagToAdd) !== -1) {
+        if (this.state.Tags.indexOf(tagToAdd) != -1) {
             console.log("The tag '" + tagToAdd + "' is already added to the event.");
         } else {
             // Add Tag
