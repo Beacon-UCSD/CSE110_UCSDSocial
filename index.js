@@ -74,27 +74,62 @@ app.use(jwt({secret: authenticator.JWT_SECRET}));
 //app.use(express.static(path.join(__dirname, 'client/build')));
 
 // endpoint to get logged in users profile
-app.get('/api/getMyProfile', (req,res) => {
-    var userQuery = db.getUserByUserID(req.user.sub);
+app.get('/api/getProfile', (req,res) => {
+    // Get the id of the user
+    var userID;
+    if ("UserID" in req.query && !isNaN(req.query.UserID)) {
+        userID = parseInt(req.query.UserID);
+        if (userID < 0) {
+            res.status(400);
+        }
+    } else {
+        userID = req.user.sub;
+    }
+
+    console.log("Get profile: " + userID);
+
+    var userQuery = db.getUserByUserID(userID);
     userQuery.then((queryRes) => {
         if (queryRes.length <= 0) {
             res.status(401);
             return;
         }
         try {
-            var user = {
-                UserID: queryRes[0].UserID,
-                Name: queryRes[0].Username,
-                Email: queryRes[0].Email,
-                Phone: queryRes[0].Phone,
-                Tags: queryRes[0].Tags,
-                College: queryRes[0].College,
-                Major: queryRes[0].Major,
-                Year: queryRes[0].Year,
-                Friends: queryRes[0].Friends,
-                Events: queryRes[0].Hostevents,
-                Notifications: queryRes[0].Notification
-            };
+            var user;
+            if (req.user.sub == userID) {
+                // The user is requesting his/her own profile
+                // Send everything
+                user = {
+                    UserID: queryRes[0].UserID,
+                    Name: queryRes[0].Username,
+                    Email: queryRes[0].Email,
+                    Picture: queryRes[0].ProfileImage,
+                    Phone: queryRes[0].Phone,
+                    Tags: queryRes[0].Tags,
+                    College: queryRes[0].College,
+                    Major: queryRes[0].Major,
+                    Year: queryRes[0].Year,
+                    Friends: queryRes[0].Friends,
+                    Events: queryRes[0].Hostevents,
+                    Notifications: queryRes[0].Notification
+                };
+            } else {
+                // The user is requesting someone else's profile
+                // Send only public info
+                user = {
+                    UserID: queryRes[0].UserID,
+                    Name: queryRes[0].Username,
+                    Email: queryRes[0].Email,
+                    Picture: queryRes[0].ProfileImage,
+                    Phone: queryRes[0].Phone,
+                    Tags: queryRes[0].Tags,
+                    College: queryRes[0].College,
+                    Major: queryRes[0].Major,
+                    Year: queryRes[0].Year,
+                    Friends: queryRes[0].Friends,
+                    Events: queryRes[0].Hostevents
+                };
+            }
             res.status(200).json(user);
         } catch (e) {
             console.error("Error getting user profile.");
@@ -114,12 +149,12 @@ app.post('/api/updateMyProfile', (req,res) => {
         }
         try {
             // Get user id.
-            var userID = query[0].UserID;
+            var userID = queryRes[0].UserID;
             // Get all parameters sent with the http request.
             // For all missing parameters, use the existing value in db.
             var userObj = {
                 Name: ("Name" in req.body) ? req.body.Name : queryRes[0].Username,
-                Email: ("Email" in req.body) ? req.body.Email : queryRes[0].Email,
+                ProfileImage: ("Picture" in req.body) ? req.body.Picture : queryRes[0].ProfileImage,
                 Phone: ("Phone" in req.body) ? req.body.Phone : queryRes[0].Phone,
                 Tags: ("Tags" in req.body) ? req.body.Tags : queryRes[0].Tags,
                 College: ("College" in req.body) ? req.body.College : queryRes[0].College,

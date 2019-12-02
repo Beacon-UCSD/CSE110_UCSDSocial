@@ -9,13 +9,10 @@ class Profile extends Component {
      constructor(props) {
          super(props);
 
-         // Gets basic user info (name, email, and profile pic)
-         this.userInfo = auth.getUserInfo();
-
          this.state = {
-             name:      this.userInfo.name,
-             picture:   this.userInfo.pictureSrc,
-             email:     this.userInfo.email,
+             name:      "",
+             picture:   "",
+             email:     "",
              phone:     "",
              tags:      [],
              college:   "",
@@ -26,11 +23,26 @@ class Profile extends Component {
              notifications: []
          };
 
-         this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
-     }
+         var gettingAnotherUsersProfile = true;
+         var params = "";
 
-     componentDidMount() {
-         pfetch.jsonGet('/api/getMyProfile', (user) => {
+         // Check if getting current user's profile
+         var userInfo = auth.getUserInfo();
+         if (!("UserID" in this.props.match.params) ||
+               this.props.match.params.UserID == userInfo.id) {
+             gettingAnotherUsersProfile = false;
+
+             // Temporarily load  basic user info (name, email, and profile pic)
+             // These data will be overwritten once backend responds to api call.
+             this.state.name = userInfo.name;
+             this.state.picture = userInfo.pictureSrc;
+             this.state.email = userInfo.email;
+         } else {
+             params += "?UserID=" + this.props.match.params.UserID;
+         }
+
+         // Get profile from backend.
+         pfetch.jsonGet('/api/getProfile'+params, (user) => {
              // Init null fields to empty string/array
              for (var key in user) {
                  if (user[key] == null) {
@@ -45,7 +57,7 @@ class Profile extends Component {
 
              this.setState({
                  name:  user.Name,
-                 picture:   this.state.picture,
+                 picture:   user.Picture,
                  email:     user.Email,
                  phone:     user.Phone,
                  tags:      user.Tags,
@@ -53,11 +65,16 @@ class Profile extends Component {
                  major:     user.Major,
                  year:      user.Year,
                  friends:   user.Friends,
-                 events:    user.Events,
-                 notifications: user.Notifications
+                 events:    user.Events
              });
-             //this.setState({ event: data });
+             if (!gettingAnotherUsersProfile) {
+                this.setState({
+                    notifications: user.Notifications
+                });
+             }
          });
+         
+         this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
      }
 
      handleUpdateProfile(evt){
