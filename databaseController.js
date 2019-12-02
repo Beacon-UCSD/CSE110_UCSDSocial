@@ -118,18 +118,19 @@ class DbController {
             return;
         }
         
-        var getUserQuery = "SELECT UserID,Username,Email,Phone,Tags,College," +
-            "Major,Year,Friends,Hostevents,Notification " +
+        var getUserQuery = "SELECT UserID,Username,Email,ProfileImage,Phone,Tags," +
+            "College,Major,Year,Friends,Hostevents,Notification " +
             "FROM Users WHERE UserID='"+userID+"' LIMIT 1;";
 
         return this.makeQuery(getUserQuery);
     }
 
     //function to create new user
-    createUser(googleUID, userName, userEmail) {
-        var insertUserQuery = "INSERT INTO Users (GoogleUID,Username,Email) VALUES('" +
+    createUser(googleUID, userName, userEmail, userPicture) {
+        var insertUserQuery = "INSERT INTO Users (GoogleUID,Username,Email,ProfileImage) VALUES('" +
             cleanString(googleUID)+"','"+cleanString(userName)+"','"+
-            escapeQuotations(userEmail.toString())+"');"
+            escapeQuotations(userEmail.toString())+"','"+
+            escapeQuotations(userPicture.toString())+"');"
         return this.makeQuery(insertUserQuery);
     }
 
@@ -138,6 +139,7 @@ class DbController {
         try {
             var updateUserQuery = "UPDATE Users SET " +
                 "Username='"+cleanString(userObj.Name)+"',"+
+                "ProfileImage='"+escapeQuotations(userObj.ProfileImage.toString())+"',"+
                 "Phone='"+escapeQuotations(userObj.Phone.toString())+"',"+
                 "Tags='"+JSON.stringify(userObj.Tags)+"',"+
                 "College='"+cleanString(userObj.College)+"',"+

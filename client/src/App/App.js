@@ -40,6 +40,7 @@ class App extends Component {
                                 <ProtectedRoute exact path='/app/UpdateEvent' component={UpdateEvent} />
                                 <ProtectedRoute exact path='/app/Event/:EventID' component={Event} />
                                 <ProtectedRoute exact path='/app/Profile' component={Profile}/>
+                                <ProtectedRoute exact path='/app/Profile/:UserID' component={Profile}/>
                                 <Route path='/' component={Error404} />
                             </Switch>
                         </div>

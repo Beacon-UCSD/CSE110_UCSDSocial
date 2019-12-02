@@ -79,7 +79,8 @@ exports.authenticate = function(idToken, clientRes) {
             userIdQuery.then((queryRes) => {
                 if (queryRes.length <= 0) {
                     // New user!!
-                    var createQuery = db.createUser(googleUserId, userName, email);
+                    var createQuery = db.createUser(googleUserId, userName,
+                        email, userPicture);
                     createQuery.then((createRes) => {
                         sendSessionToClient(createRes.insertId);
                     });
