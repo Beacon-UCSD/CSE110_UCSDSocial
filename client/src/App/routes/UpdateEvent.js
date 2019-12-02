@@ -24,6 +24,11 @@ class UpdateEvent extends React.Component{
 
         const {evt} = this.props.location.state;
         
+        let evtPrivateBool = false;
+        if (evt.Private === 1){
+            evtPrivateBool = true;
+        }
+
         this.state = {
             Tags: '',
             Eventname: evt.Eventname,
@@ -31,6 +36,7 @@ class UpdateEvent extends React.Component{
             Startdate: evt.Startdate,
             Enddate: evt.Enddate,
             Private: evt.Private,
+            PrivateBool: evtPrivateBool,
             Public: !evt.Private,
             FlyerURL: evt.FlyerURL,
             Attendees: '',
@@ -62,16 +68,36 @@ class UpdateEvent extends React.Component{
     */
     handleInputChange(evt){
         if (evt.target.name === "Private"){
-            this.setState({
-                Private: evt.target.checked,
-                Public: !evt.target.checked,
-            })
+            if (evt.target.checked){
+                this.setState({
+                    Private: "1",
+                    PrivateBool: evt.target.checked,
+                    Public: !evt.target.checked,
+                })
+            }
+            else{
+                this.setState({
+                    Private: "0",
+                    PrivateBool: evt.target.checked,
+                    Public: !evt.target.checked,
+                })
+            }
         }
         else{
-            this.setState({
-                Private: !evt.target.checked,
-                Public: evt.target.checked,
-            })
+            if (evt.target.checked){
+                this.setState({
+                    Private: "0",
+                    PrivateBool: !evt.target.checked,
+                    Public: evt.target.checked,
+                })
+            }
+            else{
+                this.setState({
+                    Private: "1",
+                    PrivateBool: !evt.target.checked,
+                    Public: evt.target.checked,
+                })
+            }
         }
     }
     /*
@@ -271,7 +297,7 @@ class UpdateEvent extends React.Component{
                     </MuiPickersUtilsProvider>
                     <br/>
                     <label>
-                        <input className="Private" name="Private" type="checkbox" checked={this.state.Private}
+                        <input className="Private" name="Private" type="checkbox" checked={this.state.PrivateBool}
                             onChange={this.handleInputChange} />
                         Private
                     </label>
