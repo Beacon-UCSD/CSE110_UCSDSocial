@@ -113,7 +113,7 @@ exports.authenticateTester1 = function(clientRes) {
     // TODO get tester 1 user data from database.
     var testerToken = {
         exp: Math.round((Date.now()+10800000)/1000),
-        sub: -1, // TODO get user id of tester 1
+        sub: 1, // user id of tester 1
         name: "Tester 1", // TODO get name of tester 1
         email: "tester1@ucsdsocial.club", // TODO get email of tester 1
         picture: "https://i.imgur.com/siKNmai.jpg", // TODO get tester profile pic
@@ -137,7 +137,7 @@ exports.authenticateTester2 = function(clientRes) {
     // TODO get tester 1 user data from database.
     var testerToken = {
         exp: Math.round((Date.now()+10800000)/1000),
-        sub: -1, // TODO get user id of tester 2
+        sub: 2, // user id of tester 2
         name: "Tester 2", // TODO get name of tester 2
         email: "tester2@ucsdsocial.club", // TODO get email of tester 2
         picture: "https://i.imgur.com/siKNmai.jpg", // TODO get tester profile pic
