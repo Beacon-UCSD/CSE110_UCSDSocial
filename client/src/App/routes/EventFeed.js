@@ -88,7 +88,7 @@ class EventFeed extends Component {
     render(){
         const { list } = this.state;
         return(
-        <div>
+        <div className="eventsfeed">
             <div className="eventsfeed-header row">
                 <div className="col-12">
                     <h2> Events Feed </h2>

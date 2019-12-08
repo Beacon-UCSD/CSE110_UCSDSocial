@@ -247,32 +247,38 @@ app.post('/api/storeEvent', function (req,res) {
 });
 
 app.post('/api/updateEvent', function (req,res) {
+    var eventID = req.body.EventID;
+    var eventQuery = db.getEvent(eventID);
+    eventQuery.then((queryRes) => {
+        if (queryRes.length <= 0) {
+            // This event id does not exist.
+            res.status(404);
+            return;
+        }
+        try {
+            // Get all parameters sent with the http request.
+            // For all missing parameters, use the existing value in db.
+            var eventObj = {
+                Description: ("Description" in req.body) ? req.body.Description : queryRes[0].Description,
+                Private: ("Private" in req.body) ? req.body.Private : queryRes[0].Private,
+                Startdate: ("Startdate" in req.body) ? new Date(req.body.Startdate) : queryRes[0].Startdate,
+                Enddate: ("Enddate" in req.body) ? new Date(req.body.Enddate) : queryRes[0].Enddate,
+                FlyerURL: ("FlyerURL" in req.body) ? req.body.FlyerURL : queryRes[0].FlyerURL
+            };
+            console.log(eventObj.Startdate);
+            console.log(typeof(eventObj.Startdate));
 
-    var eventObj = {
-        Tags: req.body.Tags,
-        Eventname: req.body.Eventname,
-        Host: req.user.name,
-        Hostemail: req.user.email,
-        Startdate: new Date(req.body.Startdate),
-        Enddate: new Date(req.body.Enddate),
-        Private: req.body.Private,
-        Description: req.body.Description,
-        FlyerURL: req.body.FlyerURL,
-        Attendees: req.body.Attendees
-    }
-
-    console.log("Updating event");
-
-    updateEventQuery = db.updateEvent( eventObj )
-
-    console.log("Done updating database");
-
-    updateEventQuery.then(function( updateEventResponse ){
-
-        console.log( 'Store event response: ' + updateEventResponse );
-        res.json({success:true});
-    })
-
+            var updateEventQuery = db.updateEvent(eventID, req.user.email, eventObj);
+            updateEventQuery.then((updateRes) => {
+                console.log(updateRes);
+                res.status(200).json({success:true});
+            });
+        } catch(e) {
+            console.error("Error getting event details [2].");
+            console.error(e);
+            res.status(500);
+        }
+    });
 });
 
 app.post('/api/joinEvent', function (req,res){

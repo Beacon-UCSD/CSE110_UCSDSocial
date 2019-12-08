@@ -30,16 +30,15 @@ class UpdateEvent extends React.Component{
         }
 
         this.state = {
-            Tags: '',
+            EventID: evt.EventID,
             Eventname: evt.Eventname,
             Description: evt.Description,
-            Startdate: evt.Startdate,
-            Enddate: evt.Enddate,
+            Startdate: new Date(evt.Startdate),
+            Enddate: new Date(evt.Enddate),
             Private: evt.Private,
             PrivateBool: evtPrivateBool,
             Public: !evt.Private,
             FlyerURL: evt.FlyerURL,
-            Attendees: '',
             objectFile: {}
         };
 
@@ -117,14 +116,14 @@ class UpdateEvent extends React.Component{
     handleStartDateChange = (date) => {
         console.log(date);
         this.setState({
-            Startdate: new Date(+date),
+            Startdate: date,
         });
         // Check if start date is after end date, if so update end date.
-        if (date > this.state.endDate) {
+        if (date > this.state.Enddate) {
             console.log("Changing end date");
             // Set end date to be 5 minutes after start time.
             this.setState({
-                endDate: new Date(date.getTime()+5*60000) // set end date 5 minutes after start date
+                Enddate: new Date(date.getTime()+5*60000) // set end date 5 minutes after start date
             });
         }
     }
@@ -136,7 +135,7 @@ class UpdateEvent extends React.Component{
         console.log('Input Date: ' + date);
 
         this.setState({
-            Enddate: new Date(+date),
+            Enddate: new Date(date),
         })
         console.log(this.state.endDate);
     }
@@ -149,22 +148,18 @@ class UpdateEvent extends React.Component{
         evt.preventDefault();
 
         this.setState({
-            Eventname: this.state.Eventname.trim(),
             Description: this.state.Description.trim()
         });
 
         // Check for missing required fields
         var errors = [];
-        if (this.state.Eventname.length < 5) {
-            errors.push("Event name must be at least 5 characters long.");
-        }
         if (this.state.Description.length < 15) {
             errors.push("Event description must be at least 15 characters long.");
         }
-        if (this.state.startDate < (Date.now()+300000)) {
+        if (this.state.Startdate < (Date.now()+300000)) {
             errors.push("Event must start at least 5 minutes into the future.");
         }
-        if ((this.state.endDate-this.state.startDate) < 300000) {
+        if ((this.state.Enddate-this.state.Startdate) < 300000) {
             errors.push("Event must have a duration of at least 5 minutes.");
         }
         /*if (this.state.Tags.length <= 0) {
@@ -172,10 +167,12 @@ class UpdateEvent extends React.Component{
         }*/
         // Check if any errors
         if (errors.length > 0) {
-            console.error("Error! Cannot post event due to the following errors:");
+            var err_str = "Error! Cannot post event due to the following errors:";
             for (var i = 0; i < errors.length; i++) {
-                console.error("  - " + errors[i]);
+                err_str += "  - " + errors[i];
             }
+            console.error(err_str);
+            alert(err_str);
 
             // Re-enable form
             this.setState({
@@ -217,18 +214,17 @@ class UpdateEvent extends React.Component{
         console.log("NW " + this.state.objectFile.name);
         console.log("The Location for Flyer is: " + location);
 
+
         var body = {
-            Tags: this.state.Tags,
-            Eventname: this.state.Eventname,
-            Host: this.userInfo.name,
-            Hostemail: this.userInfo.email,
-            Startdate: this.state.Startdate.toString(),
-            Enddate: this.state.Enddate.toString(),
+            EventID: this.state.EventID.toString(),
+            Startdate: this.state.Startdate.getTime(),
+            Enddate: this.state.Enddate.getTime(),
             Private: this.state.Private,
-            Description: this.state.Description,
-            FlyerURL: location,
-            Attendees: ""
+            Description: this.state.Description
         };
+        if (typeof(location) != 'undefined') {
+            body['FlyerURL'] = location;
+        }
 
         console.log("updating: " + this.state.Eventname);
 
@@ -281,7 +277,7 @@ class UpdateEvent extends React.Component{
         return(
             <div className="container">
                 <form id="main" onSubmit={this.handleSubmit}>
-                    <input className="eventName" name="Eventname" type="text" value={this.state.Eventname}/>
+                    <input className="eventName" name="Eventname" type="text" value={this.state.Eventname} readOnly/>
                     <input className="description" name="Description" type="text" value={this.state.Description}
                         onChange={this.handleChange}/>
                     <MuiPickersUtilsProvider
@@ -313,9 +309,6 @@ class UpdateEvent extends React.Component{
                     <div className="text-center">Upload Flyer Image</div>
                     <input type="file" className="imageupload" onChange={this.fileChangedHandler}/>
                     <img id="testImg" src={this.state.flyerURL} width="150" height="150"/>
-                    <div className="text-center">
-                        To update an event, please upload a new Flyer and reselect the event time.
-                    </div>
                     <input className="submit" type="submit" value="Update Event" />
                 </form>
             </div>

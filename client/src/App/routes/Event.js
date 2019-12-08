@@ -63,6 +63,7 @@ class Event extends Component {
     handleUpdateEvent(){
         // pass in json to updateevent
         let evt = {
+            EventID: this.state.event.EventID,
             Eventname: this.state.event.Eventname,
             Description: this.state.event.Description,
             Startdate: this.state.event.Startdate,

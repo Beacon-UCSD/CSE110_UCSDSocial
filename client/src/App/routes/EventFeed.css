@@ -1,4 +1,4 @@
-h1 {
+.eventsfeed h1 {
   width: 164px;
   height: 41px;
   color: #FFFFFF;
@@ -8,14 +8,14 @@ h1 {
   text-align: center;
 }
 
-h2 {
+.eventsfeed h2 {
   color: #000000;
   font-family: "Segoe UI";
   font-size: 28px;
   font-weight: 600;
 }
 
-h3 {
+.eventsfeed h3 {
   color: #000000;
   font-family: "Segoe UI";
   font-size: 20px;
