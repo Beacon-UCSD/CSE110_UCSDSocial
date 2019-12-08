@@ -111,7 +111,7 @@ class UpdateProfile extends React.Component{
                                 onChange={this.handleChange.bind(this)}/>
                     </label>
                     <br/>
-                    <input className="submit" type="submit" value="Update Event" />    
+                    <input className="submit" type="submit" value="Update Profile" />    
                 </form>
             </div>
         );
