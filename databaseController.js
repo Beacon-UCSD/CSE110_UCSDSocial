@@ -1,4 +1,5 @@
-var mysql = require('mysql2');
+const mysql = require('mysql2');
+const config = require('./config.json');
 
 //function to escape quotations from string
 function escapeQuotations(str) {
@@ -72,31 +73,15 @@ class DbController {
 
         //connect to the db
 
-        var connection = mysql.createConnection({
-            host     : "beacon.cx82s6pkrof3.us-east-1.rds.amazonaws.com",
-            user     : "root",
-            password : "Beacon110",
-            port     : "3306",
-            timezone : "UTC"
-        });
-
-        connection.connect(function(err) {
-
-            if(err) {
-                console.error('Error connecting: ' + err.stack);
-                return;
-            }
-
-            console.log('Connected to db as id ' + connection.threadId);
-
-        });
-
-        //use proper db
-
-        connection.query( "USE " + this.db + ";" );
+        // setup pool size
+        var mysqlSettings = config.mysql;
+        mysqlSettings['waitForConnections'] = true;
+        mysqlSettings['connectionLimit'] = 10;
+        mysqlSettings['queueLimit'] = 0;
+        var pool = mysql.createPool(mysqlSettings);
 
         //not sure why but storing in obj up there messes up async so did here
-        this.connection = connection;
+        this.pool = pool;
 
     }
 
@@ -324,14 +309,14 @@ class DbController {
 
         //need to store these here since promise doesn't have scope of this
 
-        var connection = this.connection;
+        var pool = this.pool;
         var db = this.db;
 
         //create promise and perform query
 
         return new Promise(function(resolve, reject) {
 
-            connection.query( query , db, function (error, results, fields) {
+            pool.query( query , db, function (error, results, fields) {
 
                 if ( error != null )
                     console.log( error );
@@ -342,21 +327,6 @@ class DbController {
 
         });
 
-    }
-
-    //function to close the connection for this obj
-    closeConnection () {
-        try {
-
-            this.connection.end()
-            console.log("closed connection to db")
-
-        }
-        catch (err) {
-
-            console.log("caught error in trying to close db connection" + err);
-
-        }
     }
 
 }

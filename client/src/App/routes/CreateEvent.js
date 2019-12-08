@@ -11,14 +11,14 @@ import TagButton from '../components/TagButton';
 
 import './CreateEvent.css';
 
+const config = require('../../config.json');
+
 const AWS = require('aws-sdk');
-const ID = 'AKIAQI57SY65EFA5UHTF';
-const SECRET = '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';
 
 const BUCKET = 'ucsdsocial';
 const s3 = new AWS.S3({
-    accessKeyId: ID,
-    secretAccessKey: SECRET
+    accessKeyId: config.AWS_ID,
+    secretAccessKey: config.AWS_SECRET
 });
 
 class CreateEvent extends Component {

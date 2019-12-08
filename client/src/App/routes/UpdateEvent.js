@@ -7,14 +7,14 @@ import DateFnsUtils from '@date-io/date-fns';
 import pfetch from '../fetch.protected';
 import auth from '../auth';
 
+const config = require('../../config.json');
+
 const AWS = require('aws-sdk');
-const ID ='';
-const SECRET ='';
 
 const BUCKET = 'ucsdsocial';
 const s3 = new AWS.S3({
-    accessKeyId: ID,
-    secretAccessKey: SECRET
+    accessKeyId: config.AWS_ID,
+    secretAccessKey: config.AWS_SECRET
 });
 
 class UpdateEvent extends React.Component{
